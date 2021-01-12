@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://kgtest.cd3glhhnnn2m.us-west-2.rds.amazonaws.com:3306/testDB
+    url: jdbc:mysql://kgproject.cd3glhhnnn2m.us-west-2.rds.amazonaws.com:3306/kgDB
     username: admin
     password: 11111111
 
@@ -29,5 +29,3 @@ server:
     context-path: /
     encoding:
       charset: UTF-8
-
-key: key123456
