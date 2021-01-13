@@ -22,6 +22,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
 			integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
 			crossorigin="anonymous"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<style>
 
 		* {
@@ -158,11 +159,16 @@
 			font-weight: normal;
 		}
 
-		.input {
+		.title {
 			background-color: rgba(0, 0, 0, 0.1);
 			border-radius: 4px;
 			border-style: none;
 			padding: 16px 8px;
+		}
+		.input {
+			background-color: rgba(0, 0, 0, 0.1);
+			border-radius: 4px;
+			border-style: none;
 		}
 
 		.subject {
@@ -296,34 +302,59 @@
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
+				<form id = "roomForm">
 				<div class="modal-body">
 						<h6>방제목</h6>
-						<input class="input" type="text" name="title" >
+
+						<input class="title" type="text" name="name">
 
 						<div class ="subject">
 							<h6>토론 주제</h6>
-							<select class="input form-select">
-								<option>청소년 연예인</option>
-								<option>백신 접종 의무화</option>
-								<option>인공지능 개발</option>
-								<option>착한 사마리아인법</option>
-								<option>사형제도</option>
-								<option>청소년 복장 규제</option>
-								<option>남북통일</option>
-								<option>낙태죄 폐지</option>
-								<option>동물 약물 실험</option>
-								<option>안락사</option>
-								<option>동성결혼 합법화</option>
-								<option>민식이법 개정</option>
-								<option>게임중독의 질병분류</option>
-								<option>반려동물의 중성화</option>
+							<select class="input form-select" name = "category">
+								<option value = "청소년 연예인" selected = "selected">청소년 연예인</option>
+								<option value = "백신 접종 의무화">백신 접종 의무화</option>
+								<option value = "인공지능 개발">인공지능 개발</option>
+								<option value = "착한 사마리아인법">착한 사마리아인법</option>
+								<option value="사형제도">사형제도</option>
+								<option value = "청소년 복장 규제">청소년 복장 규제</option>
+								<option value = "남북통일">남북통일</option>
+								<option value = "낙태죄 폐지">낙태죄 폐지</option>
+								<option value = "동물 약물 실험">동물 약물 실험</option>
+								<option value = "안락사">안락사</option>
+								<option value = "동성결혼 합법화">동성결혼 합법화</option>
+								<option value = "민식이법 개정">민식이법 개정</option>
+								<option value = "게임중독의 질병분류">게임중독의 질병분류</option>
+								<option value = "반려동물의 중성화">반려동물의 중성화</option>
 							</select>
 						</div>
 				</div>
+
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary">만들기</button>
+					<button type="submit" class="btn btn-primary">만들기</button>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
+
+<script>
+	$(document).ready(function() {
+
+		$("#roomForm").submit(function() { // intercepts the submit event
+			$.ajax({ // make an AJAX request
+				type: "POST",
+				url: "/api/room", //
+				data: JSON.stringify($("#roomForm").serializeArray()), // serializes the form's elements
+				success: function(data)
+				{
+					console.log(data)
+				}
+			});
+			e.preventDefault(); // avoid to execute the actual submit of the form
+		});
+
+	});
+
+
+</script>
