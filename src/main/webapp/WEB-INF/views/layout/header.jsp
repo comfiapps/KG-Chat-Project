@@ -12,11 +12,16 @@
 <title>Discussion</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-		  integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+		  integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+		  crossorigin="anonymous" />
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+			integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+			crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+			integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+			crossorigin="anonymous"></script>
 	<style>
 
 		* {
@@ -64,6 +69,8 @@
 		}
 
 		.profile_img{
+			width: 32px;
+			height: 32px;
 			border-radius: 100%;
 		}
 
@@ -146,12 +153,6 @@
 		}
 
 		/*dialog start */
-		.mainbox{
-			border-radius: 8px;
-			box-shadow: 0 3px 6px #00000029;
-			padding: 16px;
-		}
-
 		.mainbox h6 {
 			margin: 0 0 4px 0;
 			font-weight: normal;
@@ -167,31 +168,6 @@
 		.subject {
 			margin-top: 16px;
 		}
-
-		.btn {
-			margin-top: 30px;
-			padding-left: 20px;
-			display: flex;
-			justify-content: flex-end;
-		}
-
-		.btn button{
-			border-radius: 4px;
-			border-style: none;
-			height: 32px;
-			padding: 4px 8px;
-			font-size: 14px;
-		}
-
-		.btn1 {
-			background-color: #70A9FF;
-			margin-left: 8px;
-		}
-
-		.btn2 {
-			background-color: transparent;
-		}
-
 		/*dialog end*/
 
 
@@ -241,7 +217,7 @@
 				<div class="web">
 					<div class="nav_logo">
 						<div>
-							<a href="#">DISCUSSION</a>
+							<a href="/">DISCUSSION</a>
 						</div>
 					</div>
 					<div class="nav_search">
@@ -253,8 +229,21 @@
 					<div class="nav_profile">
 						<div>
 							<a class="" href="/logout">로그아웃</a>
-							<button type="button" onclick="openDialog()">방 생성</button>
-							<a><img src="${principal.user.image}" alt="" class="profile_img" width="32px" height="32px"></a>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+								방 생성
+							</button>
+							<a href="/profile">
+								<c:choose>
+									<c:when test="${principal.user.image == null}">
+										<img src="${principal.user.image}" class="profile_img">
+									</c:when>
+									<c:otherwise>
+										<img src="${pageContext.request.contextPath}/static/image/profile.png"
+											 class="profile_img">
+									</c:otherwise>
+								</c:choose>
+							</a>
+
 						</div>
 					</div>
 
@@ -263,17 +252,29 @@
 				<div class="phone">
 					<div class="nav_logo">
 						<div>
-							<a href="#">DISCUSSION</a>
+							<a href="/">DISCUSSION</a>
 						</div>
 					</div>
 					<div class="nav_profile">
 						<div>
 							<a class="" href="/logout">로그아웃</a>
-							<button type="button" onclick="openDialog()">방 생성</button>
-							<a><img src="${principal.user.image}" alt="" class="profile_img" width = "32px" height="32px"></a>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+								방 생성
+							</button>
+							<a href="/profile">
+								<c:choose>
+									<c:when test="${principal.user.image == null}">
+										<img src="${principal.user.image}" class="profile_img">
+									</c:when>
+									<c:otherwise>
+										<img src="${pageContext.request.contextPath}/static/image/profile.png"
+											 class="profile_img">
+									</c:otherwise>
+								</c:choose>
+							</a>
 						</div>
-
 					</div>
+
 					<div class="nav_search">
 						<div>
 							<input type="text">
@@ -282,57 +283,47 @@
 					</div>
 				</div>
 			</div>
-
 		</header>
 	</c:if>
 
-	<div class="modal-dialog modal-dialog-centered">
-		<div class ="mainbox">
-			<h6>방제목</h6>
-			<input class="input" type="text" name="title" >
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">토론방 생성하기</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+						<h6>방제목</h6>
+						<input class="input" type="text" name="title" >
 
-			<div class ="subject">
-				<h6>토론 주제</h6>
-				<select class="input form-select">
-					<option>청소년 연예인</option>
-					<option>백신 접종 의무화</option>
-					<option>인공지능 개발</option>
-					<option>착한 사마리아인법</option>
-					<option>사형제도</option>
-					<option>청소년 복장 규제</option>
-					<option>남북통일</option>
-					<option>낙태죄 폐지</option>
-					<option>동물 약물 실험</option>
-					<option>안락사</option>
-					<option>동성결혼 합법화</option>
-					<option>민식이법 개정</option>
-					<option>게임중독의 질병분류</option>
-					<option>반려동물의 중성화</option>
-				</select>
+						<div class ="subject">
+							<h6>토론 주제</h6>
+							<select class="input form-select">
+								<option>청소년 연예인</option>
+								<option>백신 접종 의무화</option>
+								<option>인공지능 개발</option>
+								<option>착한 사마리아인법</option>
+								<option>사형제도</option>
+								<option>청소년 복장 규제</option>
+								<option>남북통일</option>
+								<option>낙태죄 폐지</option>
+								<option>동물 약물 실험</option>
+								<option>안락사</option>
+								<option>동성결혼 합법화</option>
+								<option>민식이법 개정</option>
+								<option>게임중독의 질병분류</option>
+								<option>반려동물의 중성화</option>
+							</select>
+						</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary">만들기</button>
+				</div>
 			</div>
-
-			<ul class="btn">
-				<button class ="btn2">취소</button>
-				<button class ="btn1" type = "submit" name = "btn1">만들기</button>
-			</ul>
-
 		</div>
 	</div>
-
-	<script>
-
-		var myModal = new bootstrap.Modal(document.getElementById('myModal'), options)
-
-		window.onload = function() {
-
-			myModal.hide()
-		}
-
-		function openDialog() {
-			myModal.show()
-		}
-
-
-
-	</script>
-
