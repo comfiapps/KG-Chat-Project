@@ -156,7 +156,7 @@
                     <div>당신의 과거는 안녕하십니까?</div>
                 </div>
                 <div class="content_detail">
-                    <div class="user_left"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                    <div class="user_left"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile"></div>
                     <div class="compare">
                         <div class="score">1-2</div>
                         <div class="process_bar">
@@ -166,11 +166,11 @@
                             31:40
                         </div>
                     </div>
-                    <div class="user_right"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                    <div class="user_right"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile"></div>
                 </div>
                 <div class="content_footer">
                     <div class="content_footer_left">
-                        <div class="text_center"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" width="16px" class="profile"></div>
+                        <div class="text_center"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" width="16px" class="profile"></div>
                         <div class="text_center">User #1</div>
                     </div>
                     <div>시청자 50명</div>
@@ -187,7 +187,7 @@
                     <div>당신의 과거는 안녕하십니까?</div>
                 </div>
                 <div class="content_detail">
-                    <div class="user_left"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                    <div class="user_left"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile"></div>
                     <div class="compare">
                         <div class="score">1-2</div>
                         <div class="process_bar">
@@ -197,11 +197,11 @@
                             31:40
                         </div>
                     </div>
-                    <div class="user_right"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                    <div class="user_right"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile"></div>
                 </div>
                 <div class="content_footer">
                     <div class="content_footer_left">
-                        <div class="text_center"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" width="16px" class="profile"></div>
+                        <div class="text_center"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" width="16px" class="profile"></div>
                         <div class="text_center">User #1</div>
                     </div>
                     <div>시청자 50명</div>
@@ -218,7 +218,7 @@
                     <div>당신의 과거는 안녕하십니까?</div>
                 </div>
                 <div class="content_detail">
-                    <div class="user_left"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                    <div class="user_left"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile"></div>
                     <div class="compare">
                         <div class="score">1-2</div>
                         <div class="process_bar">
@@ -228,11 +228,11 @@
                             31:40
                         </div>
                     </div>
-                    <div class="user_right"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                    <div class="user_right"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile"></div>
                 </div>
                 <div class="content_footer">
                     <div class="content_footer_left">
-                        <div class="text_center"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" width="16px" class="profile"></div>
+                        <div class="text_center"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" width="16px" class="profile"></div>
                         <div class="text_center">User #1</div>
                     </div>
                     <div>시청자 50명</div>
@@ -249,7 +249,7 @@
                     <div>당신의 과거는 안녕하십니까?</div>
                 </div>
                 <div class="content_detail">
-                    <div class="user_left"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                    <div class="user_left"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile"></div>
                     <div class="compare">
                         <div class="score">1-2</div>
                         <div class="process_bar">
@@ -259,7 +259,7 @@
                             31:40
                         </div>
                     </div>
-                    <div class="user_right"><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                    <div class="user_right"><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile"></div>
                 </div>
                 <div class="content_footer">
                     <div class="content_footer_left">

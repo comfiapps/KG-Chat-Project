@@ -187,13 +187,13 @@
 				<div class="nav_search">
 					<div>
 						<input type="text">
-						<a href=""><img src="${pageContext.request.contextPath}/image/pngwing.com.png" alt="" width="16px"></a>
+						<a href=""><img src="${pageContext.request.contextPath}/static/image/pngwing.com.png" alt="" width="16px"></a>
 					</div>
 				</div>
 				<div class="nav_profile">
 					<div>
-						<a class="" href="/auth/loginForm">로그인</a>
-						<a><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile_img"></a>
+						<a class="" href="/login">로그인</a>
+						<a><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile_img"></a>
 					</div>
 				</div>
 			</div>
@@ -206,15 +206,15 @@
 				</div>
 				<div class="nav_profile">
 					<div>
-						<a class="" href="/auth/loginForm">로그인</a>
-						<a><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile_img"></a>
+						<a class="" href="/login">로그인</a>
+						<a><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile_img"></a>
 					</div>
 
 				</div>
 				<div class="nav_search">
 					<div>
 						<input type="text">
-						<a href=""><img src="${pageContext.request.contextPath}/image/pngwing.com.png" alt="" width="16px"></a>
+						<a href=""><img src="${pageContext.request.contextPath}/static/image/pngwing.com.png" alt="" width="16px"></a>
 					</div>
 				</div>
 			</div>
