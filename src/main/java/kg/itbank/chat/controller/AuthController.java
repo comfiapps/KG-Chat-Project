@@ -32,11 +32,6 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/loginForm")
-    public String loginForm() {
-        return "user/loginForm";
-    }
-
     @GetMapping("/kakao/callback")
     public String kakaoCallback(String code) {
         RestTemplate restTemplate = new RestTemplate();

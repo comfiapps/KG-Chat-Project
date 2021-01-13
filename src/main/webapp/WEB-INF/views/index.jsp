@@ -3,7 +3,6 @@
 <%@ include file="layout/header.jsp"%>
 
 </head>
-
 <body>
 
 

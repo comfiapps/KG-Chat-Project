@@ -14,6 +14,12 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional(readOnly = true)
+    public User findUserById(long id) {
+        return userRepository.findById(id).orElseThrow(()
+                -> new UsernameNotFoundException("User Not Found - Id : " + id));
+    }
+
+    @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(()
                 -> new UsernameNotFoundException("User Not Found - Email : " + email));
@@ -25,7 +31,7 @@ public class UserService {
     }
 
     @Transactional
-    public Long register(User user) {
+    public long register(User user) {
         User model = User.builder()
                 .email(user.getEmail())
                 .name(user.getName())
@@ -38,5 +44,17 @@ public class UserService {
         return model.getId();
     }
 
+    @Transactional
+    public long update(long id, User user) {
+        User model = userRepository.findById(id).orElseThrow(()
+                -> new UsernameNotFoundException("User Not Found - Id : " + id));
 
+        model.setEmail(user.getEmail());
+        model.setName(user.getName());
+        model.setImage(user.getImage());
+        model.setGender(user.getGender());
+        model.setAgeRange(user.getAgeRange());
+
+        return id;
+    }
 }
