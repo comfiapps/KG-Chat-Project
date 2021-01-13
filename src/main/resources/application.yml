@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://kgtest.cd3glhhnnn2m.us-west-2.rds.amazonaws.com:3306/testDB
     username: admin
-    password: 11111111
+    password: zxc!7516155
+    url: jdbc:mysql://kgproject.c2qrrcc0x8ky.us-east-2.rds.amazonaws.com:3306/naman
 
   jpa:
     show-sql: true
@@ -19,6 +19,13 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
 
+#    아래와 같이 정적파일 패턴을 지정해줄 수 있으며
+#    기본경로로 '/static', '/public'
+#    static-path-pattern: /static/**
+#
+#    classpath:/static/
+#    classpath:/public/
+
   jackson:
     serialization:
       fail-on-empty-beans: false
@@ -29,5 +36,7 @@ server:
     context-path: /
     encoding:
       charset: UTF-8
+
+
 
 key: key123456

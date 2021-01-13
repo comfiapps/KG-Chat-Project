@@ -1,6 +1,7 @@
 package kg.itbank.chat.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +9,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,23 +35,44 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/resources/**");
+    }
+
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(principalService).passwordEncoder(passwordEncoder());
+
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        http
+            .authorizeRequests()
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+            .permitAll();
+
         http
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/", "/auth/**", "/js/**", "/css/**", "/image/**", "/dummy/**")
+                .antMatchers("/", "/auth/**", "/js/**", "/image/**", "/css/**", "/dummy/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
+
+            // 기본적으로 스프링부트에서는 'resources/public', 'resources/static'의 경로 안에 있는 데이터들을 읽을 수 있게 설정되어있음
+            // 만약 경로가 'resources/static/image'에 파일이 있다면
+            // 접근 방식은 'ContextPath/image/파일이름' 형태로 접근이 가능함, 'resources/static'은 생략됨
+            // 스프링부트 시큐리티에서 정적파일에 대한 경로 예외 처리를 하지 않으면 정적 데이터에 접근을 막는데
+            // ContextPath은 알아서 붙이기 떄문에 '/image/**' 의 형태로 예외처리가 가능
+
+
             .and()
                 .formLogin()
                 .loginPage("/auth/loginForm")
                 .loginProcessingUrl("/auth/loginProc")
                 .defaultSuccessUrl("/");
+
     }
 }
