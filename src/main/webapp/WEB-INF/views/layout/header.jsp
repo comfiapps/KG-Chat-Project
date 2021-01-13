@@ -229,13 +229,13 @@
 					<div class="nav_search">
 						<div>
 							<input type="text">
-							<a href=""><img src="${pageContext.request.contextPath}/static/image/pngwing.com.png" alt="" width="16px"></a>
+							<a href=""><img src="${pageContext.request.contextPath}/image/pngwing.com.png" alt="" width="16px"></a>
 						</div>
 					</div>
 					<div class="nav_profile">
 						<div>
 							<a class="" href="/logout">로그아웃</a>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
 								방 생성
 							</button>
 							<a href="/profile">
@@ -244,7 +244,7 @@
 										<img src="${principal.user.image}" class="profile_img">
 									</c:when>
 									<c:otherwise>
-										<img src="${pageContext.request.contextPath}/static/image/profile.png"
+										<img src="${pageContext.request.contextPath}/image/profile.png"
 											 class="profile_img">
 									</c:otherwise>
 								</c:choose>
@@ -264,7 +264,7 @@
 					<div class="nav_profile">
 						<div>
 							<a class="" href="/logout">로그아웃</a>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
 								방 생성
 							</button>
 							<a href="/profile">
@@ -273,7 +273,7 @@
 										<img src="${principal.user.image}" class="profile_img">
 									</c:when>
 									<c:otherwise>
-										<img src="${pageContext.request.contextPath}/static/image/profile.png"
+										<img src="${pageContext.request.contextPath}/image/profile.png"
 											 class="profile_img">
 									</c:otherwise>
 								</c:choose>
@@ -284,7 +284,7 @@
 					<div class="nav_search">
 						<div>
 							<input type="text">
-							<a href=""><img src="${pageContext.request.contextPath}/static/image/pngwing.com.png" alt="" width="16px"></a>
+							<a href=""><img src="${pageContext.request.contextPath}/image/pngwing.com.png" alt="" width="16px"></a>
 						</div>
 					</div>
 				</div>
@@ -293,7 +293,7 @@
 	</c:if>
 
 	<!-- Modal -->
-	<div class="modal fade" id="exampleModal">
+	<div class="modal fade" id="createModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -302,59 +302,37 @@
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
-				<form id = "roomForm">
 				<div class="modal-body">
-						<h6>방제목</h6>
+					<h6>방제목</h6>
+					<input class="title" type="text" id="createRoom_name">
 
-						<input class="title" type="text" name="name">
-
-						<div class ="subject">
-							<h6>토론 주제</h6>
-							<select class="input form-select" name = "category">
-								<option value = "청소년 연예인" selected = "selected">청소년 연예인</option>
-								<option value = "백신 접종 의무화">백신 접종 의무화</option>
-								<option value = "인공지능 개발">인공지능 개발</option>
-								<option value = "착한 사마리아인법">착한 사마리아인법</option>
-								<option value="사형제도">사형제도</option>
-								<option value = "청소년 복장 규제">청소년 복장 규제</option>
-								<option value = "남북통일">남북통일</option>
-								<option value = "낙태죄 폐지">낙태죄 폐지</option>
-								<option value = "동물 약물 실험">동물 약물 실험</option>
-								<option value = "안락사">안락사</option>
-								<option value = "동성결혼 합법화">동성결혼 합법화</option>
-								<option value = "민식이법 개정">민식이법 개정</option>
-								<option value = "게임중독의 질병분류">게임중독의 질병분류</option>
-								<option value = "반려동물의 중성화">반려동물의 중성화</option>
-							</select>
-						</div>
+					<div class ="subject">
+						<h6>토론 주제</h6>
+						<select class="input form-select" id="createRoom_category">
+							<option value = "청소년 연예인" selected = "selected">청소년 연예인</option>
+							<option value = "백신 접종 의무화">백신 접종 의무화</option>
+							<option value = "인공지능 개발">인공지능 개발</option>
+							<option value = "착한 사마리아인법">착한 사마리아인법</option>
+							<option value="사형제도">사형제도</option>
+							<option value = "청소년 복장 규제">청소년 복장 규제</option>
+							<option value = "남북통일">남북통일</option>
+							<option value = "낙태죄 폐지">낙태죄 폐지</option>
+							<option value = "동물 약물 실험">동물 약물 실험</option>
+							<option value = "안락사">안락사</option>
+							<option value = "동성결혼 합법화">동성결혼 합법화</option>
+							<option value = "민식이법 개정">민식이법 개정</option>
+							<option value = "게임중독의 질병분류">게임중독의 질병분류</option>
+							<option value = "반려동물의 중성화">반려동물의 중성화</option>
+						</select>
+					</div>
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary">만들기</button>
+					<button id="createRoomClose" type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					<button id="createRoomBtn" type="submit" class="btn btn-primary">만들기</button>
 				</div>
-				</form>
 			</div>
 		</div>
 	</div>
 
-<script>
-	$(document).ready(function() {
-
-		$("#roomForm").submit(function() { // intercepts the submit event
-			$.ajax({ // make an AJAX request
-				type: "POST",
-				url: "/api/room", //
-				data: JSON.stringify($("#roomForm").serializeArray()), // serializes the form's elements
-				success: function(data)
-				{
-					console.log(data)
-				}
-			});
-			e.preventDefault(); // avoid to execute the actual submit of the form
-		});
-
-	});
-
-
-</script>
+	<script src="${pageContext.request.contextPath}/js/room.js"></script>
