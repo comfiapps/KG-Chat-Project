@@ -176,48 +176,50 @@
 	</style>
 </head>
 <body>
-	<header>
-		<div class="nav_content">
-			<div class="web">
-				<div class="nav_logo">
-					<div>
-						<a href="#">DISCUSSION</a>
+	<c:if test="${principal.user != null}">
+		<header>
+			<div class="nav_content">
+				<div class="web">
+					<div class="nav_logo">
+						<div>
+							<a href="#">DISCUSSION</a>
+						</div>
+					</div>
+					<div class="nav_search">
+						<div>
+							<input type="text">
+							<a href=""><img src="${pageContext.request.contextPath}/static/image/pngwing.com.png" alt="" width="16px"></a>
+						</div>
+					</div>
+					<div class="nav_profile">
+						<div>
+							<a class="" href="/logout">로그아웃</a>
+							<a><img src="${principal.user.image}" alt="" class="profile_img"></a>
+						</div>
 					</div>
 				</div>
-				<div class="nav_search">
-					<div>
-						<input type="text">
-						<a href=""><img src="${pageContext.request.contextPath}/static/image/pngwing.com.png" alt="" width="16px"></a>
+
+				<div class="phone">
+					<div class="nav_logo">
+						<div>
+							<a href="#">DISCUSSION</a>
+						</div>
 					</div>
-				</div>
-				<div class="nav_profile">
-					<div>
-						<a class="" href="/login">로그인</a>
-						<a><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile_img"></a>
+					<div class="nav_profile">
+						<div>
+							<a class="" href="/logout">로그아웃</a>
+							<a><img src="${principal.user.image}" alt="" class="profile_img"></a>
+						</div>
+
+					</div>
+					<div class="nav_search">
+						<div>
+							<input type="text">
+							<a href=""><img src="${pageContext.request.contextPath}/static/image/pngwing.com.png" alt="" width="16px"></a>
+						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="phone">
-				<div class="nav_logo">
-					<div>
-						<a href="#">DISCUSSION</a>
-					</div>
-				</div>
-				<div class="nav_profile">
-					<div>
-						<a class="" href="/login">로그인</a>
-						<a><img src="${pageContext.request.contextPath}/static/image/profile.png" alt="" class="profile_img"></a>
-					</div>
-
-				</div>
-				<div class="nav_search">
-					<div>
-						<input type="text">
-						<a href=""><img src="${pageContext.request.contextPath}/static/image/pngwing.com.png" alt="" width="16px"></a>
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</header>
+		</header>
+	</c:if>

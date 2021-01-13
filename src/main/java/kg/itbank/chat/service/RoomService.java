@@ -5,6 +5,8 @@ import kg.itbank.chat.model.User;
 import kg.itbank.chat.repository.RoomRepository;
 import kg.itbank.chat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,7 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public List<Room> searchRoom(String keyword) {
+        // TODO searchRoom
         return new ArrayList<>();
     }
 
@@ -60,6 +63,7 @@ public class RoomService {
     public void startDebate(long roomId, long userId) {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
+        if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setStartTime(new Timestamp(System.currentTimeMillis()));
     }
 
@@ -67,6 +71,7 @@ public class RoomService {
     public void endDebate(long roomId, long userId) {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
+        if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setStartTime(null);
     }
 }

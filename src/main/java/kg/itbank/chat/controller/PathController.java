@@ -27,15 +27,7 @@ public class PathController {
 
     @GetMapping("/login")
     public String login(@AuthenticationPrincipal PrincipalDetail principal) {
-        // TODO login - check session > if exists, redirect
-        if(principal == null) return "redirect:/";
         return "user/loginForm";
-    }
-
-    @GetMapping("/logout")
-    public String logout(@AuthenticationPrincipal PrincipalDetail principal) {
-        // TODO logout - clear session
-        return "redirect:/";
     }
 
     @GetMapping("/discuss/{id}")
