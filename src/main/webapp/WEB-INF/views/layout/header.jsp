@@ -139,8 +139,8 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary">만들기</button>
+					<button id="createRoomClose" type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					<button id="createRoomBtn" type="button" class="btn btn-primary">만들기</button>
 				</div>
 			</div>
 		</div>
