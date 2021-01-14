@@ -65,7 +65,7 @@ let msgObj = {
         if(user !== msg.receiver){
             html+= '    <div class="discusser_left">';
             html+= '        <div>';
-            html+= '            <img src="/static/image/profileReplacement.png" alt="" class="profile">';
+            html+= '            <img src="/static/image/user.png" alt="" class="profile">';
             html+= '        </div>';
             html+= '        <p>'+msg.message+'</p>';
             html+= '    </div>';
@@ -74,7 +74,7 @@ let msgObj = {
             html+= '    <div class="discusser_right">';
             html+= '        <p>'+msg.message+'</p>';
             html+= '        <div>';
-            html+= '            <img src="/static/image/profileReplacement.png" alt="" class="profile">';
+            html+= '            <img src="/static/image/user.png" alt="" class="profile">';
             html+= '        </div>';
             html+= '    </div>';
         }

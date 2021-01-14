@@ -1,0 +1,7 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "dependencies": {
+    "@material/textfield": "^9.0.0"
+  }
+}

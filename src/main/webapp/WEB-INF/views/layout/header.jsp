@@ -54,9 +54,13 @@
 					</div>
 					<div class="nav_profile">
 						<div>
-							<a class="" href="/logout">로그아웃</a>
-							<button type="button" class="btn btn-primary no-outline" data-toggle="modal" data-target="#createModal">
-								방 생성
+							<button class="mdc-button" onclick="location.href = '/logout'"/>
+								<span class="mdc-button__ripple"></span>
+								<span class="mdc-button__label">로그아웃</span>
+							</button>
+							<button class="mdc-button mdc-button--raised no-outline" data-toggle="modal" data-target="#createModal">
+								<span class="mdc-button__label">방 생성</span>
+							</button>
 							</button>
 							<a href="/profile">
 								<c:choose>
@@ -64,7 +68,7 @@
 										<img src="${principal.user.image}" alt="profile" class="profile_img">
 									</c:when>
 									<c:otherwise>
-										<img src="${pageContext.request.contextPath}/image/profileReplacement.png"
+										<img src="${pageContext.request.contextPath}/image/user.png"
 											 alt="profile"
 											 class="profile_img">
 									</c:otherwise>
@@ -84,9 +88,12 @@
 					</div>
 					<div class="nav_profile">
 						<div>
-							<a class="" href="/logout">로그아웃</a>
-							<button type="button" class="btn btn-primary no-outline" data-toggle="modal" data-target="#createModal">
-								방 생성
+							<button class="mdc-button" onclick="location.href = '/logout'"/>
+								<span class="mdc-button__ripple"></span>
+								<span class="mdc-button__label">로그아웃</span>
+							</button>
+							<button class="mdc-button mdc-button--raised no-outline" data-toggle="modal" data-target="#createModal">
+								<span class="mdc-button__label">방 생성</span>
 							</button>
 							<a href="/profile">
 								<c:choose>
@@ -94,7 +101,7 @@
 										<img src="${principal.user.image}" alt="profile" class="profile_img">
 									</c:when>
 									<c:otherwise>
-										<img src="${pageContext.request.contextPath}/image/profileReplacement.png"
+										<img src="${pageContext.request.contextPath}/image/user.png"
 											 alt="profile"
 											 class="profile_img">
 									</c:otherwise>
@@ -126,8 +133,12 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<h6>방제목</h6>
-					<input class="title no-outline" type="text" id="createRoom_name">
+					<label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100">
+						<span class="mdc-text-field__ripple"></span>
+						<input class="mdc-text-field__input" type="text" placeholder="방 제목" aria-label="Label"
+							   id="createRoom_name">
+						<span class="mdc-line-ripple"></span>
+					</label>
 
 					<div class ="subject">
 						<h6>토론 주제</h6>
