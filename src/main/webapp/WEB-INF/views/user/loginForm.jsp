@@ -14,11 +14,8 @@
 
 	.discussion {
 		background-color: #F7F7F7;
-		float: left;
-		margin-left: 200px;
-		margin-bottom: 20px;
-		text-align: center;
-		align-items: center;
+
+		margin: 0;
 
 	}
 	.discussion h1 {
@@ -32,29 +29,41 @@
 		font-weight: bold;
 	}
 	.kakaoLogin {
-		margin-left: 100px;
 		text-align: center;
 		width: 500px;
+		height: 180px;
 		float: left;
 		background-color: white;
 		border-radius: 10px;
+		margin-left: 20px;
+		margin-right: 20px;
 
 	}
 	.kakaoLogin div{
 		text-align: center;
-		margin-top: 20px;
+		margin-top: 40px;
 		margin-bottom: 20px;
 
 
 	}
 	.kakaoLogin img {
-		margin-bottom: 20px;
+
 	}
 	.line {
 		margin: 0 auto;
 		width: fit-content;
-		height: 100%;
+		display: flex;
+		align-items: center;
+		height: 30%;
 	}
+	@media(max-width : 881px) {
+		.line {
+			flex-wrap: wrap;
+			width: 500px;
+			justify-content: center;
+		}
+	}
+
 
 
 
