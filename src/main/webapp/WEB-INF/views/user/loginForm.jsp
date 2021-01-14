@@ -74,6 +74,8 @@
 				<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
 			</a>
 		</div>
+
+
 	</div>
 
 </section>

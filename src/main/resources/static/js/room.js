@@ -18,7 +18,7 @@ let room = {
             contentType: "application/json; charset=utf-8",
             dataType: "json"
 
-            }).done(response => {
+        }).done(response => {
             if(response.status === 200) {
                 const id = response.data;
                 location.href="/discuss/" + id;
