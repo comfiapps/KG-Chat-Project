@@ -74,4 +74,6 @@ public class RoomService {
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setStartTime(null);
     }
+
+
 }

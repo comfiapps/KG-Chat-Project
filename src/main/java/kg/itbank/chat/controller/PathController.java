@@ -38,7 +38,7 @@ public class PathController {
     @GetMapping("/discuss/{id}")
     public String discussRoom(@PathVariable long id, Model model) {
         // model.addAttribute("room", roomService.)
-        return "discuss/roomForm";
+        return "discuss/discusser";
     }
 
     @GetMapping("/search/{keyword}")
