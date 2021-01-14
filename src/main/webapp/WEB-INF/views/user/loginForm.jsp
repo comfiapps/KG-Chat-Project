@@ -38,6 +38,7 @@
 
 	.kakaoLogin h6{
 		margin-bottom: 16px;
+		font-weight: bold;
 	}
 
 	@media(max-width : 881px) {

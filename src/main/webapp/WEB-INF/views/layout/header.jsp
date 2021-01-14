@@ -46,7 +46,7 @@
 					<div class="nav_profile">
 						<div>
 							<a class="" href="/logout">로그아웃</a>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+							<button type="button" class="btn btn-primary no-outline" data-toggle="modal" data-target="#createModal">
 								방 생성
 							</button>
 							<span>${principal.user.image}</span>
@@ -76,7 +76,7 @@
 					<div class="nav_profile">
 						<div>
 							<a class="" href="/logout">로그아웃</a>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+							<button type="button" class="btn btn-primary no-outline" data-toggle="modal" data-target="#createModal">
 								방 생성
 							</button>
 							<span>${principal.user.image}</span>
@@ -106,7 +106,7 @@
 	</c:if>
 
 	<!-- Modal -->
-	<div class="modal fade2" id="createModal" role="dialog" tabindex="-1">
+	<div class="modal fade2" id="createModal">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -117,11 +117,11 @@
 				</div>
 				<div class="modal-body">
 					<h6>방제목</h6>
-					<input class="title" type="text" id="createRoom_name">
+					<input class="title no-outline" type="text" id="createRoom_name">
 
 					<div class ="subject">
 						<h6>토론 주제</h6>
-						<select class="input form-select" id="createRoom_category">
+						<select class="input form-select no-outline" id="createRoom_category">
 							<option value = "청소년 연예인" selected = "selected">청소년 연예인</option>
 							<option value = "백신 접종 의무화">백신 접종 의무화</option>
 							<option value = "인공지능 개발">인공지능 개발</option>
@@ -141,8 +141,8 @@
 				</div>
 
 				<div class="modal-footer">
-<%--					<button id="createRoomClose" type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>--%>
-					<button id="createRoomBtn" type="button" class="btn btn-primary">만들기</button>
+					<button id="createRoomClose" type="button" class="btn btn-secondary no-outline" data-dismiss="modal">취소</button>
+					<button id="createRoomBtn" type="button" class="btn btn-primary no-outline">만들기</button>
 				</div>
 			</div>
 		</div>
