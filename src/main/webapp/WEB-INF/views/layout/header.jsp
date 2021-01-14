@@ -49,6 +49,7 @@
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
 								방 생성
 							</button>
+							<span>${principal.user.image}</span>
 							<a href="/profile">
 								<c:choose>
 									<c:when test="${principal.user.image == null}">
@@ -78,6 +79,7 @@
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
 								방 생성
 							</button>
+							<span>${principal.user.image}</span>
 							<a href="/profile">
 								<c:choose>
 									<c:when test="${principal.user.image == null}">
