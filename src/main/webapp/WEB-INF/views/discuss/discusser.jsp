@@ -34,20 +34,20 @@
 
 <script>
     $(document).ready(function () {
-        console.log($("visitor_msg_input"));
-
         $("#visitor_msg_input").keyup(function (event) {
             if (event.key === "Enter") {
-                var data = $("#visitor_msg_input").val();
-                $("#visitor_msg_input").val("");
-                console.log("전송");
+                var data = event.target.value;
+                event.target.value = "";
+                console.log("전송할 데이터: ", data);
             }
         });
 
-        ${"#discusser_msg_input"}.keyup(function(event){
-            var data = $("#visitor_msg_input").val();
-            $("#visitor_msg_input").val("");
-            console.log("전송");
+        $("#discusser_msg_input").keyup(function(event){
+            if(event.key === "Enter"){
+                var data = event.target.value;
+                event.target.value = "";
+                console.log("전송할 데이터: ", data);
+            }
         })
     });
 
@@ -60,8 +60,6 @@
     function sendMsg(){
 
     }
-
-
 
 </script>
 
