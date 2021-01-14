@@ -42,7 +42,7 @@ public class PathController {
     }
 
     @GetMapping("/search/{keyword}")
-    public String discussRoom(@PathVariable String keyword, Model model) {
+    public String search(@PathVariable String keyword, Model model) {
         // model.addAttribute("room", roomService.)
         return "search/searchForm";
     }
