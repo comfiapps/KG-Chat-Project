@@ -9,45 +9,22 @@
             인기
         </div>
         <div class="group_box">
-            <div class="mdc-card mdc-card--outlined my-card">
-                <div class="mdc-card__primary-action mdc-card--outlined my-card-content" tabindex="0">
 
-                    <div><sub>주제</sub></div>
-                    <h5 class="font-weight-bold">제목</h5>
-
+            <div class="mdc-card mdc-card--outlined">
+                <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
+                    <sub>50명 시청 • 29:40</sub>
+                    <br>
                     <div class="my-card-body">
-                        <div>
-                            <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile contributors">
+                        <div class="contributors">
+                            <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
                         </div>
-                        <div>
-                            <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile contributors">
-                        </div>
-                    </div>
-
-                    <div class="process_bar">
-                        <div class="process_left"></div>
-                    </div>
-
-                    <div class="my-card-score">
-                        <h3>1-2</h3>
-                    </div>
-
-                    <div>
-                        <div class="float-left">
-                            <sub>31:40</sub>
-                        </div>
-                        <div class="float-right">
-                            <sub>50명 시청</sub>
+                        <div class="contributors">
+                            <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
                         </div>
                     </div>
-
-
-                    <div class="content_footer">
-                        <div class="content_footer_left">
-                        </div>
-                        <div></div>
-                    </div>
-
+                    <div class="process_bar"><div class="process_left"></div></div>
+                    <div><sub>주제</sub></div>
+                    <h5 class="font-weight-bold">제목 (1-2)</h5>
                 </div>
             </div>
 

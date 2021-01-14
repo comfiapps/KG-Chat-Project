@@ -54,7 +54,7 @@
 					</div>
 					<div class="nav_profile">
 						<div>
-							<button class="mdc-button" onclick="location.href = '/logout'"/>
+							<button class="mdc-button no" onclick="location.href = '/logout'"/>
 								<span class="mdc-button__ripple"></span>
 								<span class="mdc-button__label">로그아웃</span>
 							</button>
@@ -88,7 +88,7 @@
 					</div>
 					<div class="nav_profile">
 						<div>
-							<button class="mdc-button" onclick="location.href = '/logout'"/>
+							<button class="mdc-button no-outline" onclick="location.href = '/logout'"/>
 								<span class="mdc-button__ripple"></span>
 								<span class="mdc-button__label">로그아웃</span>
 							</button>
@@ -126,11 +126,8 @@
 	<div class="modal fade2" id="createModal">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header border-bottom-0">
 					<h5 class="modal-title">토론방 생성하기</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
 				</div>
 				<div class="modal-body">
 					<label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100">
@@ -161,9 +158,15 @@
 					</div>
 				</div>
 
-				<div class="modal-footer">
-					<button id="createRoomClose" type="button" class="btn btn-secondary no-outline" data-dismiss="modal">취소</button>
-					<button id="createRoomBtn" type="button" class="btn btn-primary no-outline">만들기</button>
+				<div class="modal-footer border-top-0">
+
+					<button id="createRoomClose" class="mdc-button no-outline" data-dismiss="modal"/>
+						<span class="mdc-button__ripple"></span>
+						<span class="mdc-button__label">취소</span>
+					</button>
+					<button id="createRoomBtn" class="mdc-button mdc-button--raised no-outline">
+						<span class="mdc-button__label">확인</span>
+					</button>
 				</div>
 			</div>
 		</div>

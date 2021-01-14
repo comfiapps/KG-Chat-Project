@@ -528,7 +528,6 @@ header{
 /* dialog end */
 
 .my-card {
-    height: 350px;
     width: 350px;
 }
 
@@ -549,12 +548,17 @@ header{
     padding: 1rem;
 }
 
-.my-card-score {
+.my-card-time {
     width: 100%;
     text-align: center;
 }
 
 .contributors {
+    display: flex;
+    flex-direction: column;
+}
+
+.contributors img {
     width: 56px;
     height: 56px;
 }
