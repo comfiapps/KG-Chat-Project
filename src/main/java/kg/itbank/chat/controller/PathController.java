@@ -19,6 +19,11 @@ public class PathController {
     @Autowired
     private RoomService roomService;
 
+    @GetMapping("test")
+    public String test(){
+        return "discuss/discusser";
+    }
+
     @GetMapping({"", "/", "/home"})
     public String home(@AuthenticationPrincipal PrincipalDetail principal) {
         if(principal == null) return "redirect:/login";

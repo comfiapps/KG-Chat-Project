@@ -4,7 +4,7 @@
 
 <div class="container">
 	<a href="https://kauth.kakao.com/oauth/authorize?client_id=2e63b44fb79b64b533648b862668b579&redirect_uri=http://localhost:5000/auth/kakao/callback&response_type=code">
-		<img src="${pageContext.request.contextPath}/static/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
+		<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
 	</a>
 </div>
 
