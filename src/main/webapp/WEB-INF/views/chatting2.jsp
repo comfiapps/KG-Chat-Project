@@ -1,6 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="layout/header.jsp"%>
 
@@ -81,26 +79,16 @@
 
 		$("#connect").click(
 			function(){
-				$.ajax({
-					type : "POST",
-					url : "/stomp/createChatRoom/${chatId}",
-					success : function(result){
-						console.log("방 번호 획득: ",result)
-						connect(result);
-						user = $("#user").val();
-						$("#send").click(send(result));
-					},
-					error : function(a,b,c){
-						console.log(a,b,c)
-					}
-				});	
-		}); 
-		
+			connect(${sessionScope.chatId});
+			user = $("#user").val();
+			$("#send").click(send(${sessionScope.chatId}));
+		});
+
 		
 		function connect(destination){
 			console.log("destination: ",destination);
 			
-			socket = new SockJS("/stomp/chat");
+			socket = new SockJS("/chat");
 			stompClient = Stomp.over(socket);
 			
 			stompClient.connect({}, function() {

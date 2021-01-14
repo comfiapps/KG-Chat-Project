@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Controller
@@ -31,7 +35,7 @@ public class ChatController {
 		
 		JSONObject jobj = new JSONObject(message);
 		
-		String chatRoomId = jobj.getString("chatRoomId");
+		long chatRoomId = jobj.getLong("chatRoomId");
 		String sender = jobj.getString("sender");
 		String receiver = jobj.getString("receiver");
 		String msg = jobj.getString("message");
