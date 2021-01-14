@@ -1,6 +1,5 @@
 package kg.itbank.chat.model;
 
-import kg.itbank.chat.model.embbedId.ParticipantId;
 import kg.itbank.chat.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,8 +16,17 @@ import javax.persistence.*;
 public class Participant {
 
     @Id
-    private ParticipantId id;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "roomId")
+    private Room room;
 
     private Role role;
-    private long voteTo; // userId
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User voteTo;
 }

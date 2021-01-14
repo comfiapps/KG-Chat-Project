@@ -56,6 +56,7 @@ public class RoomService {
         model.setOwner(userRepository.findById(userId).orElseThrow(()
                 -> new UsernameNotFoundException("User Not Found - Id : " + userId)));
         roomRepository.save(model);
+
         return model.getId();
     }
 
