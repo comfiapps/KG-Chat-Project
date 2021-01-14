@@ -33,7 +33,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		System.out.println("실행됨");
 		config.enableSimpleBroker("/topic", "queue");
 		config.setApplicationDestinationPrefixes("/app");
 			
@@ -41,7 +40,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 	
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		System.out.println("등록 시도");
 		registry.addEndpoint("/chat").withSockJS();
 	}
 

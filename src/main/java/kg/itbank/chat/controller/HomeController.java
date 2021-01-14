@@ -20,19 +20,11 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@GetMapping("/chatting2")
-	public String chatting2(@RequestParam(required = false) String room,
+	public String chatting2(@RequestParam String room,
 							Model model,
 							HttpSession session) {
-		logger.info("방번호: {}", room);
-		
 		session.setAttribute("chatId", room);
 		
 		return "chatting2";
 	}
-	
-	@RequestMapping("/watcher")
-	public String watcher(Model model) {
-		return "watcher";
-	}
-
 }
