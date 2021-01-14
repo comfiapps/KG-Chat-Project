@@ -134,7 +134,7 @@
             left: 408px;
             width: 62px;
             height: 62px;
-            background: transparent url('img/img_01.png') 0% 0% no-repeat padding-box;
+            background: transparent url('static/image/profile.png') 0% 0% no-repeat padding-box;
             opacity: 1;
         }
         .content_box{
@@ -515,7 +515,7 @@
 
 </script>
 
-
+</body>
 
 </html>
 
