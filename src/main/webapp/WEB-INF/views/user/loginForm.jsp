@@ -58,25 +58,24 @@
 	}
 
 </style>
-</head>
-<body>
-	<section class="loginPage">
 
-		<div class ="line">
-			<div class ="discussion">
-				<h1>DISCUSSION</h1>
-				<h2>Discussion 을 통해 수많은 사람들과</h2>
-				<h2>여러 주제로 토론하고 시청하세요!</h2>
-			</div>
+<section class="loginPage">
 
-			<div class="kakaoLogin">
-				<h6>시작하기</h6>
-				<a href="https://kauth.kakao.com/oauth/authorize?client_id=2e63b44fb79b64b533648b862668b579&redirect_uri=http://localhost:5000/auth/kakao/callback&response_type=code">
-					<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
-				</a>
-			</div>
+	<div class ="line">
+		<div class ="discussion">
+			<h1>DISCUSSION</h1>
+			<h2>Discussion 을 통해 수많은 사람들과</h2>
+			<h2>여러 주제로 토론하고 시청하세요!</h2>
 		</div>
 
-	</section>
+		<div class="kakaoLogin">
+			<h6>시작하기</h6>
+			<a href="https://kauth.kakao.com/oauth/authorize?client_id=2e63b44fb79b64b533648b862668b579&redirect_uri=http://localhost:5000/auth/kakao/callback&response_type=code">
+				<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
+			</a>
+		</div>
+	</div>
+
+</section>
 
 <%@ include file="../layout/footer.jsp"%>

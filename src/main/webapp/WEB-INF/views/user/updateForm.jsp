@@ -274,8 +274,7 @@
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-</head>
-<body>
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-9 col-md-6 " >

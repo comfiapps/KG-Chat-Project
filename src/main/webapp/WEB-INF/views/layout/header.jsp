@@ -49,14 +49,14 @@
 							<button type="button" class="btn btn-primary no-outline" data-toggle="modal" data-target="#createModal">
 								방 생성
 							</button>
-							<span>${principal.user.image}</span>
 							<a href="/profile">
 								<c:choose>
-									<c:when test="${principal.user.image == null}">
-										<img src="${principal.user.image}" class="profile_img">
+									<c:when test="${principal.user.image != null}">
+										<img src="${principal.user.image}" alt="profile" class="profile_img">
 									</c:when>
 									<c:otherwise>
-										<img src="${pageContext.request.contextPath}/image/pngwing.com.png"
+										<img src="${pageContext.request.contextPath}/image/profileReplacement.png"
+											 alt="profile"
 											 class="profile_img">
 									</c:otherwise>
 								</c:choose>
@@ -79,14 +79,14 @@
 							<button type="button" class="btn btn-primary no-outline" data-toggle="modal" data-target="#createModal">
 								방 생성
 							</button>
-							<span>${principal.user.image}</span>
 							<a href="/profile">
 								<c:choose>
-									<c:when test="${principal.user.image == null}">
-										<img src="${principal.user.image}" class="profile_img">
+									<c:when test="${principal.user.image != null}">
+										<img src="${principal.user.image}" alt="profile" class="profile_img">
 									</c:when>
 									<c:otherwise>
-										<img src="${pageContext.request.contextPath}/image/pngwing.com.png"
+										<img src="${pageContext.request.contextPath}/image/profileReplacement.png"
+											 alt="profile"
 											 class="profile_img">
 									</c:otherwise>
 								</c:choose>
@@ -104,6 +104,7 @@
 			</div>
 		</header>
 	</c:if>
+
 
 	<!-- Modal -->
 	<div class="modal fade2" id="createModal">
