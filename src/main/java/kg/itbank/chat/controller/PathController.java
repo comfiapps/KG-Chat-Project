@@ -34,7 +34,7 @@ public class PathController {
     }
 
     @GetMapping("/login")
-    public String login(@AuthenticationPrincipal PrincipalDetail principal) {
+    public String login() {
         return "user/loginForm";
     }
 

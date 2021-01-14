@@ -2,15 +2,11 @@ let chat = {
     init: function() {
         this.connect(channel);
 
-        $("#sendMsg").on("click", () => {
-            this.send(channel);
-        });
-
         $("#visitor_msg_input").on("keyup", (event) => {
             if (event.key === "Enter") {
                 let data = event.target.value;
                 event.target.value = "";
-                console.log("전송할 데이터: ", data);
+                // console.log("전송할 데이터: ", data);
                 this.send(data);
             }
         });
@@ -19,7 +15,7 @@ let chat = {
             if(event.key === "Enter"){
                 let data = event.target.value;
                 event.target.value = "";
-                console.log("전송할 데이터: ", data);
+                // console.log("전송할 데이터: ", data);
                 this.send(channel, data);
             }
         });
@@ -66,14 +62,15 @@ let msgObj = {
 
         let html = "";
 
-        if(user != msg.receiver){
+        if(user !== msg.receiver){
             html+= '    <div class="discusser_left">';
             html+= '        <div>';
             html+= '            <img src="/image/profile.png" alt="" class="profile">';
             html+= '        </div>';
             html+= '        <p>'+msg.message+'</p>';
             html+= '    </div>';
-        }else{
+
+        } else {
             html+= '    <div class="discusser_right">';
             html+= '        <p>'+msg.message+'</p>';
             html+= '        <div>';

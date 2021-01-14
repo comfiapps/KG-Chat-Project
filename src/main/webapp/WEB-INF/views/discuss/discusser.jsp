@@ -56,9 +56,7 @@
                     </div>
                 </div>
                 <div class="discusser_content">
-                    <div class="discusser_area">
-
-                    </div>
+                    <div class="discusser_area"></div>
                 </div>
 
                 <div class="hr_line"></div>
