@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="layout/header.jsp"%>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -132,7 +134,7 @@
             left: 408px;
             width: 62px;
             height: 62px;
-            background: transparent url('static/image/profile.png') 0% 0% no-repeat padding-box;
+            background: transparent url('img/img_01.png') 0% 0% no-repeat padding-box;
             opacity: 1;
         }
         .content_box{
@@ -285,8 +287,6 @@
     <link href="https://www.cssscript.com/wp-includes/css/sticky.css" rel="stylesheet" type="text/css">
     <meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><link rel="preload" href="https://adservice.google.co.kr/adsid/integrator.js?domain=www.cssscript.com" as="script"><script src="https://pagead2.googlesyndication.com/pagead/js/r20210107/r20190131/reactive_library_fy2019.js"></script><script src="https://www.googletagservices.com/activeview/js/current/osd.js?cb=%2Fr20100101"></script><script type="text/javascript" src="https://adservice.google.co.kr/adsid/integrator.js?domain=www.cssscript.com"></script><link rel="preload" href="https://adservice.google.com/adsid/integrator.js?domain=www.cssscript.com" as="script"><script type="text/javascript" src="https://adservice.google.com/adsid/integrator.js?domain=www.cssscript.com"></script>
 </head>
-
-
 <body aria-hidden="false">
 <div class="sz-navbar">
     <div class="sz-navbar-inner sz-navbar-right">
@@ -484,10 +484,8 @@
     </div>
 </div>
 
-<script src="https://partner.googleadservices.com/gampad/cookie.js?domain=www.cssscript.com&amp;callback=_gfp_s_&amp;client=ca-pub-2783044520727903&amp;cookie=ID%3Dc9beed36aa7665e0-226a05a8a9c50002%3AT%3D1610474566%3ART%3D1610474566%3AS%3DALNI_MaPskzCHjGtRokYBi0oTcHz7gtMiQ"></script><script src="https://pagead2.googlesyndication.com/pagead/js/r20210107/r20190131/show_ads_impl_fy2019.js" id="google_shimpl"></script>
-<script async="" src="//www.google-analytics.com/analytics.js"></script>
-<script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
+<script src="https://partner.googleadservices.com/gampad/cookie.js?domain=www.cssscript.com&amp;callback=_gfp_s_&amp;client=ca-pub-2783044520727903&amp;cookie=ID%3Dc9beed36aa7665e0-226a05a8a9c50002%3AT%3D1610474566%3ART%3D1610474566%3AS%3DALNI_MaPskzCHjGtRokYBi0oTcHz7gtMiQ"></script><script src="https://pagead2.googlesyndication.com/pagead/js/r20210107/r20190131/show_ads_impl_fy2019.js" id="google_shimpl"></script><script async="" src="//www.google-analytics.com/analytics.js"></script><script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- CSSScript Demo Page -->
 
 <script>
     (adsbygoogle = window.adsbygoogle || []).push({});
@@ -517,7 +515,9 @@
 
 </script>
 
-</body>
+
+
+</html>
 
 <%@ include file="layout/footer.jsp"%>
 
