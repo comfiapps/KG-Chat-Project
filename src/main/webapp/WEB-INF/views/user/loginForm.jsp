@@ -17,10 +17,14 @@
 		float: left;
 		margin-left: 200px;
 		margin-bottom: 20px;
+		text-align: center;
+		align-items: center;
+
 	}
 	.discussion h1 {
 		font-size: 50px	;
 		font-weight: bold;
+		margin-left: 20px;
 		width: 300px;
 	}
 	.discussion h2 {
@@ -47,30 +51,32 @@
 		margin-bottom: 20px;
 	}
 	.line {
-		display: inline;
+		margin: 0 auto;
+		width: fit-content;
+		height: 100%;
 	}
+
 
 
 
 </style>
 
 	<section class="loginPage">
-		<div class ="">
-		<div class ="discussion">
+		<div class ="line">
+			<div class ="discussion">
+				<h1>DISCUSSION</h1>
+				<h2>Discussion을 통해 수많은 사람들과</h2>
+				<h2>여러 주제로 토론해보고 시청해보세요</h2>
 
-			<h1>DISCUSSION</h1>
-			<h2>Discussion을 통해 수많은 사람들과</h2>
-			<h2>여러 주제로 토론해보고 시청해보세요</h2>
-
-		</div>
+			</div>
 
 
-		<div class="kakaoLogin">
-			<div>DISCUSSION에 로그인</div>
-			<a href="https://kauth.kakao.com/oauth/authorize?client_id=2e63b44fb79b64b533648b862668b579&redirect_uri=http://localhost:5000/auth/kakao/callback&response_type=code">
-				<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
-			</a>
-		</div>
+			<div class="kakaoLogin">
+				<div>DISCUSSION에 로그인</div>
+				<a href="https://kauth.kakao.com/oauth/authorize?client_id=2e63b44fb79b64b533648b862668b579&redirect_uri=http://localhost:5000/auth/kakao/callback&response_type=code">
+					<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
+				</a>
+			</div>
 		</div>
 	</section>
 
