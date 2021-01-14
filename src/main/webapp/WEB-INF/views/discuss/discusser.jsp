@@ -57,23 +57,7 @@
                 </div>
                 <div class="discusser_content">
                     <div class="discusser_area">
-                        <div class="discusser_box">
-                            <div class="discusser_left">
-                                <div>
-                                    <img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile">
-                                </div>
-                                <p>Lorem</p>
-                            </div>
-                        </div>
 
-                        <div class="discusser_box">
-                            <div class="discusser_right">
-                                <p>Lorem</p>
-                                <div>
-                                    <img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile">
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -104,7 +88,6 @@
         let socket;
         let stompClient;
         let user = "tempTester";
-
     </script>
 
     <script src="${pageContext.request.contextPath}/js/sockjs.js"></script>
