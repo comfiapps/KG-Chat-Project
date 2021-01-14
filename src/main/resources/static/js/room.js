@@ -1,4 +1,4 @@
-let index = {
+let room = {
     init: function() {
         $("#createRoomBtn").on("click", () => {
             this.createRoom();
@@ -31,4 +31,4 @@ let index = {
     }
 }
 
-index.init();
+room.init();
