@@ -20,7 +20,7 @@ let chat = {
                 let data = event.target.value;
                 event.target.value = "";
                 console.log("전송할 데이터: ", data);
-                this.send(data);
+                this.send(channel, data);
             }
         });
     },
@@ -35,45 +35,58 @@ let chat = {
             stompClient.subscribe('/topic/' + destination, function (e) {
                 const msg = JSON.parse(e.body);
                 console.log("test: ",msg);
-                msg.contributor(msg);
+                msgObj.contributor(msg);
             });
         });
     },
 
-    send: function (result) {
+    send: function (channel, result) {
         let data = {
-            'chatRoomId': result,
+            'chatRoomId': channel,
             'sender': user,
             'receiver': "all",
-            'message': $("#message").val()
+            'message': result
         };
 
         console.log("전송시도");
         console.log(data);
         stompClient.send("/app/chat", {}, JSON.stringify(data));
 
-        $("#message").val("");
+        $("#discusser_msg_input").val("");
     },
 }
 
-let msg = {
+let msgObj = {
     contributor: function (msg) {
-        console.log(msg)
+        console.log("msg", msg);
+        console.log("user: ", user);
+
         let divs = document.createElement("div");
-        divs.setAttribute('class', "content");
+        divs.setAttribute('class', "discusser_box");
 
         let html = "";
 
-        html+= '<div class = "content">';
-        html+= '	<div class = "'+(user != msg.receiver?"left":"right")+'">';
-        html+= '		<div><small>'+msg.receiver+'</small></div>';
-        html+= '		<div>'+msg.message+'</div>';
-        html+= '	</div>';
-        html+= '</div>';
+        if(user != msg.receiver){
+            html+= '    <div class="discusser_left">';
+            html+= '        <div>';
+            html+= '            <img src="/image/profile.png" alt="" class="profile">';
+            html+= '        </div>';
+            html+= '        <p>'+msg.message+'</p>';
+            html+= '    </div>';
+        }else{
+            html+= '    <div class="discusser_right">';
+            html+= '        <p>'+msg.message+'</p>';
+            html+= '        <div>';
+            html+= '            <img src="/image/profile.png" alt="" class="profile">';
+            html+= '        </div>';
+            html+= '    </div>';
+        }
 
         divs.innerHTML = html;
 
-        $("#textBox").append(divs);
+        console.log("divs: ", divs);
+
+        $(".discusser_area").append(divs);
     }
 }
 

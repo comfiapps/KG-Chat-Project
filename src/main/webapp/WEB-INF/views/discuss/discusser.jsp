@@ -103,7 +103,8 @@
         let channel = ${sessionScope.chatId};
         let socket;
         let stompClient;
-        let user = "dfdfdf";
+        let user = "tempTester";
+
     </script>
 
     <script src="${pageContext.request.contextPath}/js/sockjs.js"></script>
