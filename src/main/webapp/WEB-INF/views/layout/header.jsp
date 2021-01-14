@@ -56,7 +56,7 @@
 										<img src="${principal.user.image}" class="profile_img">
 									</c:when>
 									<c:otherwise>
-										<img src="${pageContext.request.contextPath}/image/profile.png"
+										<img src="${pageContext.request.contextPath}/image/pngwing.com.png"
 											 class="profile_img">
 									</c:otherwise>
 								</c:choose>
@@ -86,7 +86,7 @@
 										<img src="${principal.user.image}" class="profile_img">
 									</c:when>
 									<c:otherwise>
-										<img src="${pageContext.request.contextPath}/image/profile.png"
+										<img src="${pageContext.request.contextPath}/image/pngwing.com.png"
 											 class="profile_img">
 									</c:otherwise>
 								</c:choose>
@@ -106,8 +106,8 @@
 	</c:if>
 
 	<!-- Modal -->
-	<div class="modal fade" id="createModal">
-		<div class="modal-dialog">
+	<div class="modal fade2" id="createModal" role="dialog" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">토론방 생성하기</h5>
@@ -141,7 +141,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button id="createRoomClose" type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+<%--					<button id="createRoomClose" type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>--%>
 					<button id="createRoomBtn" type="button" class="btn btn-primary">만들기</button>
 				</div>
 			</div>

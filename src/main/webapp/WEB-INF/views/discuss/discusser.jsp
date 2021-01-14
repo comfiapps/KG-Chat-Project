@@ -39,7 +39,7 @@
                 <div class="result_box">
                     <div class="score_box">
                         <div class="user_left">
-                            <div><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                            <div><img src="${pageContext.request.contextPath}/image/profileReplacement.png" alt="" class="profile"></div>
                             <div>user#1</div>
                         </div>
                         <div class="compare">
@@ -47,7 +47,7 @@
                             <div class="time">3:32</div>
                         </div>
                         <div class="user_right">
-                            <div><img src="${pageContext.request.contextPath}/image/profile.png" alt="" class="profile"></div>
+                            <div><img src="${pageContext.request.contextPath}/image/profileReplacement.png" alt="" class="profile"></div>
                             <div>user#1</div>
                         </div>
                     </div>

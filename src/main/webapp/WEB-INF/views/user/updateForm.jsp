@@ -125,7 +125,7 @@
             left: 408px;
             width: 62px;
             height: 62px;
-            background: transparent url('static/image/profile.png') 0% 0% no-repeat padding-box;
+            background: transparent url('IdeaProjects/chat/src/main/resources/static/image/profileReplacement.png') 0% 0% no-repeat padding-box;
             opacity: 1;
         }
 

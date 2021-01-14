@@ -35,6 +35,7 @@ select {
     -o-appearance: none;
     -ms-appearance: none;
     appearance: none;
+    outline: none;
 }
 
 ul,
@@ -55,6 +56,8 @@ header{
 
 .profile_img{
     border-radius: 100%;
+    width: 32px;
+    height: 32px;
 }
 
 .web{
@@ -129,6 +132,7 @@ header{
     margin-right: 30px;
 
 }
+
 
 @media(min-width: 1281px){
     .web{
@@ -494,10 +498,11 @@ header{
 }
 
 .title {
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     border-style: none;
-    padding: 16px 8px;
+    padding: 8px;
 }
 
 .input {
@@ -509,4 +514,18 @@ header{
 .subject {
     margin-top: 16px;
 }
-/*dialog end*/z
+
+.fade2 {
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all .1s linear;
+    display: block !important;
+}
+
+.fade2.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/*dialog end*/
