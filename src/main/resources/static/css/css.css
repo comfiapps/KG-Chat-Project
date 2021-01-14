@@ -486,3 +486,27 @@ header{
     width: 30px;
     margin: 0 10px;
 }
+
+/*dialog start */
+.mainbox h6 {
+    margin: 0 0 4px 0;
+    font-weight: normal;
+}
+
+.title {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    border-style: none;
+    padding: 16px 8px;
+}
+
+.input {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    border-style: none;
+}
+
+.subject {
+    margin-top: 16px;
+}
+/*dialog end*/
