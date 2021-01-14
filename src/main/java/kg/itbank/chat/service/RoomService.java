@@ -49,14 +49,14 @@ public class RoomService {
     }
 
     @Transactional
-    public Room create(Room room, long userId) {
+    public long create(Room room, long userId) {
         Room model = new Room();
         model.setName(room.getName());
         model.setCategory(room.getCategory());
         model.setOwner(userRepository.findById(userId).orElseThrow(()
                 -> new UsernameNotFoundException("User Not Found - Id : " + userId)));
         roomRepository.save(model);
-        return model;
+        return model.getId();
     }
 
     @Transactional
