@@ -33,7 +33,7 @@ public class RoomApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), roomService.getRoom(id));
     }
 
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseDto<?> becomeDebater(@AuthenticationPrincipal PrincipalDetail principal,
                                         @PathVariable long roomId) {
         roomService.becomeDebater(principal.getId(), roomId);
