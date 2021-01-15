@@ -51,12 +51,12 @@
 
 		.kakaoLogin {
 			margin: 32px 0;
-			align-self: flex-end;
+			align-self: start;
 		}
 
 		.discussion {
 			text-align: center;
-			align-self: end;
+			align-self: flex-end;
 		}
 	}
 

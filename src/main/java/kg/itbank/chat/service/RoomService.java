@@ -1,11 +1,10 @@
 package kg.itbank.chat.service;
 
+import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.model.Room;
-import kg.itbank.chat.model.User;
 import kg.itbank.chat.repository.RoomRepository;
 import kg.itbank.chat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -58,6 +57,27 @@ public class RoomService {
         roomRepository.save(model);
 
         return model.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public RoomInfoDto defaultInfo(long roomId) {
+        Room room = getRoom(roomId);
+
+        return RoomInfoDto.builder()
+                .owner(room.getOwner())
+                .opponent(room.getOpponentId() != 0 ?
+                        userRepository.findById(room.getOpponentId()).orElseThrow(()
+                                -> new UsernameNotFoundException("User Not Found - Id : " + room.getOpponentId()))
+                        : null)
+                .roomName(room.getName())
+                .roomCategory(room.getCategory())
+                .startDebate(room.getStartTime())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public void join(long roomId) {
+
     }
 
     @Transactional
