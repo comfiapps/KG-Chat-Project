@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+
 <%@ include file="../layout/header.jsp"%>
 
 <h6>${principal.user.id}</h6>
@@ -289,10 +290,21 @@
             <div class="form-group">
                 <label>프로필사진</label>
 
-
-                <img src="img/img_01.jpg" class="img">
+                <c:choose>
+                    <c:when test="${principal.user.image != null}">
+                        <a href = "#"><img id = "target_img" src="${principal.user.image}" alt="profile" class="update_profile_img"></a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href = "#"><img src="${pageContext.request.contextPath}/image/user.png" alt="profile" class="profile_img"></a>
+                    </c:otherwise>
+                </c:choose>
+                <input accept="image/jpeg, image/png" type = "file" id = "fileSelector" style = "display:none;">
+                <input type="hidden" name = "target_url">
 
                 <a href="#" data-drawer-trigger="" aria-controls="drawer-name" aria-expanded="false" class="btn btn-primary" style="float: right;">참여한 토론</a>
+
+
+
 
 
             </div>
@@ -483,6 +495,7 @@
     </div>
     </div>
 </section>
+<script src="${pageContext.request.contextPath}/js/user.js"></script>
 <script>
 
 
@@ -632,14 +645,11 @@
     drawer();
 
 
+
+
+
+
 </script>
 
-
-
-
-
-
-
-</body>
 
 <%@ include file="../layout/footer.jsp"%>
