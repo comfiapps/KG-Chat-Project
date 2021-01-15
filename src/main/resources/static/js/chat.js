@@ -5,18 +5,22 @@ let chat = {
         $("#visitor_msg_input").on("keyup", (event) => {
             if (event.key === "Enter") {
                 let data = event.target.value;
-                event.target.value = "";
-                // console.log("전송할 데이터: ", data);
-                this.send(data);
+                if(data != ""){
+                    event.target.value = "";
+                    // console.log("전송할 데이터: ", data);
+                    this.send(data);
+                }
             }
         });
 
         $("#discusser_msg_input").on("keyup", (event) => {
             if(event.key === "Enter"){
                 let data = event.target.value;
-                event.target.value = "";
-                // console.log("전송할 데이터: ", data);
-                this.send(channel, data);
+                if(data != ""){
+                    event.target.value = "";
+                    // console.log("전송할 데이터: ", data);
+                    this.send(channel, data);
+                }
             }
         });
     },
@@ -54,6 +58,7 @@ let chat = {
 
 let msgObj = {
     contributor: function (msg) {
+
         console.log("msg", msg);
         console.log("user: ", user);
 
@@ -82,9 +87,22 @@ let msgObj = {
         divs.innerHTML = html;
 
         console.log("divs: ", divs);
-
         $(".discusser_area").append(divs);
+        this.scollMoving(".discusser_content", ".discusser_area", $(".discusser_content").innerHeight());
+
+    },
+
+
+    scollMoving: function (box, target, limit){
+
+        let length =  $(target).innerHeight();
+        let scrollLength = $(box).scrollTop() + $(box).innerHeight();
+
+        if(length - scrollLength <= limit){
+            $(box).scrollTop(length);
+        }
     }
+
 }
 
 chat.init();

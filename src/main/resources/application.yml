@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://kgproject.cd3glhhnnn2m.us-west-2.rds.amazonaws.com:3306/kgDB
     username: admin
-    password: 11111111
+    password: zxc!7516155
+    url: jdbc:mysql://kgproject.c2qrrcc0x8ky.us-east-2.rds.amazonaws.com:3306/naman
+
 
   jpa:
     show-sql: true
