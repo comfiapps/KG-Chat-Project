@@ -9,12 +9,13 @@
 	}
 
 	.loginPage {
-		margin-top: 360px;
+		height: 100vh;
 	}
 
 	.line {
 		margin: 0 auto;
 		width: fit-content;
+		height: 100%;
 		display: flex;
 		align-items: center;
 	}
@@ -50,16 +51,18 @@
 
 		.kakaoLogin {
 			margin: 32px 0;
+			align-self: flex-end;
 		}
 
 		.discussion {
 			text-align: center;
+			align-self: end;
 		}
 	}
 
 </style>
 
-<section class="loginPage">
+<div class="loginPage">
 
 	<div class ="line">
 		<div class ="discussion">
@@ -78,6 +81,6 @@
 
 	</div>
 
-</section>
+</div>
 
 <%@ include file="../layout/footer.jsp"%>
