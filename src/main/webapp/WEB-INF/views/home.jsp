@@ -2,6 +2,10 @@
 
 <%@ include file="layout/header.jsp"%>
 
+<div>
+    ${recommend}
+</div>
+
 <section class="main">
 
     <div class="container">

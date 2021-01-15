@@ -22,14 +22,11 @@ public class PathController {
     @Autowired
     private RoomService roomService;
 
-    @GetMapping("test")
-    public String test(){
-        return "discuss/discusser";
-    }
-
     @GetMapping({"", "/", "/home"})
-    public String home(@AuthenticationPrincipal PrincipalDetail principal) {
+    public String home(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
         if(principal == null) return "redirect:/login";
+        System.out.println(roomService.listFeaturedRoom().toString());
+//        model.addAttribute("recommend", roomService.listFeaturedRoom());
         return "home";
     }
 

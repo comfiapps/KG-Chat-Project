@@ -1,5 +1,6 @@
 package kg.itbank.chat.service;
 
+import kg.itbank.chat.dto.FeaturedDto;
 import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.model.User;
@@ -26,18 +27,33 @@ public class RoomService {
     private RoomRepository roomRepository;
 
     @Transactional(readOnly = true)
-    public List<Room> listRoomByUserId(long userId) {
+    public List<?> listRoomByUserId(long userId) {
         return roomRepository.findAllByOwnerId(userId);
     }
 
     @Transactional(readOnly = true)
-    public List<Room> listFeaturedRoom() {
-        // TODO listFeaturedRoom
-        return new ArrayList<>();
+    public List<?> listFeaturedRoom() {
+        List<FeaturedDto> featuredList = new ArrayList<>();
+
+        List<String> categories = roomRepository.listCategories();
+        for(String category : categories) {
+            List<Room> getItems = roomRepository.findTop8ByCategory(category);
+
+            List<RoomInfoDto> roomInfoDtos = new ArrayList<>();
+            for(Room room : getItems) roomInfoDtos.add(defaultInfo(room.getId()));
+
+            featuredList.add(FeaturedDto.builder()
+                    .category(category)
+                    .rooms(roomInfoDtos)
+                    .build());
+        }
+
+        return featuredList;
     }
 
     @Transactional(readOnly = true)
     public Room getRoom(long id) {
+        // TODO privacy
         return roomRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Room not found - Id : " + id));
     }
@@ -48,7 +64,7 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public List<Room> searchRoom(String keyword) {
+    public List<?> searchRoom(String keyword) {
         // TODO searchRoom
         return new ArrayList<>();
     }
