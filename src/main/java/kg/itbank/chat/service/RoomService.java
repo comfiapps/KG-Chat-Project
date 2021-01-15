@@ -68,8 +68,10 @@ public class RoomService {
     @Transactional(readOnly = true)
     public RoomInfoDto defaultInfo(long roomId) {
         Room room = getRoom(roomId);
-        User opponent = userRepository.findById(room.getOpponentId()).orElseThrow(()
-                -> new UsernameNotFoundException("User Not Found - Id : " + room.getOpponentId()));
+        User opponent = room.getOpponentId() != 0 ?
+                userRepository.findById(room.getOpponentId()).orElseThrow(()
+                -> new UsernameNotFoundException("User Not Found - Id : " + room.getOpponentId()))
+                : null;
 
         return RoomInfoDto.builder()
                 .owner(User.builder()
@@ -77,7 +79,7 @@ public class RoomService {
                         .name(room.getOwner().getName())
                         .image(room.getOwner().getImage())
                         .build())
-                .opponent(room.getOpponentId() != 0 ? User.builder()
+                .opponent(opponent != null ? User.builder()
                                 .id(opponent.getId())
                                 .name(opponent.getName())
                                 .image(opponent.getImage())
