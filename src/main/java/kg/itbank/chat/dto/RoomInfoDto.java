@@ -13,6 +13,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 public class RoomInfoDto {
+    private long roomId;
+
     private User owner;
     private User opponent;
 

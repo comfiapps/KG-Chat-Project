@@ -36,11 +36,16 @@ public class RoomService {
         List<FeaturedDto> featuredList = new ArrayList<>();
 
         List<String> categories = roomRepository.listCategories();
+
         for(String category : categories) {
             List<Room> getItems = roomRepository.findTop8ByCategory(category);
 
             List<RoomInfoDto> roomInfoDtos = new ArrayList<>();
-            for(Room room : getItems) roomInfoDtos.add(defaultInfo(room.getId()));
+            for(Room room : getItems) {
+                RoomInfoDto roomInfoDto = defaultInfo(room.getId());
+                roomInfoDto.setRoomId(room.getId());
+                roomInfoDtos.add(roomInfoDto);
+            }
 
             featuredList.add(FeaturedDto.builder()
                     .category(category)
