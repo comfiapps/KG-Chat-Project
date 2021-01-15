@@ -27,6 +27,8 @@ public class Room {
     @JoinColumn(name = "userId")
     private User owner;
 
+    private long opponentId;
+
     private String category;
 
     @CreationTimestamp

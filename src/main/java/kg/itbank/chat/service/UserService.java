@@ -49,11 +49,11 @@ public class UserService {
         User model = userRepository.findById(id).orElseThrow(()
                 -> new UsernameNotFoundException("User Not Found - Id : " + id));
 
-        model.setEmail(user.getEmail());
-        model.setName(user.getName());
-        model.setImage(user.getImage());
-        model.setGender(user.getGender());
-        model.setAgeRange(user.getAgeRange());
+        if(user.getEmail() != null) model.setEmail(user.getEmail());
+        if(user.getName() != null) model.setName(user.getName());
+        if(user.getImage() != null) model.setImage(user.getImage());
+        if(user.getGender() != null) model.setGender(user.getGender());
+        if(user.getAgeRange() != null) model.setAgeRange(user.getAgeRange());
 
         return id;
     }
