@@ -33,18 +33,25 @@ public class RoomApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), roomService.getRoom(id));
     }
 
+    @GetMapping("/{id}")
+    public ResponseDto<?> becomeDebater(@AuthenticationPrincipal PrincipalDetail principal,
+                                        @PathVariable long roomId) {
+        roomService.becomeDebater(principal.getId(), roomId);
+        return new ResponseDto<>(HttpStatus.OK.value(), "success");
+    }
+
     @PutMapping("/{roomId}/start")
     public ResponseDto<?> startDebate(@AuthenticationPrincipal PrincipalDetail principal,
                                       @PathVariable long roomId) {
         roomService.startDebate(roomId, principal.getId());
-        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+        return new ResponseDto<>(HttpStatus.OK.value(), "success");
     }
 
     @PutMapping("/{roomId}/end")
     public ResponseDto<?> endDebate(@AuthenticationPrincipal PrincipalDetail principal,
                                     @PathVariable long roomId) {
         roomService.endDebate(roomId, principal.getId());
-        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+        return new ResponseDto<>(HttpStatus.OK.value(), "success");
     }
 
 
