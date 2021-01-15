@@ -64,6 +64,12 @@ header{
     height: 32px;
     margin: 0 0 0 8px;
 }
+.update_profile_img {
+    border-radius: 100%;
+    width: 64px;
+    height: 64px;
+    margin: 0 0 0 8px
+}
 
 .web{
     height: 56px;
