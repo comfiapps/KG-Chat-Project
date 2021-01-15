@@ -45,8 +45,8 @@ public class PathController {
 
     @GetMapping("/discuss/{id}")
     public String discussRoom(@PathVariable long id, Model model, HttpSession session) {
+        if(!roomService.roomExists(id)) return "redirect:/";
         logger.info("방번호: {}", id);
-        System.out.println(roomService.defaultInfo(id));
         model.addAttribute("room", roomService.defaultInfo(id));
         session.setAttribute("chatId", id);
         return "discuss/discusser";

@@ -2,6 +2,7 @@ package kg.itbank.chat.service;
 
 import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.model.Room;
+import kg.itbank.chat.model.User;
 import kg.itbank.chat.repository.RoomRepository;
 import kg.itbank.chat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,11 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
+    public boolean roomExists(long id) {
+        return roomRepository.existsById(id);
+    }
+
+    @Transactional(readOnly = true)
     public List<Room> searchRoom(String keyword) {
         // TODO searchRoom
         return new ArrayList<>();
@@ -62,22 +68,31 @@ public class RoomService {
     @Transactional(readOnly = true)
     public RoomInfoDto defaultInfo(long roomId) {
         Room room = getRoom(roomId);
+        User opponent = userRepository.findById(room.getOpponentId()).orElseThrow(()
+                -> new UsernameNotFoundException("User Not Found - Id : " + room.getOpponentId()));
 
         return RoomInfoDto.builder()
-                .owner(room.getOwner())
-                .opponent(room.getOpponentId() != 0 ?
-                        userRepository.findById(room.getOpponentId()).orElseThrow(()
-                                -> new UsernameNotFoundException("User Not Found - Id : " + room.getOpponentId()))
-                        : null)
+                .owner(User.builder()
+                        .id(room.getOwner().getId())
+                        .name(room.getOwner().getName())
+                        .image(room.getOwner().getImage())
+                        .build())
+                .opponent(room.getOpponentId() != 0 ? User.builder()
+                                .id(opponent.getId())
+                                .name(opponent.getName())
+                                .image(opponent.getImage())
+                                .build() : null)
                 .roomName(room.getName())
                 .roomCategory(room.getCategory())
                 .startDebate(room.getStartTime())
                 .build();
     }
 
-    @Transactional(readOnly = true)
-    public void join(long roomId) {
-
+    @Transactional
+    public void becomeDebater(long roomId, long userId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(()
+                -> new IllegalArgumentException("Room not found - Id : " + roomId));
+        if (room.getOwner().getId() != userId && room.getOpponentId() == 0) room.setOpponentId(userId);
     }
 
     @Transactional
