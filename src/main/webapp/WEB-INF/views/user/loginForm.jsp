@@ -18,7 +18,6 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
-		height: 100%;
 	}
 
 	.discussion h1 {
