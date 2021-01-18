@@ -95,6 +95,17 @@
             <span class="privacy_detail">${principal.user.name}</span>
             <span class="material-icons md-18">chevron_right</span>
         </div>
+        <div class="small-box mdc-ripple-surface">
+            <span class="hint">이메일</span>
+            <c:choose>
+                <c:when test="${principal.user.email == null}">
+                    <span class="privacy_detail" style="opacity: .5">(설정 안함)</span>
+                </c:when>
+                <c:otherwise>
+                    <span class="privacy_detail">${principal.user.email}</span>
+                </c:otherwise>
+            </c:choose>
+        </div>
         <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyAge">
             <span class="hint">나이</span>
             <c:choose>
@@ -129,7 +140,8 @@
     <div class="box2">
         <c:forEach items="${myRoom}" var="rooms">
 
-                <div class="mdc-card mdc-card--outlined"  onclick="location.href = '/discuss/${rooms.roomId}'">
+                <div class="mdc-card mdc-card--outlined" onclick="location.href = '/discuss/${rooms.roomId}'"
+                     style="display: table-cell">
                     <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
                         <c:choose>
                             <c:when test="${rooms.opponent.id == null}">
@@ -178,9 +190,7 @@
                         <h5 class="font-weight-bold">${rooms.roomName}(1-2)</h5>
                     </div>
                 </div>
-            </a>
 
-            <br/>
         </c:forEach>
     </div>
 </div>
