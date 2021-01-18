@@ -8,6 +8,7 @@
         <version>2.4.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>kg.itbank</groupId>
     <artifactId>chat</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -81,7 +82,12 @@
             <artifactId>jstl</artifactId>
         </dependency>
 
-
+        <!--  jwt를 사용하기위한 라이브러리  -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
 
         <!-- Chat -->
         <dependency>

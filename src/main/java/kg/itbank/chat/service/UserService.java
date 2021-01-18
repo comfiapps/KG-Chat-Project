@@ -26,13 +26,25 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public User findUserByKakaoId(int kakaoId) {
+        return userRepository.findByKakaoId(kakaoId).orElseThrow(()
+                -> new UsernameNotFoundException("User Not Found - KakaoId : " + kakaoId));
+    }
+
+    @Transactional(readOnly = true)
     public boolean existsUserByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsUserByKakaoId(int kakaoID) {
+        return userRepository.existsByKakaoId(kakaoID);
     }
 
     @Transactional
     public long register(User user) {
         User model = User.builder()
+                .kakaoId(user.getKakaoId())
                 .email(user.getEmail())
                 .name(user.getName())
                 .image(user.getImage())

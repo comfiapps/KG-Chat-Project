@@ -21,6 +21,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/auth")
@@ -33,7 +36,12 @@ public class AuthController {
     private UserService userService;
 
     @GetMapping("/kakao/callback")
-    public String kakaoCallback(String code) {
+    public String kakaoCallback(HttpServletRequest request, String code) {
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath(null)
+                .build()
+                .toUriString();
+
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -42,7 +50,7 @@ public class AuthController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "2e63b44fb79b64b533648b862668b579");
-        params.add("redirect_uri", "http://localhost:5000/auth/kakao/callback");
+        params.add("redirect_uri",  baseUrl + "/auth/kakao/callback");
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
@@ -91,6 +99,7 @@ public class AuthController {
             throw new IllegalArgumentException("OAuth Login Fail - Email Not Found");
 
         User kakaoUser = User.builder()
+                .kakaoId(kakaoProfile.getId())
                 .email(kakaoProfile.getKakao_account().getEmail())
                 .name(kakaoProfile.getKakao_account().getProfile().getNickname())
                 .image(kakaoProfile.getProperties().getProfile_image())
@@ -99,8 +108,8 @@ public class AuthController {
                 .build();
 
         long currentUser;
-        if(!userService.existsUserByEmail(kakaoUser.getEmail())) currentUser = userService.register(kakaoUser);
-        else currentUser = userService.findUserByEmail(kakaoUser.getEmail()).getId();
+        if(!userService.existsUserByKakaoId(kakaoUser.getKakaoId())) currentUser = userService.register(kakaoUser);
+        else currentUser = userService.findUserByKakaoId(kakaoUser.getKakaoId()).getId();
 
         UserDetails userDetails = principalService.loadUserById(currentUser);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,

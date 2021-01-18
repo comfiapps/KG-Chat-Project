@@ -19,6 +19,9 @@ public class User {
     private long id;
 
     @Column(unique = true)
+    private int kakaoId;
+
+    @Column(unique = true)
     private String email;
 
     private String name;

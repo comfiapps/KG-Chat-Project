@@ -11,7 +11,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -31,7 +33,14 @@ public class PathController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@AuthenticationPrincipal PrincipalDetail principal, HttpServletRequest request, Model model) {
+        if(principal != null) return "redirect:/";
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath(null)
+                .build()
+                .toUriString();
+
+        model.addAttribute("baseUrl", baseUrl);
         return "user/loginForm";
     }
 
