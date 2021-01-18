@@ -69,7 +69,10 @@ public class UserService {
         if(user.getEmail() != null) model.setEmail(user.getEmail());
         if(user.getName() != null) model.setName(user.getName());
         if(user.getImage() != null) model.setImage(user.getImage());
-        if(user.getGender() != null) model.setGender(user.getGender());
+        if(user.getGender() != null) {
+            if(user.getGender().equals("null")) model.setGender(null);
+            else model.setGender(user.getGender());
+        }
         if(user.getAgeRange() != null) model.setAgeRange(user.getAgeRange());
 
         return id;

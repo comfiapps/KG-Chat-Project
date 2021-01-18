@@ -29,6 +29,11 @@
         align-items: center;
     }
 
+    .small-box img {
+        width: 24px;
+        height: 24px;
+    }
+
     .img-box {
         height: 93px;
     }
@@ -55,30 +60,50 @@
             <div>
                 <c:choose>
                     <c:when test="${principal.user.image != null}">
-                       <img src="${principal.user.image}" alt="profile" class="update_profile_img target_img">
+                       <img src="${principal.user.image}" alt="profile"
+                            class="update_profile_img target_img">
                     </c:when>
                     <c:otherwise>
                         <img src="${pageContext.request.contextPath}/image/user.png" alt="profile"
-                             class="update_profile_img target_img"></a>
+                             class="update_profile_img target_img">
                     </c:otherwise>
                 </c:choose>
                 <input accept="image/jpeg, image/png" type = "file" id = "fileSelector" style = "display:none;">
             </div>
         </div>
 
-        <div class="small-box" data-toggle="modal" data-target="#modifyName">
+        <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyName">
             <h6 class="hint">닉네임</h6>
             <h6>${principal.user.name}</h6>
             <img src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
         </div>
-        <div class="small-box">
+        <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyAge">
             <h6 class="hint">나이</h6>
-            <h6>${principal.user.ageRange}</h6>
+            <c:choose>
+                <c:when test="${principal.user.ageRange == null}">
+                    <h6 style="opacity: .5">(설정 안함)</h6>
+                </c:when>
+                <c:otherwise>
+                    <h6>${principal.user.ageRange}</h6>
+                </c:otherwise>
+            </c:choose>
+
             <img src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
         </div>
-        <div class="small-box border-0">
+        <div class="small-box border-0 mdc-ripple-surface" data-toggle="modal" data-target="#modifyGender">
             <h6 class="hint">성별</h6>
-            <h6>${principal.user.gender}</h6>
+            <c:choose>
+                <c:when test="${principal.user.gender == 'female'}">
+                    <h6>여성</h6>
+                </c:when>
+                <c:when test="${principal.user.gender == 'male'}">
+                    <h6>남성</h6>
+                </c:when>
+                <c:otherwise>
+                    <h6 style="opacity: .5">(선택 안함)</h6>
+                </c:otherwise>
+            </c:choose>
+
             <img src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
         </div>
     </div>
@@ -90,7 +115,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-bottom-0">
-                <h5 class="modal-title">이름 변경</h5>
+                <h5 class="modal-title">닉네임 변경</h5>
             </div>
             <div class="modal-body">
                 <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100">
@@ -102,17 +127,128 @@
             </div>
 
             <div class="modal-footer border-top-0">
-                <button id="createRoomClose" class="mdc-button no-outline" data-dismiss="modal"/>
+                <button  class="mdc-button no-outline" data-dismiss="modal"/>
                 <span class="mdc-button__ripple"></span>
                 <span class="mdc-button__label">취소</span>
                 </button>
                 <button id="nicknameSubmit" class="mdc-button mdc-button--raised no-outline">
-                    <span class="mdc-button__label">적용</span>
+                    <span class="mdc-button__label">변경</span>
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade2" id="modifyAge">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title">나이 변경</h5>
+            </div>
+            <div class="modal-body">
+                <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100">
+                    <span class="mdc-text-field__ripple"></span>
+                    <input class="mdc-text-field__input" type="text" placeholder="변경할 나이" aria-label="Label"
+                           id="ageInput" value="${principal.user.ageRange}">
+                    <span class="mdc-line-ripple"></span>
+                </label>
+            </div>
+
+            <div class="modal-footer border-top-0">
+                <button  class="mdc-button no-outline" data-dismiss="modal"/>
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">취소</span>
+                </button>
+                <button id="ageSubmit" class="mdc-button mdc-button--raised no-outline">
+                    <span class="mdc-button__label">변경</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade2" id="modifyGender">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">성별 변경</h5>
+            </div>
+            <div class="modal-body">
+                <ul class="mdc-list">
+                    <li class="mdc-list-item" tabindex="0">
+                    <span class="mdc-list-item__graphic">
+                        <div class="mdc-radio">
+                        <input class="mdc-radio__native-control"
+                            type="radio"
+                            id="gender-select-0"
+                            name="genderInput"
+                               value="null"
+                            checked>
+                        <div class="mdc-radio__background">
+                        <div class="mdc-radio__outer-circle"></div>
+                        <div class="mdc-radio__inner-circle"></div>
+                        </div>
+                        </div>
+                    </span>
+                    <label id="gender-select-0-label"
+                       for="gender-select-0"
+                       class="mdc-list-item__text">선택 안함</label>
+                    </li>
+
+                    <li class="mdc-list-item" tabindex="0">
+                    <span class="mdc-list-item__graphic">
+                        <div class="mdc-radio">
+                        <input class="mdc-radio__native-control"
+                            type="radio"
+                           value="female"
+                            id="gender-select-1"
+                            name="genderInput">
+                        <div class="mdc-radio__background">
+                        <div class="mdc-radio__outer-circle"></div>
+                        <div class="mdc-radio__inner-circle"></div>
+                        </div>
+                        </div>
+                    </span>
+                    <label id="gender-select-1-label"
+                       for="gender-select-1"
+                       class="mdc-list-item__text">여성</label>
+                    </li>
+
+                    <li class="mdc-list-item" tabindex="0">
+                    <span class="mdc-list-item__graphic">
+                        <div class="mdc-radio">
+                        <input class="mdc-radio__native-control"
+                            type="radio"
+                               value="male"
+                            id="gender-select-2"
+                            name="genderInput">
+                        <div class="mdc-radio__background">
+                        <div class="mdc-radio__outer-circle"></div>
+                        <div class="mdc-radio__inner-circle"></div>
+                        </div>
+                        </div>
+                    </span>
+                    <label id="gender-select-2-label"
+                       for="gender-select-2"
+                       class="mdc-list-item__text">남성</label>
+                    </li>
+                    <!-- ... -->
+                </ul>
+            </div>
+
+            <div class="modal-footer border-top-0">
+                <button  class="mdc-button no-outline" data-dismiss="modal"/>
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">취소</span>
+                </button>
+                <button id="genderSubmit" class="mdc-button mdc-button--raised no-outline">
+                    <span class="mdc-button__label">변경</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script src="${pageContext.request.contextPath}/js/user.js"></script>
 

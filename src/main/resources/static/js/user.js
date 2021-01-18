@@ -16,18 +16,6 @@ let user = {
             }
         });
 
-        $('#nicknameBlock').on('click', () => {
-            // TODO dialog
-        });
-
-        $('#ageBlock').on('click', () => {
-            // TODO dialog
-        });
-
-        $('#genderBlock').on('click', () => {
-            // TODO dialog
-        });
-
         $('#nicknameSubmit').on('click', () => {
             this.modify({
                 name:  $("#nicknameInput").val()
@@ -42,7 +30,7 @@ let user = {
 
         $('#genderSubmit').on('click', () => {
             this.modify({
-                gender:  $("#genderInput").val()
+                gender:  $("input[name='genderInput']:checked").val()
             })
         });
     },
