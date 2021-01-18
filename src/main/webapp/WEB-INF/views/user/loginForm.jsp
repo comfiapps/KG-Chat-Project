@@ -76,8 +76,12 @@
 			<a href="https://kauth.kakao.com/oauth/authorize?client_id=2e63b44fb79b64b533648b862668b579&redirect_uri=${baseUrl}/auth/kakao/callback&response_type=code">
 				<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
 			</a>
+		</div>
+
+		<%-- TODO test login--%>
+		<div class="kakaoLogin">
 			<input placeholder="테스트 이름 입력" id="test_register"> <%-- TODO test login--%>
-			<input placeholder="테스트 목적 - DB 기준 아이디 (long) 입력" id="test_login"> <%-- TODO test login--%>
+			<input placeholder="테스트 목적 - DB 기준 아이디 (long) 입력" id="test_login">
 		</div>
 
 	</div>
