@@ -48,7 +48,7 @@
 					</div>
 					<div class="nav_search">
 						<div>
-							<input class="searchInput" type="text" id="desktopSearchInput">
+							<input placeholder="토론방 검색하기" class="searchInput" type="text" id="desktopSearchInput">
 							<img class="searchBtn" src="${pageContext.request.contextPath}/image/baseline_search_black_48dp.png" alt="search">
 						</div>
 					</div>
@@ -112,7 +112,7 @@
 
 					<div class="nav_search">
 						<div>
-							<input class="searchInput" type="text" id="mobileSearchInput">
+							<input placeholder="토론방 검색하기" class="searchInput" type="text" id="mobileSearchInput">
 							<img class="searchBtn" src="${pageContext.request.contextPath}/image/baseline_search_black_48dp.png" alt="search">
 						</div>
 					</div>

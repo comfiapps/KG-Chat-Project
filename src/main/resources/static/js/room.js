@@ -10,16 +10,14 @@ let room = {
             }
         });
 
-        const input = document.querySelector('input');
-
-        $("#desktopSearchInput").addEventListener('input', (event) => {
-            console.log(event.target.value)
+        $("#desktopSearchInput").on('input', (event) => {
             searchKeyword = event.target.value;
+            $("#mobileSearchInput").val(searchKeyword)
         });
 
-        $("#mobileSearchInput").addEventListener('input', (event) => {
-            console.log(event.target.value)
+        $("#mobileSearchInput").on('input', (event) => {
             searchKeyword = event.target.value;
+            $("#desktopSearchInput").val(searchKeyword)
         });
 
         $(".searchBtn").on("click", () => {
@@ -52,12 +50,11 @@ let room = {
     },
 
     search: function () {
-        console.log("raw: " + searchKeyword)
-
-        if(searchKeyword.trim().length > 0) {
+        let trim = searchKeyword.trim();
+        if(trim.length > 0) {
             let url = new URL(location.origin + "/search");
-            url.searchParams.set('p', searchKeyword);
-            console.log(searchKeyword)
+            url.searchParams.set('p', trim);
+            location.href = url.href;
         }
     }
 }
