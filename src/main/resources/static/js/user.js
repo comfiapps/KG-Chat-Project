@@ -1,6 +1,6 @@
 let user = {
     init: function() {
-        $('#target_img').on('click', function (e) {
+        $('.target_img').on('click', function (e) {
             $('#fileSelector').click();
         });
 
@@ -8,37 +8,59 @@ let user = {
             if (e.target.files && e.target.files.length > 0) {
                 const reader = new FileReader();
                 reader.addEventListener('load', () => {
-                    this.updateImg(reader.result)
+                    this.modify({
+                        image:  reader.result
+                    })
                 });
                 reader.readAsDataURL(e.target.files[0]);
             }
         });
+
+        $('#nicknameBlock').on('click', () => {
+            // TODO dialog
+        });
+
+        $('#ageBlock').on('click', () => {
+            // TODO dialog
+        });
+
+        $('#genderBlock').on('click', () => {
+            // TODO dialog
+        });
+
+        $('#nicknameSubmit').on('click', () => {
+            this.modify({
+                name:  $("#nicknameInput").val()
+            })
+        });
+
+        $('#ageSubmit').on('click', () => {
+            this.modify({
+                ageRange:  $("#ageInput").val()
+            })
+        });
+
+        $('#genderSubmit').on('click', () => {
+            this.modify({
+                gender:  $("#genderInput").val()
+            })
+        });
     },
 
-    updateImg: function (imageData) {
-        let data = {
-            image: imageData
-        };
-
+    modify: function (data) {
         $.ajax({
-
             type:"POST",
             url:"/api/me",
             data:JSON.stringify(data),
             contentType: "application/json; charset = utf-8",
-            dataType:"json"
+            dataType: "json"
+
         }).done(response => {
-            if(response.status === 200) {
-                location.href = "/profile"
-            }
+            if(response.status === 200) location.href = "/profile";
+
         }).fail(error => {
             alert(JSON.stringify(error))
         })
-
-
-
-
-
     }
 }
 
