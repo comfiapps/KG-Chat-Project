@@ -121,6 +121,7 @@
         </div>
         <c:set var="categoryNum" value="${categoryNum + 1}" />
     </c:forEach>
+    <br>
 </section>
 
 <script src="${pageContext.request.contextPath}/js/scroll.js"></script>
