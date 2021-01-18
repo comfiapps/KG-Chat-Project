@@ -32,6 +32,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public boolean existsById(long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Transactional(readOnly = true)
     public boolean existsUserByEmail(String email) {
         return userRepository.existsByEmail(email);
     }

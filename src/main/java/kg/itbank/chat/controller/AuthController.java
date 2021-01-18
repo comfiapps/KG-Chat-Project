@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -34,6 +35,22 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+
+    // TODO test login
+    @GetMapping("/test/callback/{id}")
+    public String testLogin(@PathVariable long id, HttpServletRequest request) {
+        long currentUser;
+        if(!userService.existsById(id)) return "redirect:/login";
+        else currentUser = userService.findUserById(id).getId();
+
+        UserDetails userDetails = principalService.loadUserById(currentUser);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+                null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return "redirect:/";
+    }
 
     @GetMapping("/kakao/callback")
     public String kakaoCallback(HttpServletRequest request, String code) {
