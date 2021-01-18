@@ -5,817 +5,125 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/css.css">
 
 <style>
-    .group_box a:link{
-     color: black; text-decoration: none;
+    .scrollmenu {
+        overflow: auto;
+        white-space: nowrap;
+        padding-inline-start: 32px;
+        padding-inline-end: 32px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .scrollmenu::-webkit-scrollbar {
+        display: none;
+    }
+
+    .category-title {
+        padding: 32px 32px 0;
+    }
+
+    .scrollmenu-wrapper {
+        position:relative;
+    }
+
+    .panner {
+        margin: 0 16px;
+        background: white;
+        color: black;
+        position:absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+
+    #panLeft {
+        left: 0;
+        display: none;
+    }
+
+    #panRight {
+        right: 0;
+        display: none;
     }
 </style>
 
+<section class="main-content">
 
-<section class="main main-content">
+    <c:set var="categoryNum" value="0" />
+    <c:forEach items="${recommend}" var="recommends">
+        <h4 class="font-weight-bold category-title">${recommends.category}</h4>
 
-    <div class="container">
-        <div class="group_title">
-            인기
-        </div>
-        <div class="group_box">
-            <a href = "/discuss/">
-                <div class="mdc-card mdc-card--outlined">
-                    <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
-                        <sub>50명 시청 • 29:40</sub>
-                        <br>
-                        <div class="my-card-body">
-                            <div class="contributors">
-                                <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
+        <div class="scrollmenu-wrapper">
+            <div class="scrollmenu" id="scrollmenu-${categoryNum}">
+                <c:forEach items= "${recommends.rooms}" var = "roomList">
+                    <div class="mdc-card mdc-card--outlined room-card" onclick="location.href = '/discuss/${roomList.roomId}'">
+                        <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
+                            <c:choose>
+                                <c:when test="${roomList.startDebate == null}">
+                                    <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
+                                </c:when>
+                                <c:otherwise>
+                                    <sub>--명 시청 • ${roomList.startDebate}</sub>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <br>
+                            <div class="my-card-body">
+                                <div class="contributors">
+                                    <c:choose>
+                                        <c:when test="${roomList.owner.image != null}">
+                                            <img src="${roomList.owner.image}" class="profile">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="${pageContext.request.contextPath}/image/user.png" class="profile">
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <div class="contributors">
+                                    <c:choose>
+                                        <c:when test="${roomList.opponent.id == null}">
+                                            <h4>대기</h4>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:choose>
+                                                <c:when test="${roomList.opponent.image != null}">
+                                                    <img src="${roomList.opponent.image}" class="profile">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img src="${pageContext.request.contextPath}/image/user.png" class="profile">
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                             </div>
-                            <div class="contributors">
-                                <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
-                            </div>
+                            <div class="process_bar"><div class="process_left"></div></div>
+                            <div><sub>${roomList.roomCategory}</sub></div>
+                            <h5 class="font-weight-bold">${roomList.roomName} (1-2)</h5>
                         </div>
-                        <div class="process_bar"><div class="process_left"></div></div>
-                        <div><sub>주제</sub></div>
-                        <h5 class="font-weight-bold">제목 (1-2)</h5>
                     </div>
-                </div>
-            </a>
-            <div>
-<%--                ${recommend}--%>
-            </div>
+    <%--                                <c:out value = "${roomList.owner.id}" />--%>
+    <%--                                <c:out value = "${roomList.owner.name}" />--%>
+    <%--                            <c:out value = "${roomList.opponent.id}" />--%>
+    <%--                            <c:out value = "${roomList.opponent.name}" />--%>
 
-            <div>
-                <c:forEach items="${recommend}" var="recommends">
-                    <c:out value="${recommends.category}"/>
-                    <c:forEach items= "${recommends.rooms}" var = "roomList">
-                        <c:out value = "${roomList.roomId}" />
-                            <c:out value = "${roomList.owner.id}" />
-                            <c:out value = "${roomList.owner.name}" />
-                            <c:out value = "${roomList.owner.image}" />
-                        <c:out value = "${roomList.opponent.id}" />
-                        <c:out value = "${roomList.opponent.name}" />
-                        <c:out value = "${roomList.opponent.image}" />
-                        <c:out value = "${roomList.roomName}" />
-                        <c:out value = "${roomList.roomCategory}" />
-                        <c:out value = "${roomList.startDebate}" />
-                    </c:forEach>
-                    <br/>
                 </c:forEach>
-            </div>
 
+                <button class="mdc-fab mdc-fab--mini panner" id="panLeft" data-scroll-modifier='-1'>
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="mdc-fab__icon material-icons">chevron_left</span>
+                </button>
 
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="${pageContext.request.contextPath}/image/user.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
+                <button class="mdc-fab mdc-fab--mini panner" id="panRight" data-scroll-modifier='1'>
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="mdc-fab__icon material-icons">chevron_right</span>
+                </button>
             </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="${pageContext.request.contextPath}/image/user.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="${pageContext.request.contextPath}/image/user.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
         </div>
-    </div>
-
-    <div class="container">
-        <div class="group_title">성평등</div>
-        <div class="group_box">
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="group_title">게임</div>
-        <div class="group_box">
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-            <div class="content_box">
-                <div class="content_title">
-                    <div class="hashTag">
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                        <a href="#">#성평등</a>
-                    </div>
-                    <div>당신의 과거는 안녕하십니까?</div>
-                </div>
-                <div class="content_detail">
-                    <div class="user_left"><img src="img/profile.png" alt="" class="profile"></div>
-                    <div class="compare">
-                        <div class="score">1-2</div>
-                        <div class="process_bar">
-                            <div class="process_left"></div>
-                        </div>
-                        <div class="time">
-                            31:40
-                        </div>
-                    </div>
-                    <div class="user_right"><img src="img/profile.png" alt="" class="profile"></div>
-                </div>
-                <div class="content_footer">
-                    <div class="content_footer_left">
-                        <div class="text_center"><img src="img/profile.png" alt="" width="16px" class="profile"></div>
-                        <div class="text_center">User #1</div>
-                    </div>
-                    <div>시청자 50명</div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
-    <script>
-
-    </script>
+        <c:set var="categoryNum" value="${categoryNum + 1}" />
+    </c:forEach>
 </section>
+
+<script src="${pageContext.request.contextPath}/js/scroll.js"></script>
 
 
 

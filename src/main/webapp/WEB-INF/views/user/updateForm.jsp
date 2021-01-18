@@ -103,7 +103,7 @@
                 </c:when>
                 <c:otherwise>
                     <h6 style="opacity: .5">(선택 안함)</h6>
-                </c:otherwise>
+                </c:otherwise><%-- --%>
             </c:choose>
 
             <img class="arrow"

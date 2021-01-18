@@ -184,12 +184,6 @@ header{
     margin-bottom: 20px;
 
 }
-.group_title{
-    display: flex;
-
-    width: 100%;
-    font: normal normal bold 24px/32px Segoe UI;
-}
 
 .group_box{
     width: 100%;
@@ -282,31 +276,9 @@ header{
     align-self: center;
 }
 
-.main{
-    width: 1280px;
-    padding: 24px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-@media (min-width: 1280px){
-    .main{
-        width: 1280px;
-    }
-}
-
 @media (max-width: 700px) {
-    .main{
-        width: 100%;
-    }
     .content_box{
         width: 100%;
-    }
-}
-
-@media(min-width:701px) and (max-width: 1279px){
-    .main{
-        width: 700px;
     }
 }
 
@@ -351,6 +323,11 @@ header{
 /* home.jsp - dialog end */
 
 /* home.jsp - card start - */
+.room-card {
+    display: inline-block;
+    margin: 8px;
+}
+
 .my-card {
     width: 350px;
 }

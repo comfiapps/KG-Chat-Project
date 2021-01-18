@@ -32,8 +32,7 @@ public class PathController {
 
     @GetMapping({"", "/", "/home"})
     public String home(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
-        if(principal == null) return "redirect:/login";
-//        System.out.println(roomService.listFeaturedRoom().toString());
+//        if(principal == null) return "redirect:/login";
         model.addAttribute("recommend", roomService.listFeaturedRoom());
         return "home";
     }
