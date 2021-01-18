@@ -7,7 +7,6 @@ var transportList = require('./transport-list');
 
 module.exports = require('./main')(transportList);
 
-// TODO can't get rid of this until all servers do
 if ('_sockjs_onload' in global) {
   setTimeout(global._sockjs_onload, 1);
 }
@@ -162,7 +161,6 @@ EventTarget.prototype.dispatchEvent = function() {
   var t = event.type;
   // equivalent of Array.prototype.slice.call(arguments, 0);
   var args = arguments.length === 1 ? [event] : Array.apply(null, arguments);
-  // TODO: This doesn't match the real behavior; per spec, onfoo get
   // their place in line from the /first/ time they're set from
   // non-null. Although WebKit bumps it to the end every time it's
   // set.
@@ -253,7 +251,6 @@ module.exports = function(SockJS, availableTransports) {
   });
 
   // hard-coded for the info iframe
-  // TODO see if we can make this more dynamic
   transportMap[InfoIframeReceiver.transportName] = InfoIframeReceiver;
   var parentOrigin;
 
@@ -470,7 +467,6 @@ function InfoIframe(baseUrl, url) {
     });
   };
 
-  // TODO this seems the same as the 'needBody' from transports
   if (!global.document.body) {
     utils.attachEvent('load', go);
   } else {
@@ -527,8 +523,6 @@ function InfoReceiver(baseUrl, urlInfo) {
 }
 
 inherits(InfoReceiver, EventEmitter);
-
-// TODO this is currently ignoring the list of available transports and the whitelist
 
 InfoReceiver._getReceiver = function(baseUrl, url, urlInfo) {
   // determine method of CORS support (if needed)
@@ -756,14 +750,12 @@ SockJS.prototype.close = function(code, reason) {
     return;
   }
 
-  // TODO look at docs to determine how to set this
   var wasClean = true;
   this._close(code || 1000, reason || 'Normal closure', wasClean);
 };
 
 SockJS.prototype.send = function(data) {
   // #13 - convert anything non-string to string
-  // TODO this currently turns objects into [object Object]
   if (typeof data !== 'string') {
     data = '' + data;
   }
@@ -1207,10 +1199,8 @@ defineProperties(FunctionPrototype, {
             Empty.prototype = null;
         }
 
-        // TODO
         // 18. Set the [[Extensible]] internal property of F to true.
 
-        // TODO
         // 19. Let thrower be the [[ThrowTypeError]] function Object (13.2.3).
         // 20. Call the [[DefineOwnProperty]] internal method of F with
         //   arguments "caller", PropertyDescriptor {[[Get]]: thrower, [[Set]]:
@@ -1221,7 +1211,6 @@ defineProperties(FunctionPrototype, {
         //   [[Set]]: thrower, [[Enumerable]]: false, [[Configurable]]: false},
         //   and false.
 
-        // TODO
         // NOTE Function objects created using Function.prototype.bind do not
         // have a prototype property or the [[Code]], [[FormalParameters]], and
         // [[Scope]] internal properties.
@@ -1273,7 +1262,7 @@ defineProperties(ArrayPrototype, {
 
         // If no callback function or if callback is not a callable function
         if (!isFunction(fun)) {
-            throw new TypeError(); // TODO message
+            throw new TypeError();
         }
 
         while (++i < length) {
@@ -3929,7 +3918,6 @@ exports.colors = ['#0000CC', '#0000FF', '#0033CC', '#0033FF', '#0066CC', '#0066F
  * and the Firebug extension (any Firefox version) are known
  * to support "%c" CSS customizations.
  *
- * TODO: add a `localStorage` variable to explicitly enable/disable colors
  */
 // eslint-disable-next-line complexity
 

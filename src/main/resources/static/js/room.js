@@ -3,6 +3,28 @@ let room = {
         $("#createRoomBtn").on("click", () => {
             this.createRoom();
         });
+
+        $(".searchInput").on("keyup", (event) => {
+            if (event.key === "Enter") {
+                this.search()
+            }
+        });
+
+        const input = document.querySelector('input');
+
+        $("#desktopSearchInput").addEventListener('input', (event) => {
+            console.log(event.target.value)
+            searchKeyword = event.target.value;
+        });
+
+        $("#mobileSearchInput").addEventListener('input', (event) => {
+            console.log(event.target.value)
+            searchKeyword = event.target.value;
+        });
+
+        $(".searchBtn").on("click", () => {
+            this.search();
+        });
     },
 
     createRoom: function () {
@@ -27,7 +49,16 @@ let room = {
         }).fail(error => {
             alert(JSON.stringify(error));
         });
+    },
 
+    search: function () {
+        console.log("raw: " + searchKeyword)
+
+        if(searchKeyword.trim().length > 0) {
+            let url = new URL(location.origin + "/search");
+            url.searchParams.set('p', searchKeyword);
+            console.log(searchKeyword)
+        }
     }
 }
 

@@ -53,14 +53,15 @@ public class PathController {
     public String discussRoom(@PathVariable long id, Model model, HttpSession session) {
         if(!roomService.roomExists(id)) return "redirect:/";
         logger.info("방번호: {}", id);
-        model.addAttribute("room", roomService.defaultInfo(id));
         session.setAttribute("chatId", id);
+        model.addAttribute("room", roomService.defaultInfo(id));
+        // TODO add attribute of past chat data
         return "discuss/discusser";
     }
 
     @GetMapping("/search/{keyword}")
     public String search(@PathVariable String keyword, Model model) {
-//        model.addAttribute("room", roomService.)
+        model.addAttribute("room", roomService.searchRoom(keyword));
         return "search/searchForm";
     }
 

@@ -48,8 +48,8 @@
 					</div>
 					<div class="nav_search">
 						<div>
-							<input type="text">
-							<a href=""><img src="${pageContext.request.contextPath}/image/pngwing.com.png" alt="" width="16px"></a>
+							<input class="searchInput" type="text" id="desktopSearchInput">
+							<img class="searchBtn" src="${pageContext.request.contextPath}/image/baseline_search_black_48dp.png" alt="search">
 						</div>
 					</div>
 					<div class="nav_profile">
@@ -112,8 +112,8 @@
 
 					<div class="nav_search">
 						<div>
-							<input type="text">
-							<a href=""><img src="${pageContext.request.contextPath}/image/pngwing.com.png" alt="" width="16px"></a>
+							<input class="searchInput" type="text" id="mobileSearchInput">
+							<img class="searchBtn" src="${pageContext.request.contextPath}/image/baseline_search_black_48dp.png" alt="search">
 						</div>
 					</div>
 				</div>
@@ -171,5 +171,7 @@
 			</div>
 		</div>
 	</div>
+
+	<script>let searchKeyword = "";</script>
 
 	<script src="${pageContext.request.contextPath}/js/room.js"></script>
