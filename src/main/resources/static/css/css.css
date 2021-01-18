@@ -326,10 +326,10 @@ header{
 /* home.jsp - card start - */
 .room-card {
     display: inline-block;
-    margin: 8px;
 }
 
 .my-card {
+    margin: 8px;
     width: 350px;
 }
 

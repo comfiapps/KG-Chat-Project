@@ -18,14 +18,6 @@
         padding: 24px;
         border-radius: 8px;
     }
-    .box2 {
-        margin: 16px 0 52px 0;
-        width: 100%;
-        max-width: 861px;
-        border: 1px  rgba(0,0,0,0.3);
-        padding: 24px;
-        border-radius: 8px;
-    }
 
     .small-box {
         width: 100%;
@@ -56,14 +48,6 @@
 
     .md-18 {
         font-size: 18px
-    }
-
-    .mdc-card__primary-action mdc-card--outlined  my-card my-card-content{
-        width: 100%;
-        height: 172px;
-        padding: 16px;
-        display: flex;
-        align-items: center;
     }
 
 </style>
@@ -137,12 +121,12 @@
 
         <h4>참여한 토론</h4>
 
-        <div class="box2">
+    <div class="container">
+        <div class="row">
             <c:forEach items="${myRoom}" var="rooms">
-
-                    <div class="mdc-card mdc-card--outlined" onclick="location.href = '/discuss/${rooms.roomId}'"
-                         style="display: table-cell">
-                        <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
+                <div class="col" style="display: flex; justify-content: center">
+                    <div class="mdc-card mdc-card--outlined my-card" onclick="location.href = '/discuss/${rooms.roomId}'">
+                        <div class="mdc-card__primary-action my-card-content" tabindex="0">
                             <c:choose>
                                 <c:when test="${rooms.opponent.id == null}">
                                     <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
@@ -190,14 +174,14 @@
                             <h5 class="font-weight-bold">${rooms.roomName}(1-2)</h5>
                         </div>
                     </div>
+                </div>
 
             </c:forEach>
+
         </div>
 
     </div>
 </div>
-
-
 
 <%@ include file="../../component/dialog/nickname.jsp"%>
 <%@ include file="../../component/dialog/age.jsp"%>

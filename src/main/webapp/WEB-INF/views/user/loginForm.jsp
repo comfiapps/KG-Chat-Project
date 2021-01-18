@@ -81,7 +81,7 @@
 		<%-- TODO test login--%>
 		<div class="kakaoLogin">
 			<input placeholder="테스트 이름 입력" id="test_register"> <%-- TODO test login--%>
-			<input placeholder="테스트 목적 - DB 기준 아이디 (long) 입력" id="test_login">
+			<input placeholder="DB 기준 아이디 입력" id="test_login">
 		</div>
 
 	</div>

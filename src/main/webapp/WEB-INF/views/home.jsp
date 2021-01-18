@@ -55,8 +55,8 @@
         <div class="scrollmenu-wrapper">
             <div class="scrollmenu" id="scrollmenu-${categoryNum}">
                 <c:forEach items= "${recommends.rooms}" var = "roomList">
-                    <div class="mdc-card mdc-card--outlined room-card" onclick="location.href = '/discuss/${roomList.roomId}'">
-                        <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
+                    <div class="mdc-card mdc-card--outlined my-card room-card" onclick="location.href = '/discuss/${roomList.roomId}'">
+                        <div class="mdc-card__primary-action my-card-content" tabindex="0">
                             <c:choose>
                                 <c:when test="${roomList.startDebate == null}">
                                     <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
