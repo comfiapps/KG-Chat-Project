@@ -29,7 +29,7 @@
         align-items: center;
     }
 
-    .small-box img {
+    .arrow {
         width: 24px;
         height: 24px;
     }
@@ -75,7 +75,8 @@
         <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyName">
             <h6 class="hint">닉네임</h6>
             <h6>${principal.user.name}</h6>
-            <img src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
+            <img class="arrow"
+                 src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
         </div>
         <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyAge">
             <h6 class="hint">나이</h6>
@@ -88,7 +89,8 @@
                 </c:otherwise>
             </c:choose>
 
-            <img src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
+            <img class="arrow"
+                 src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
         </div>
         <div class="small-box border-0 mdc-ripple-surface" data-toggle="modal" data-target="#modifyGender">
             <h6 class="hint">성별</h6>
@@ -104,7 +106,8 @@
                 </c:otherwise>
             </c:choose>
 
-            <img src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
+            <img class="arrow"
+                    src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
         </div>
     </div>
 </div>
