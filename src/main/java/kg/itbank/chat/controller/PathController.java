@@ -89,7 +89,8 @@ public class PathController {
     @GetMapping("/search")
     public String search(@RequestParam(value = "p", required = false) String keyword, Model model) {
         if(keyword == null) return "redirect:/";
-        model.addAttribute("room", roomService.searchRoom(keyword));
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("searchResult", roomService.searchRoom(keyword));
         return "search/searchForm";
     }
 

@@ -2,11 +2,8 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-<div>
-
-
-
-
+<div class="main-content">
+    <p>${searchResult}</p>
 </div>
 
 <%@ include file="../layout/footer.jsp"%>

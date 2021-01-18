@@ -70,8 +70,16 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public List<?> searchRoom(String keyword) {
-        // TODO searchRoom
-        return new ArrayList<>();
+        List<Room> raw = roomRepository.findByNameIsContainingOrCategoryContainingOrOwnerNameContaining(keyword, keyword, keyword);
+        List<RoomInfoDto> result = new ArrayList<>();
+
+        for(Room room : raw) {
+            RoomInfoDto roomInfoDto = defaultInfo(room.getId());
+            roomInfoDto.setRoomId(room.getId());
+            result.add(roomInfoDto);
+        }
+
+        return result;
     }
 
     @Transactional

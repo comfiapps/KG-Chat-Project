@@ -11,7 +11,7 @@
 </style>
 
 
-<section class="main">
+<section class="main main-content">
 
     <div class="container">
         <div class="group_title">
