@@ -32,7 +32,7 @@ public class PathController {
 
     @GetMapping({"", "/", "/home"})
     public String home(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
-//        if(principal == null) return "redirect:/login";
+        if(principal == null) return "redirect:/login";
         model.addAttribute("recommend", roomService.listFeaturedRoom());
         return "home";
     }
