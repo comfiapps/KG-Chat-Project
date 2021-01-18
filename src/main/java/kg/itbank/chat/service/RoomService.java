@@ -26,9 +26,22 @@ public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
 
+    private List<?> convertRoomToPublic(List<Room> raw) {
+        List<RoomInfoDto> result = new ArrayList<>();
+
+        for(Room room : raw) {
+            RoomInfoDto roomInfoDto = defaultInfo(room.getId());
+            roomInfoDto.setRoomId(room.getId());
+            result.add(roomInfoDto);
+        }
+
+        return result;
+    }
+
     @Transactional(readOnly = true)
     public List<?> listRoomByUserId(long userId) {
-        return roomRepository.findAllByOwnerId(userId);
+        List<Room> raw = roomRepository.findAllByOwnerIdOrOpponentId(userId, userId);
+        return convertRoomToPublic(raw);
     }
 
     @Transactional(readOnly = true)
@@ -71,15 +84,7 @@ public class RoomService {
     @Transactional(readOnly = true)
     public List<?> searchRoom(String keyword) {
         List<Room> raw = roomRepository.findByNameIsContainingOrCategoryContainingOrOwnerNameContaining(keyword, keyword, keyword);
-        List<RoomInfoDto> result = new ArrayList<>();
-
-        for(Room room : raw) {
-            RoomInfoDto roomInfoDto = defaultInfo(room.getId());
-            roomInfoDto.setRoomId(room.getId());
-            result.add(roomInfoDto);
-        }
-
-        return result;
+        return convertRoomToPublic(raw);
     }
 
     @Transactional

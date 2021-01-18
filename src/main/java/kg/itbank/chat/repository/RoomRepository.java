@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
-    List<Room> findAllByOwnerId(long id);
+    List<Room> findAllByOwnerIdOrOpponentId(long owner, long opponent);
     boolean existsById(long id);
 
     @Query(value = "SELECT category FROM Room GROUP BY category", nativeQuery = true)

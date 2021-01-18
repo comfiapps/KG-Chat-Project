@@ -95,7 +95,8 @@ public class PathController {
     }
 
     @GetMapping("/profile")
-    public String profile() {
+    public String profile(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
+        model.addAttribute("myRoom", roomService.listRoomByUserId(principal.getId()));
         return "user/updateForm";
     }
 

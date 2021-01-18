@@ -110,7 +110,14 @@
                     src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
         </div>
     </div>
+
+    <h4>참여한 토론</h4>
+
+    <div>${myRoom}</div>
+
 </div>
+
+
 
 <%@ include file="../../component/dialog/nickname.jsp"%>
 <%@ include file="../../component/dialog/age.jsp"%>
