@@ -4,6 +4,14 @@ spring:
     username: admin
     password: 11111111
 
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  freemarker:
+    cache: false
+
   jpa:
     show-sql: true
     hibernate:
@@ -29,3 +37,8 @@ server:
     context-path: /
     encoding:
       charset: UTF-8
+
+jwt:
+  secret:
+    key: jwtisnoteasy
+

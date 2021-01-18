@@ -2,9 +2,6 @@
 
 <%@ include file="layout/header.jsp"%>
 
-<div>
-    ${recommend}
-</div>
 
 <section class="main">
 
@@ -32,18 +29,9 @@
                 </div>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
+            <div>
+                ${recommend}
+            </div>
 
             <div class="content_box">
                 <div class="content_title">

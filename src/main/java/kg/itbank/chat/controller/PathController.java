@@ -2,12 +2,16 @@ package kg.itbank.chat.controller;
 
 
 import kg.itbank.chat.config.PrincipalDetail;
+import kg.itbank.chat.dto.RoomInfoDto;
+import kg.itbank.chat.model.User;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.UserService;
+import kg.itbank.chat.util.JwtToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,8 @@ public class PathController {
 
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private JwtToken jwtToken;
 
     @GetMapping({"", "/", "/home"})
     public String home(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
@@ -53,14 +59,32 @@ public class PathController {
     public String discussRoom(@PathVariable long id, Model model, HttpSession session) {
         if(!roomService.roomExists(id)) return "redirect:/";
         logger.info("방번호: {}", id);
-        session.setAttribute("chatId", id);
-        model.addAttribute("room", roomService.defaultInfo(id));
-        // TODO add attribute of past chat data
+
+        String token;
+        String senderType = "watcher";
+        RoomInfoDto room = roomService.defaultInfo(id);
+
+        //token에다가 방번호/유저이름/권한(discusser, watcher) 형태로 보낼것임
+        PrincipalDetail user = (PrincipalDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(room.getOwner().getId() == user.getUser().getId()){
+            senderType = "owner";
+        }else if(room.getOpponent().getId() == user.getUser().getId()){
+            senderType = "opponent";
+        }
+
+        token = jwtToken.getToken(id + "/" + user.getUser().getName() +"/" + senderType);
+
+        model.addAttribute("chatId", id);
+        model.addAttribute("token", token);
+        model.addAttribute("room", room);
+        model.addAttribute("senderType", senderType);
+
         return "discuss/discusser";
     }
 
-    @GetMapping("/search/{keyword}")
-    public String search(@PathVariable String keyword, Model model) {
+    @GetMapping("/search")
+    public String search(@RequestParam(value = "p", required = false) String keyword, Model model) {
+        if(keyword == null) return "redirect:/";
         model.addAttribute("room", roomService.searchRoom(keyword));
         return "search/searchForm";
     }

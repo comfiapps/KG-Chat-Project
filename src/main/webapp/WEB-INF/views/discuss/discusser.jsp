@@ -194,7 +194,9 @@
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }
-
+    .hidden{
+        display: none;
+    }
 
 
 
@@ -221,9 +223,11 @@
                 <div class="process_bar">
                     <div class="process_left"></div>
                 </div>
+
             </div>
             <div class="discusser_content">
-                <div class="discusser_area"></div>
+                <div class="discusser_area_init">아직 상대방 토론자가 참여하지 않았습니다.</div>
+                <div class="discusser_area hidden"></div>
             </div>
 
             <div class="hr_line"></div>
@@ -252,53 +256,45 @@
 
 <script>
 
-    let channel = "${chatId}";
+    const channel = "${chatId}";
+    const token = "${token}";
+
+    const user = "${principal.user.name}";
+    const senderType = "${senderType}";
+    let opponent;
+
     let time = "${room.startDebate}";
 
-    const user = {id: "${room.owner.id}", name:"${room.owner.name}"};
-    const opponent = {id: "${room.opponent.id}", name:"${room.opponent.name}"};
+    <%--let temp = "${principal.user.id}";--%>
+    <%--let tempName = ""--%>
 
-    let temp = "${principal.user.id}";
-    let tempName = "${principal.user.name}"
+    let transData = {
+        'token': token,
+        'chatRoomId': channel,
+        'sender': user ,
+        'sendTime': null,
+        'senderType': senderType,
+        'message': null
+    };
 
     let socket;
     let stompClient;
     let sessionId;
 
-    function timer(){
-
-    }
 
 </script>
 
 <script src="${pageContext.request.contextPath}/js/sockjs.js"></script>
 <script src="${pageContext.request.contextPath}/js/stomp.js"></script>
 <script>
+
     let chat = {
         init: function() {
-            this.connect(channel);
-
-            $("#visitor_msg_input").on("keyup", (event) => {
-                if (event.key === "Enter") {
-                    let data = event.target.value;
-                    if(data != ""){
-                        event.target.value = "";
-                        // console.log("전송할 데이터: ", data);
-                        this.send(channel, data, "visitor");
-                    }
-                }
-            });
-            $("#discusser_msg_input").on("keyup", (event) => {
-                if(event.key === "Enter"){
-                    let data = event.target.value;
-                    if(data != ""){
-                        event.target.value = "";
-                        // console.log("전송할 데이터: ", data);
-                        this.send(channel, data, "discusser");
-                    }
-                }
-            });
+            chat.connect(channel);
+            screenOperation.addEvent();
+            screenOperation.showArea(".discusser_area", ".discusser_area_init");
         },
+
 
         connect: function (destination) {
             console.log("destination: ", destination);
@@ -307,33 +303,72 @@
             stompClient = Stomp.over(socket);
 
             stompClient.connect({}, function() {
-                console.log("connected, session id: " , socket.sessionId, stompClient.sessionId,);
+
+                stompClient.subscribe('/topic/enter/' + destination, function (e) {
+                    if(JSON.parse(e.body).senderType === "opponent"){
+                        console.log("상대방 입장");
+                        //타이머 작동
+                        //~~ 토론기능 동작시킬 예정
+                    }
+                });
 
                 stompClient.subscribe('/topic/' + destination, function (e) {
                     const msg = JSON.parse(e.body);
                     console.log("test: ",msg);
-                    msgObj.contributor(msg);
+                    screenOperation.contributor(msg);
                 });
+
+                chat.enter();
 
             });
         },
 
-        send: function (channel, result, target) {
-            let data = {
+        enter: function(){
+            stompClient.send(
+                "/app/chat/enter",
+                {},
+                JSON.stringify({
+                'token':token,
                 'chatRoomId': channel,
-                'sender': user ,
-                'sendTime':new Date().getTime(),
-                'receiver': "discusser",
-                'message': result
-            };
+                'sender': user}));
+        },
+
+
+        send: function (msg) {
+            transData.sendTime = new Date();
+            transData.message = msg;
 
             console.log("전송시도");
-            console.log(data);
-            stompClient.send("/app/chat", {}, JSON.stringify(data));
+            console.log(transData);
+            stompClient.send("/app/chat/msg", {}, JSON.stringify(transData));
         },
     }
 
-    let msgObj = {
+    let screenOperation = {
+
+        addEvent: function (){
+            $("#visitor_msg_input").on("keyup", (event) => {
+                if (event.key === "Enter") {
+                    let msg = event.target.value;
+                    if(msg != ""){
+                        event.target.value = "";
+                        // console.log("전송할 데이터: ", data);
+                        chat.send(msg);
+                    }
+                }
+            });
+            $("#discusser_msg_input").on("keyup", (event) => {
+                if(event.key === "Enter"){
+                    let msg = event.target.value;
+                    if(msg != ""){
+                        event.target.value = "";
+                        // console.log("전송할 데이터: ", data);
+                        chat.send(msg);
+                    }
+                }
+            });
+        },
+
         contributor: function (msg) {
 
             console.log("msg", msg);
@@ -342,10 +377,9 @@
             let divs = document.createElement("div");
             let html = "";
 
-            if(msg.receiver === "discusser"){
+            if(msg.senderType === "owner" || msg.senderType === "opponent"){
                 divs.setAttribute('class', "discusser_box");
-
-                if(user.id != msg.sender.id){
+                if(msg.senderType === "owner"){
                     html+= '    <div class="discusser_left">';
                     html+= '        <div>';
                     html+= '            <img src="/static/image/user.png" alt="" class="profile">';
@@ -361,13 +395,13 @@
                     html+= '        </div>';
                     html+= '    </div>';
                 }
-
                 divs.innerHTML = html;
+                console.log(divs);
+
                 $(".discusser_area").append(divs);
                 this.scollMoving(".discusser_content", ".discusser_area", $(".discusser_content").innerHeight());
 
-
-            }else if(msg.receiver === "all"){
+            }else if(msg.senderType === "watcher"){
                 divs.setAttribute('class', "visitor_box");
 
                 html += '    <div class="user">';
@@ -393,6 +427,11 @@
             if(length - scrollLength <= limit){
                 $(box).scrollTop(length);
             }
+        },
+
+        showArea: function(show, hidden){
+            $(show).removeClass("hidden");
+            $(hidden).addClass("hidden");
         }
     }
 

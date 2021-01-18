@@ -15,10 +15,11 @@ import java.sql.Timestamp;
 @Builder
 public class ChatDto {
 
-    private long  chatRoomId;
-    private ChatUserDto sender;
+    private String token;
+    private String chatRoomId;
+    private String sender;
     private Timestamp sendTime;
-    private String receiver;
+    private String senderType;
     private String message;
 
 }
