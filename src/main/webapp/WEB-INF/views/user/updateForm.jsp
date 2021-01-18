@@ -7,7 +7,7 @@
 
     <link href="https://www.cssscript.com/wp-includes/css/sticky.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/materia/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+
 
     <title>사용자 페이지</title>
 
@@ -273,8 +273,8 @@
     }
 
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+
+
 
 <div class="container">
     <div class="row">

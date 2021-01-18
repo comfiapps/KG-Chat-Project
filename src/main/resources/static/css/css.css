@@ -54,6 +54,10 @@ dl {
     list-style-type: none;
 }
 
+.content {
+    margin-top: 112px
+}
+
 
 /* header */
 header{
@@ -63,16 +67,18 @@ header{
     z-index: 10;
 }
 
-.profile_img{
-    border-radius: 100%;
-    width: 32px;
-    height: 32px;
-    margin: 0 0 0 8px;
-}
 .update_profile_img {
     border-radius: 100%;
     width: 64px;
     height: 64px;
+    margin: 0 0 0 8px
+}
+
+
+.profile_img {
+    border-radius: 100%;
+    width: 32px;
+    height: 32px;
     margin: 0 0 0 8px
 }
 

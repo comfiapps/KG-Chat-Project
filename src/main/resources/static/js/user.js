@@ -1,6 +1,6 @@
 let user = {
     init: function() {
-        $('#target_img').on('click', function (e) {
+        $('.target_img').on('click', function (e) {
             $('#fileSelector').click();
         });
 
