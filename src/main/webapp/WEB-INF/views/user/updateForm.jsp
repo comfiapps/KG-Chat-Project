@@ -139,7 +139,6 @@
 
         -webkit-overflow-scrolling: touch;
 
-
         box-shadow: 0 2px 6px #777;
     }
 

@@ -61,15 +61,19 @@ public class PathController {
         logger.info("방번호: {}", id);
 
         String token;
-        String senderType = "watcher";
+        String senderType;
         RoomInfoDto room = roomService.defaultInfo(id);
 
         //token에다가 방번호/유저이름/권한(discusser, watcher) 형태로 보낼것임
+        logger.info("room: {}", room);
+
         PrincipalDetail user = (PrincipalDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(room.getOwner().getId() == user.getUser().getId()){
             senderType = "owner";
-        }else if(room.getOpponent().getId() == user.getUser().getId()){
+        }else if(room.getOpponent() != null && room.getOpponent().getId() == user.getUser().getId()){
             senderType = "opponent";
+        }else{
+            senderType = "watcher";
         }
 
         token = jwtToken.getToken(id + "/" + user.getUser().getName() +"/" + senderType);

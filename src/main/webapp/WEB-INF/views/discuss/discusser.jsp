@@ -125,8 +125,9 @@
     .discusser_box .discusser_right p,
     .discusser_box .discusser_left p {
         text-align: left;
-        width: 70%;
-        min-width: 230px;
+        max-width: 70%;
+        width: fit-content;
+        /*min-width: 230px;*/
         border-radius: 16px;
         padding: 15px;
         font: normal normal normal 18px/19px Segoe UI;
@@ -197,8 +198,10 @@
     .hidden{
         display: none;
     }
-
-
+    a{
+        text-decoration: none;
+        color: black;
+    }
 
 </style>
 
@@ -209,7 +212,7 @@
                 <div class="score_box">
                     <div class="user_left">
                         <div><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                        <div>${room.owner.name}</div>
+                        <div id="owner_name">owner</div>
                     </div>
                     <div class="compare">
                         <div class="score">0-0</div>
@@ -217,7 +220,7 @@
                     </div>
                     <div class="user_right">
                         <div><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                        <div>Opponent</div>
+                        <div id="opponent_name">Opponent</div>
                     </div>
                 </div>
                 <div class="process_bar">
@@ -226,7 +229,10 @@
 
             </div>
             <div class="discusser_content">
-                <div class="discusser_area_init">아직 상대방 토론자가 참여하지 않았습니다.</div>
+                <div class="discusser_area_init" style="width: fit-content; margin: 0 auto">아직 상대방 토론자가 참여하지 않았습니다.</div>
+                <div class="discusser_area_start">
+                    <a href="#">시작</a>
+                </div>
                 <div class="discusser_area hidden"></div>
             </div>
 
@@ -249,6 +255,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div>
+                <input type="text" id="watcher_msg_input">
             </div>
         </div>
     </div>
@@ -284,15 +293,29 @@
 
 </script>
 
+<%--통신용 라이브러리--%>
 <script src="${pageContext.request.contextPath}/js/sockjs.js"></script>
 <script src="${pageContext.request.contextPath}/js/stomp.js"></script>
+
+<%--시간 처리 라이브러리--%>
+<script src="${pageContext.request.contextPath}/js/moment.js"></script>
+
 <script>
+
 
     let chat = {
         init: function() {
+
+            console.log("channel: ", channel);
+            console.log("token: ", token);
+            console.log("user: ", user);
+            console.log("senderType: ", senderType);
+            console.log("time: ", time);
+
             chat.connect(channel);
             screenOperation.addEvent();
             screenOperation.showArea(".discusser_area", ".discusser_area_init");
+
         },
 
 
@@ -305,10 +328,12 @@
             stompClient.connect({}, function() {
 
                 stompClient.subscribe('/topic/enter/' + destination, function (e) {
-                    if(JSON.parse(e.body).senderType === "opponent"){
+                    const msg = JSON.parse(e.body);
+                    if(msg.senderType === "opponent"){
+                        opponent = msg.sender;
                         console.log("상대방 입장");
-                        //타이머 작동
-                        //~~ 토론기능 동작시킬 예정
+
+                        // 화면 갱신
                     }
                 });
 
@@ -335,7 +360,7 @@
 
 
         send: function (msg) {
-            transData.sendTime = new Date();
+            transData.sendTime = new Date().getTime();
             transData.message = msg;
 
             console.log("전송시도");
@@ -367,6 +392,17 @@
                     }
                 }
             });
+
+            $("#watcher_msg_input").on("keyup", (event)=>{
+                if(event.key === "Enter"){
+                    let msg = event.target.value;
+                    if(msg != ""){
+                        event.target.value = "";
+                        // console.log("전송할 데이터: ", data);
+                        chat.send(msg);
+                    }
+                }
+            })
         },
 
         contributor: function (msg) {
@@ -405,7 +441,7 @@
                 divs.setAttribute('class', "visitor_box");
 
                 html += '    <div class="user">';
-                html += '        <strong>'+msg.sender.name+'</strong> • '+ msg.sendTime;
+                html += '        <strong>'+msg.sender+'</strong> • '+ screenOperation.dateformat(msg.sendTime);
                 html += '    </div>';
                 html += '    <div class="reply">';
                 html += '        <p>'+msg.message+'</p>';
@@ -416,11 +452,9 @@
 
                 this.scollMoving(".visitor_content", ".visitor_reply_area", $(".visitor_content").innerHeight());
             }
-
         },
 
         scollMoving: function (box, target, limit){
-
             let length =  $(target).innerHeight();
             let scrollLength = $(box).scrollTop() + $(box).innerHeight();
 
@@ -429,17 +463,23 @@
             }
         },
 
+        addOpponent: function (name){
+            $("#opponent_name").innerHTML(name);
+        },
+
         showArea: function(show, hidden){
             $(show).removeClass("hidden");
             $(hidden).addClass("hidden");
+        },
+
+        dateformat: function (date){
+           return  moment(date).format("HH:mm");
         }
+
+
     }
 
     chat.init();
-
-
-
-
 
 
 </script>

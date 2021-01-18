@@ -30,42 +30,25 @@ public class ChatController {
 	@Autowired
 	private JwtToken jwtToken;
 
-//	// 상대방 토론자 입장 시
-//	@GetMapping("/discuss/enter/{id}")
-//	public String discussRoomOpponent(@PathVariable(value = "id") long id, Model model){
-//		if(!roomService.roomExists(id)) return "redirect:/";
-//		//룸 정보 갱신
-//
-//		simpMessagingTemplate.convertAndSend("/topic/enter/"+id, "True");
-//		return null;
-//	}
-
 	//enter를 통해 discusser인지 watcher판단하여 discusser 입장시
 	@MessageMapping("/chat/enter")
 	public void enter(@RequestBody ChatDto message){
 		log.info("받은 메시지: {}", message);
 		if(jwtToken.validateToken(message.getToken())){
+			String[] value = jwtToken.decodingToken(message.getToken()).split("/",3);
 			HashMap<String, Object> sendMap = new HashMap<String, Object>();
-			sendMap.put("senderType", jwtToken.decodingToken(message.getToken()).split("/",3)[2]);
-			simpMessagingTemplate.convertAndSend("/topic/enter/"+message.getChatRoomId(), sendMap);
+			sendMap.put("sender", value[1]);
+			sendMap.put("senderType", value[2]);
+			simpMessagingTemplate.convertAndSend("/topic/enter/"+value[0], sendMap);
 		}
 	}
 
 	@MessageMapping("/chat/msg")
 	public void sendMsg(ChatDto message, SimpMessageHeaderAccessor headerAccessor) {
 
-//		channelinterceptor
-//		인터셉터를 통해 메시지 처리에 대한 전후를 처리할 수 있음
-
-//		System.out.println(headerAccessor);
-//		System.out.println(headerAccessor.getSessionId());
-//		System.out.println(message);
-
 		log.info("받은 메시지: {}", message);
 
 		if(jwtToken.validateToken(message.getToken())){
-			// token에다가 방번호/유저이름/권한(discusser, watcher) 형태로 보낼것임
-			// 그냥 검증과정만하면 되지 않을까... 너무 과도한 검증인거 같네
 
 			String[] value = jwtToken.decodingToken(message.getToken()).split("/",3);
 			log.info("분해값 : {}", value);
@@ -73,12 +56,10 @@ public class ChatController {
 				value[1].equals(message.getSender()) &&
 				value[2].equals(message.getSenderType())){
 				log.info("일치함");
-
 				simpMessagingTemplate.convertAndSend("/topic/"+message.getChatRoomId(), message);
 			}else{
 				log.info("조작된 데이터");
 			}
-//			simpMessagingTemplate.convertAndSend("/topic/"+message.getChatRoomId(), message);
 		}else{
 			log.info("토큰 검증 실패");
 		}
