@@ -35,15 +35,12 @@
         padding: 15px 12px 16px 24px;
         display: flex;
         align-items: center;
-    }
-
-    .arrow {
-        width: 24px;
-        height: 24px;
+        cursor: pointer;
     }
 
     .img-box {
         height: 93px;
+        cursor: default;
     }
 
     .hint {
@@ -53,9 +50,15 @@
         font-size: 10px;
     }
 
-    .small-box h6 {
+    .privacy_detail {
+        font-size: 14px;
         flex-grow: 1;
     }
+
+    .md-18 {
+        font-size: 18px
+    }
+
     .mdc-card__primary-action mdc-card--outlined  my-card my-card-content{
         width: 100%;
         height: 172px;
@@ -64,9 +67,6 @@
         align-items: center;
     }
 
-
-
-
 </style>
 
 <div class="main-content update-content">
@@ -74,7 +74,7 @@
 
     <div class="box">
         <div class="small-box img-box">
-            <h6 class="hint">사진</h6>
+            <span class="hint">사진</span>
             <div>
                 <c:choose>
                     <c:when test="${principal.user.image != null}">
@@ -91,41 +91,36 @@
         </div>
 
         <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyName">
-            <h6 class="hint">닉네임</h6>
-            <h6>${principal.user.name}</h6>
-            <img class="arrow"
-                 src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
+            <span class="hint">닉네임</span>
+            <span class="privacy_detail">${principal.user.name}</span>
+            <span class="material-icons md-18">chevron_right</span>
         </div>
         <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyAge">
-            <h6 class="hint">나이</h6>
+            <span class="hint">나이</span>
             <c:choose>
                 <c:when test="${principal.user.ageRange == null}">
-                    <h6 style="opacity: .5">(설정 안함)</h6>
+                    <span class="privacy_detail" style="opacity: .5">(설정 안함)</span>
                 </c:when>
                 <c:otherwise>
-                    <h6>${principal.user.ageRange}</h6>
+                    <span class="privacy_detail">${principal.user.ageRange}</span>
                 </c:otherwise>
             </c:choose>
-
-            <img class="arrow"
-                 src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
+            <span class="material-icons md-18">chevron_right</span>
         </div>
         <div class="small-box border-0 mdc-ripple-surface" data-toggle="modal" data-target="#modifyGender">
-            <h6 class="hint">성별</h6>
+            <span class="hint">성별</span>
             <c:choose>
                 <c:when test="${principal.user.gender == 'female'}">
-                    <h6>여성</h6>
+                    <span class="privacy_detail">여성</span>
                 </c:when>
                 <c:when test="${principal.user.gender == 'male'}">
-                    <h6>남성</h6>
+                    <span class="privacy_detail">남성</span>
                 </c:when>
                 <c:otherwise>
-                    <h6 style="opacity: .5">(선택 안함)</h6>
+                    <span class="privacy_detail" style="opacity: .5">(선택 안함)</span>
                 </c:otherwise>
             </c:choose>
-
-            <img class="arrow"
-                    src="${pageContext.request.contextPath}/image/round_keyboard_arrow_right_black_48dp.png">
+            <span class="material-icons md-18">chevron_right</span>
         </div>
     </div>
 
@@ -176,10 +171,6 @@
                                         </c:choose>
                                     </c:otherwise>
                                 </c:choose>
-
-
-
-
                             </div>
                         </div>
                         <div class="process_bar"><div class="process_left"></div></div>
@@ -189,27 +180,6 @@
                 </div>
             </a>
 
-          <%--  <c:out value = "${rooms.owner.id}" />
-            <c:out value = "${rooms.owner.name}" />
-
-
-            <c:out value = "${rooms.opponent.name}" />--%>
-
-
-
-<%--
-            <c:forEach items= "${recommends.rooms}" var = "roomList">
-                <c:out value = "${roomList.roomId}" />
-                <c:out value = "${roomList.owner.id}" />
-                <c:out value = "${roomList.owner.name}" />
-                <c:out value = "${roomList.owner.image}" />
-                <c:out value = "${roomList.opponent.id}" />
-                <c:out value = "${roomList.opponent.name}" />
-                <c:out value = "${roomList.opponent.image}" />
-                <c:out value = "${roomList.roomName}" />
-                <c:out value = "${roomList.roomCategory}" />
-                <c:out value = "${roomList.startDebate}" />
-            </c:forEach>--%>
             <br/>
         </c:forEach>
     </div>
