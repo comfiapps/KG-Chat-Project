@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/auth")
@@ -38,8 +39,25 @@ public class AuthController {
 
 
     // TODO test login
+    @GetMapping("/test/register/{name}")
+    public String testRegister(@PathVariable String name) {
+        User testUser = User.builder()
+                .name(name)
+                .email(UUID.randomUUID().toString())
+                .build();
+        userService.register(testUser);
+
+        UserDetails userDetails = principalService.loadUserById(userService.findUserByEmail(testUser.getEmail()).getId());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+                null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return "redirect:/";
+    }
+
+    // TODO test login
     @GetMapping("/test/callback/{id}")
-    public String testLogin(@PathVariable long id, HttpServletRequest request) {
+    public String testLogin(@PathVariable long id) {
         long currentUser;
         if(!userService.existsById(id)) return "redirect:/login";
         else currentUser = userService.findUserById(id).getId();

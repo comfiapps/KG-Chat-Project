@@ -76,6 +76,7 @@
 			<a href="https://kauth.kakao.com/oauth/authorize?client_id=2e63b44fb79b64b533648b862668b579&redirect_uri=${baseUrl}/auth/kakao/callback&response_type=code">
 				<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
 			</a>
+			<input placeholder="테스트 이름 입력" id="test_register"> <%-- TODO test login--%>
 			<input placeholder="테스트 목적 - DB 기준 아이디 (long) 입력" id="test_login"> <%-- TODO test login--%>
 		</div>
 
@@ -88,6 +89,9 @@
 <script>
 	$("#test_login").on("keyup", (event) => {
 		if (event.key === "Enter") location.href = "${baseUrl}/auth/test/callback/" + $("#test_login").val();
+	});
+	$("#test_register").on("keyup", (event) => {
+		if (event.key === "Enter") location.href = "${baseUrl}/auth/test/register/" + $("#test_register").val();
 	});
 </script>
 

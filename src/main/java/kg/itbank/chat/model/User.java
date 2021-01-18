@@ -21,6 +21,7 @@ public class User {
     @Column(unique = true)
     private int kakaoId;
 
+    @Lob
     @Column(unique = true)
     private String email;
 
