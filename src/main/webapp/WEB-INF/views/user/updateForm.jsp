@@ -23,7 +23,7 @@
     .small-box {
         width: 100%;
         height: 52px;
-        border-bottom: 1px solid rgba(0,0,0,0.3);
+        border-bottom: 1px solid rgba(0,0,0,0.1);
         padding: 15px 12px 16px 24px;
         display: flex;
         align-items: center;
