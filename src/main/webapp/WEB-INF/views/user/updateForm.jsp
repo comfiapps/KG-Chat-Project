@@ -5,7 +5,6 @@
 <style>
     .update-content {
         padding-top: 36px;
-        height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -69,129 +68,132 @@
 
 </style>
 
-<div class="main-content update-content">
-    <h4>개인정보</h4>
+<div class="main-content">
+    <div class="update-content">
+        <h4>개인정보</h4>
 
-    <div class="box">
-        <div class="small-box img-box">
-            <span class="hint">사진</span>
-            <div>
+        <div class="box">
+            <div class="small-box img-box">
+                <span class="hint">사진</span>
+                <div>
+                    <c:choose>
+                        <c:when test="${principal.user.image != null}">
+                           <img src="${principal.user.image}" alt="profile"
+                                class="update_profile_img target_img">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="${pageContext.request.contextPath}/image/user.png" alt="profile"
+                                 class="update_profile_img target_img">
+                        </c:otherwise>
+                    </c:choose>
+                    <input accept="image/jpeg, image/png" type = "file" id = "fileSelector" style = "display:none;">
+                </div>
+            </div>
+
+            <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyName">
+                <span class="hint">닉네임</span>
+                <span class="privacy_detail">${principal.user.name}</span>
+                <span class="material-icons md-18">chevron_right</span>
+            </div>
+            <div class="small-box mdc-ripple-surface">
+                <span class="hint">이메일</span>
                 <c:choose>
-                    <c:when test="${principal.user.image != null}">
-                       <img src="${principal.user.image}" alt="profile"
-                            class="update_profile_img target_img">
+                    <c:when test="${principal.user.email == null}">
+                        <span class="privacy_detail" style="opacity: .5">(설정 안함)</span>
                     </c:when>
                     <c:otherwise>
-                        <img src="${pageContext.request.contextPath}/image/user.png" alt="profile"
-                             class="update_profile_img target_img">
+                        <span class="privacy_detail">${principal.user.email}</span>
                     </c:otherwise>
                 </c:choose>
-                <input accept="image/jpeg, image/png" type = "file" id = "fileSelector" style = "display:none;">
+            </div>
+            <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyAge">
+                <span class="hint">나이</span>
+                <c:choose>
+                    <c:when test="${principal.user.ageRange == null}">
+                        <span class="privacy_detail" style="opacity: .5">(설정 안함)</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="privacy_detail">${principal.user.ageRange}</span>
+                    </c:otherwise>
+                </c:choose>
+                <span class="material-icons md-18">chevron_right</span>
+            </div>
+            <div class="small-box border-0 mdc-ripple-surface" data-toggle="modal" data-target="#modifyGender">
+                <span class="hint">성별</span>
+                <c:choose>
+                    <c:when test="${principal.user.gender == 'female'}">
+                        <span class="privacy_detail">여성</span>
+                    </c:when>
+                    <c:when test="${principal.user.gender == 'male'}">
+                        <span class="privacy_detail">남성</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="privacy_detail" style="opacity: .5">(선택 안함)</span>
+                    </c:otherwise>
+                </c:choose>
+                <span class="material-icons md-18">chevron_right</span>
             </div>
         </div>
 
-        <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyName">
-            <span class="hint">닉네임</span>
-            <span class="privacy_detail">${principal.user.name}</span>
-            <span class="material-icons md-18">chevron_right</span>
-        </div>
-        <div class="small-box mdc-ripple-surface">
-            <span class="hint">이메일</span>
-            <c:choose>
-                <c:when test="${principal.user.email == null}">
-                    <span class="privacy_detail" style="opacity: .5">(설정 안함)</span>
-                </c:when>
-                <c:otherwise>
-                    <span class="privacy_detail">${principal.user.email}</span>
-                </c:otherwise>
-            </c:choose>
-        </div>
-        <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyAge">
-            <span class="hint">나이</span>
-            <c:choose>
-                <c:when test="${principal.user.ageRange == null}">
-                    <span class="privacy_detail" style="opacity: .5">(설정 안함)</span>
-                </c:when>
-                <c:otherwise>
-                    <span class="privacy_detail">${principal.user.ageRange}</span>
-                </c:otherwise>
-            </c:choose>
-            <span class="material-icons md-18">chevron_right</span>
-        </div>
-        <div class="small-box border-0 mdc-ripple-surface" data-toggle="modal" data-target="#modifyGender">
-            <span class="hint">성별</span>
-            <c:choose>
-                <c:when test="${principal.user.gender == 'female'}">
-                    <span class="privacy_detail">여성</span>
-                </c:when>
-                <c:when test="${principal.user.gender == 'male'}">
-                    <span class="privacy_detail">남성</span>
-                </c:when>
-                <c:otherwise>
-                    <span class="privacy_detail" style="opacity: .5">(선택 안함)</span>
-                </c:otherwise>
-            </c:choose>
-            <span class="material-icons md-18">chevron_right</span>
-        </div>
-    </div>
+        <h4>참여한 토론</h4>
 
-    <h4>참여한 토론</h4>
+        <div class="box2">
+            <c:forEach items="${myRoom}" var="rooms">
 
-    <div class="box2">
-        <c:forEach items="${myRoom}" var="rooms">
-
-                <div class="mdc-card mdc-card--outlined" onclick="location.href = '/discuss/${rooms.roomId}'"
-                     style="display: table-cell">
-                    <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
-                        <c:choose>
-                            <c:when test="${rooms.opponent.id == null}">
-                                <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
-                            </c:when>
-                            <c:otherwise>
-                                <sub>50명 시청 • ${rooms.startDebate}</sub>
-                            </c:otherwise>
-                        </c:choose>
+                    <div class="mdc-card mdc-card--outlined" onclick="location.href = '/discuss/${rooms.roomId}'"
+                         style="display: table-cell">
+                        <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
+                            <c:choose>
+                                <c:when test="${rooms.opponent.id == null}">
+                                    <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
+                                </c:when>
+                                <c:otherwise>
+                                    <sub>50명 시청 • ${rooms.startDebate}</sub>
+                                </c:otherwise>
+                            </c:choose>
 
 
-                        <br>
-                        <div class="my-card-body">
-                            <div class="contributors">
-                                <c:choose>
-                                    <c:when test="${rooms.owner.image == null}">
-                                        <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img src=${rooms.owner.image} alt="" class="profile">
-                                    </c:otherwise>
-                                </c:choose>
+                            <br>
+                            <div class="my-card-body">
+                                <div class="contributors">
+                                    <c:choose>
+                                        <c:when test="${rooms.owner.image == null}">
+                                            <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src=${rooms.owner.image} alt="" class="profile">
+                                        </c:otherwise>
+                                    </c:choose>
 
+                                </div>
+                                <div class="contributors">
+                                    <c:choose>
+                                        <c:when test="${rooms.opponent.id == null}">
+                                            <h2>대기</h2>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:choose>
+                                                <c:when test="${rooms.opponent.img = null}">
+                                                    <img src="${pageContext.request.contextPath}/image/user.png"  class="profile">
+                                                </c:when>
+                                                <c:otherwise>
+                                                        <img src="${rooms.opponent.img}" class="profile">
+
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                             </div>
-                            <div class="contributors">
-                                <c:choose>
-                                    <c:when test="${rooms.opponent.id == null}">
-                                        <h2>대기</h2>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:choose>
-                                            <c:when test="${rooms.opponent.img = null}">
-                                                <img src="${pageContext.request.contextPath}/image/user.png"  class="profile">
-                                            </c:when>
-                                            <c:otherwise>
-                                                    <img src="${rooms.opponent.img}" class="profile">
-
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+                            <div class="process_bar"><div class="process_left"></div></div>
+                            <div><sub>${rooms.roomCategory}</sub></div>
+                            <h5 class="font-weight-bold">${rooms.roomName}(1-2)</h5>
                         </div>
-                        <div class="process_bar"><div class="process_left"></div></div>
-                        <div><sub>${rooms.roomCategory}</sub></div>
-                        <h5 class="font-weight-bold">${rooms.roomName}(1-2)</h5>
                     </div>
-                </div>
 
-        </c:forEach>
+            </c:forEach>
+        </div>
+
     </div>
 </div>
 
