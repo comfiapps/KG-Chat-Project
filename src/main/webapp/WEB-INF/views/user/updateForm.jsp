@@ -19,6 +19,14 @@
         padding: 24px;
         border-radius: 8px;
     }
+    .box2 {
+        margin: 16px 0 52px 0;
+        width: 100%;
+        max-width: 861px;
+        border: 1px  rgba(0,0,0,0.3);
+        padding: 24px;
+        border-radius: 8px;
+    }
 
     .small-box {
         width: 100%;
@@ -48,6 +56,16 @@
     .small-box h6 {
         flex-grow: 1;
     }
+    .mdc-card__primary-action mdc-card--outlined  my-card my-card-content{
+        width: 100%;
+        height: 172px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+    }
+
+
+
 
 </style>
 
@@ -103,7 +121,7 @@
                 </c:when>
                 <c:otherwise>
                     <h6 style="opacity: .5">(선택 안함)</h6>
-                </c:otherwise><%-- --%>
+                </c:otherwise>
             </c:choose>
 
             <img class="arrow"
@@ -113,8 +131,88 @@
 
     <h4>참여한 토론</h4>
 
-    <div>${myRoom}</div>
+    <div class="box2">
+        <c:forEach items="${myRoom}" var="rooms">
 
+                <div class="mdc-card mdc-card--outlined"  onclick="location.href = '/discuss/${rooms.roomId}'">
+                    <div class="mdc-card__primary-action mdc-card--outlined  my-card my-card-content" tabindex="0">
+                        <c:choose>
+                            <c:when test="${rooms.opponent.id == null}">
+                                <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
+                            </c:when>
+                            <c:otherwise>
+                                <sub>50명 시청 • ${rooms.startDebate}</sub>
+                            </c:otherwise>
+                        </c:choose>
+
+
+                        <br>
+                        <div class="my-card-body">
+                            <div class="contributors">
+                                <c:choose>
+                                    <c:when test="${rooms.owner.image == null}">
+                                        <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src=${rooms.owner.image} alt="" class="profile">
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </div>
+                            <div class="contributors">
+                                <c:choose>
+                                    <c:when test="${rooms.opponent.id == null}">
+                                        <h2>대기</h2>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${rooms.opponent.img = null}">
+                                                <img src="${pageContext.request.contextPath}/image/user.png"  class="profile">
+                                            </c:when>
+                                            <c:otherwise>
+                                                    <img src="${rooms.opponent.img}" class="profile">
+
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="process_bar"><div class="process_left"></div></div>
+                        <div><sub>${rooms.roomCategory}</sub></div>
+                        <h5 class="font-weight-bold">${rooms.roomName}(1-2)</h5>
+                    </div>
+                </div>
+            </a>
+
+          <%--  <c:out value = "${rooms.owner.id}" />
+            <c:out value = "${rooms.owner.name}" />
+
+
+            <c:out value = "${rooms.opponent.name}" />--%>
+
+
+
+<%--
+            <c:forEach items= "${recommends.rooms}" var = "roomList">
+                <c:out value = "${roomList.roomId}" />
+                <c:out value = "${roomList.owner.id}" />
+                <c:out value = "${roomList.owner.name}" />
+                <c:out value = "${roomList.owner.image}" />
+                <c:out value = "${roomList.opponent.id}" />
+                <c:out value = "${roomList.opponent.name}" />
+                <c:out value = "${roomList.opponent.image}" />
+                <c:out value = "${roomList.roomName}" />
+                <c:out value = "${roomList.roomCategory}" />
+                <c:out value = "${roomList.startDebate}" />
+            </c:forEach>--%>
+            <br/>
+        </c:forEach>
+    </div>
 </div>
 
 
