@@ -46,18 +46,12 @@
                     <c:out value="${recommends.category}"/>
                     <c:forEach items= "${recommends.rooms}" var = "roomList">
                         <c:out value = "${roomList.roomId}" />
-<%--
-                        <c:forEach items= "${recommends.owner}" var = "ownerList">
-                            <c:out value = "${ownerList.id}" />
-                            <c:out value = "${ownerList.kakaoId}" />
-                            <c:out value = "${ownerList.email}" />
-                            <c:out value = "${ownerList.name}" />
-                            <c:out value = "${ownerList.image}" />
-                            <c:out value = "${ownerList.ageRange}" />
-                            <c:out value = "${ownerList.gender}" />
-                        </c:forEach>
---%>
-                        <c:out value = "${roomList.opponent}" />
+                            <c:out value = "${roomList.owner.id}" />
+                            <c:out value = "${roomList.owner.name}" />
+                            <c:out value = "${roomList.owner.image}" />
+                        <c:out value = "${roomList.opponent.id}" />
+                        <c:out value = "${roomList.opponent.name}" />
+                        <c:out value = "${roomList.opponent.image}" />
                         <c:out value = "${roomList.roomName}" />
                         <c:out value = "${roomList.roomCategory}" />
                         <c:out value = "${roomList.startDebate}" />
