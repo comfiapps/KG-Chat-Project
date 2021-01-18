@@ -40,7 +40,7 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public List<?> listRoomByUserId(long userId) {
-        List<Room> raw = roomRepository.findAllByOwnerIdOrOpponentId(userId, userId);
+        List<Room> raw = roomRepository.findAllByOwnerIdOrOpponentIdOrderByCreateDateDesc(userId, userId);
         return convertRoomToPublic(raw);
     }
 
@@ -120,6 +120,7 @@ public class RoomService {
                                 .build() : null)
                 .roomName(room.getName())
                 .roomCategory(room.getCategory())
+                .createDate(room.getCreateDate())
                 .startDebate(room.getStartTime())
                 .build();
     }
