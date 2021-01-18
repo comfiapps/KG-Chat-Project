@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.UUID;
 
 @Controller
@@ -43,8 +44,10 @@ public class AuthController {
     public String testRegister(@PathVariable String name) {
         User testUser = User.builder()
                 .name(name)
+                .kakaoId((int) (new Date().getTime()/1000))
                 .email(UUID.randomUUID().toString())
                 .build();
+        System.out.println(testUser.toString());
         userService.register(testUser);
 
         UserDetails userDetails = principalService.loadUserById(userService.findUserByEmail(testUser.getEmail()).getId());
