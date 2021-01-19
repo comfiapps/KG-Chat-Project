@@ -15,7 +15,7 @@
             <div class="modal-body">
                 <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100">
                     <span class="mdc-text-field__ripple"></span>
-                    <input class="mdc-text-field__input" type="text" placeholder="변경할 나이" aria-label="Label"
+                    <input class="mdc-text-field__input" type="number" maxlength="2" placeholder="변경할 나이" aria-label="Label"
                            id="ageInput" value="${principal.user.ageRange}">
                     <span class="mdc-line-ripple"></span>
                 </label>

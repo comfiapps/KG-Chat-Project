@@ -1,9 +1,12 @@
 let room = {
     init: function() {
         $("#createRoomBtn").on("click", () => {
-            $("#my-helper-id").css("display", "none");
-            if($("#createRoom_name").val().length <= 0) $("#my-helper-id").css("display", "block");
-            else this.createRoom();
+            this.createRoom();
+        });
+
+        $("#createRoom_name").on("input", (e) => {
+            if(e.target.value.length <= 0) $("#createRoomBtn").attr("disabled", true);
+            else $("#createRoomBtn").attr("disabled", false);
         });
 
         $(".searchInput").on("keyup", (event) => {
