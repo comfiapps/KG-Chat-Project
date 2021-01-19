@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<style>
+    .custom {
+        max-width: 240px;
+    }
+</style>
+
 <div class="modal fade2" id="modifyAge">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered custom">
         <div class="modal-content">
             <div class="modal-header border-bottom-0">
                 <h5 class="modal-title">나이 변경</h5>

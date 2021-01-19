@@ -5,6 +5,7 @@ import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.UserService;
+import kg.itbank.chat.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +18,9 @@ public class RoomApiController {
     @Autowired
     private RoomService roomService;
 
+    @Autowired
+    private JwtToken jwtToken;
+
     @GetMapping
     public ResponseDto<?> listFeaturedRoom() {
         return new ResponseDto<>(HttpStatus.OK.value(), roomService.listFeaturedRoom());
@@ -26,6 +30,17 @@ public class RoomApiController {
     public ResponseDto<?> createRoom(@AuthenticationPrincipal PrincipalDetail principal,
                                      @RequestBody Room room) {
         return new ResponseDto<>(HttpStatus.OK.value(), roomService.create(room, principal.getId()));
+    }
+
+    @PostMapping("/enter/{token}")
+    public ResponseDto<?> enterRoom(@AuthenticationPrincipal PrincipalDetail principal, @PathVariable(value = "token") String token){
+
+        if(jwtToken.validateToken(token)){
+            String chatroomId = jwtToken.decodingToken(token).split("/", 3)[1];
+
+        }
+
+        return null;
     }
 
     @GetMapping("/{id}")

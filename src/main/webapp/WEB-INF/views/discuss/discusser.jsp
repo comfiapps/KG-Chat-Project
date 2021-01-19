@@ -2,6 +2,11 @@
 
 <%@ include file="../layout/header.jsp"%>
 
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
+
 <style>
     .hr_line{
         margin: 10px 0;
@@ -226,12 +231,11 @@
                 <div class="process_bar">
                     <div class="process_left"></div>
                 </div>
-
             </div>
             <div class="discusser_content">
                 <div class="discusser_area_init" style="width: fit-content; margin: 0 auto">아직 상대방 토론자가 참여하지 않았습니다.</div>
                 <div class="discusser_area_start">
-                    <a href="#">시작</a>
+                    <a href="#" onclick="modal();">시작</a>
                 </div>
                 <div class="discusser_area hidden"></div>
             </div>
@@ -261,6 +265,9 @@
             </div>
         </div>
     </div>
+
+    <%@ include file="../../component/dialog/enterDiscuss.jsp"%>
+
 </section>
 
 <script>
@@ -270,7 +277,7 @@
 
     const user = "${principal.user.name}";
     const senderType = "${senderType}";
-    let opponent;
+    let opponent = null;
 
     let time = "${room.startDebate}";
 
@@ -290,6 +297,17 @@
     let stompClient;
     let sessionId;
 
+    $(document).ready(function(){
+        if(opponent == null){
+            $("#enter").addClass("show");
+        }
+    })
+
+
+    function modal(){
+        console.log("안녕하세요");
+    }
+
 
 </script>
 
@@ -302,22 +320,20 @@
 
 <script>
 
-
     let chat = {
         init: function() {
 
-            console.log("channel: ", channel);
-            console.log("token: ", token);
-            console.log("user: ", user);
-            console.log("senderType: ", senderType);
-            console.log("time: ", time);
+            console.log("channel    : ", channel);
+            console.log("token      : ", token);
+            console.log("user       : ", user);
+            console.log("senderType : ", senderType);
+            console.log("time       : ", time);
 
             chat.connect(channel);
             screenOperation.addEvent();
             screenOperation.showArea(".discusser_area", ".discusser_area_init");
 
         },
-
 
         connect: function (destination) {
             console.log("destination: ", destination);
@@ -326,25 +342,19 @@
             stompClient = Stomp.over(socket);
 
             stompClient.connect({}, function() {
-
                 stompClient.subscribe('/topic/enter/' + destination, function (e) {
                     const msg = JSON.parse(e.body);
                     if(msg.senderType === "opponent"){
                         opponent = msg.sender;
                         console.log("상대방 입장");
-
-                        // 화면 갱신
                     }
                 });
-
                 stompClient.subscribe('/topic/' + destination, function (e) {
                     const msg = JSON.parse(e.body);
                     console.log("test: ",msg);
                     screenOperation.contributor(msg);
                 });
-
                 chat.enter();
-
             });
         },
 
@@ -357,7 +367,6 @@
                 'chatRoomId': channel,
                 'sender': user}));
         },
-
 
         send: function (msg) {
             transData.sendTime = new Date().getTime();
@@ -475,12 +484,9 @@
         dateformat: function (date){
            return  moment(date).format("HH:mm");
         }
-
-
     }
 
     chat.init();
-
 
 </script>
 

@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<style>
+    .custom {
+        max-width: 240px;
+    }
+</style>
+
 <div class="modal fade2" id="modifyGender">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered custom">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">성별 변경</h5>
@@ -70,7 +76,7 @@
             </div>
 
             <div class="modal-footer border-top-0">
-                <button  class="mdc-button no-outline" data-dismiss="modal"/>
+                <button  class="mdc-button" data-dismiss="modal"/>
                 <span class="mdc-button__ripple"></span>
                 <span class="mdc-button__label">취소</span>
                 </button>
