@@ -41,8 +41,8 @@ public class RoomService {
         for(Room room : raw) {
             RoomInfoDto roomInfoDto = defaultInfo(room.getId());
             roomInfoDto.setRoomId(room.getId());
-            roomInfoDto.setCountOwnerVote(voteRepository.countByRoomIdAndUserId(room.getId(), room.getOwner().getId()));
-            roomInfoDto.setCountOpponentVote(voteRepository.countByRoomIdAndVoteToId(room.getId(), room.getOpponentId()));
+            roomInfoDto.setCountOwnerVote(voteRepository.countByIdRoomIdAndIdUserId(room.getId(), room.getOwner().getId()));
+            roomInfoDto.setCountOpponentVote(voteRepository.countByIdRoomIdAndVoteToId(room.getId(), room.getOpponentId()));
             result.add(roomInfoDto);
         }
 

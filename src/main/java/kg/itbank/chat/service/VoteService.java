@@ -3,6 +3,7 @@ package kg.itbank.chat.service;
 import kg.itbank.chat.dto.CountVoteDto;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.model.Vote;
+import kg.itbank.chat.model.embbedId.VoteId;
 import kg.itbank.chat.repository.RoomRepository;
 import kg.itbank.chat.repository.UserRepository;
 import kg.itbank.chat.repository.VoteRepository;
@@ -25,14 +26,16 @@ public class VoteService {
 
     @Transactional
     public void voteTo(long myId, long roomId, long userId) {
-        Vote vote = voteRepository.findByRoomIdAndUserId(roomId, myId);
+        Vote vote = voteRepository.findByIdRoomIdAndIdUserId(roomId, myId);
         if(vote == null) {
             voteRepository.save(
                     Vote.builder()
-                            .room(roomRepository.findById(roomId).orElseThrow(()
-                                    -> new IllegalArgumentException("Room not found - Id : " + roomId)))
-                            .user(userRepository.findById(myId).orElseThrow(()
-                                    -> new UsernameNotFoundException("User Not Found - Id : " + myId)))
+                            .id(VoteId.builder()
+                                    .room(roomRepository.findById(roomId).orElseThrow(()
+                                            -> new IllegalArgumentException("Room not found - Id : " + roomId)))
+                                    .user(userRepository.findById(myId).orElseThrow(()
+                                            -> new UsernameNotFoundException("User Not Found - Id : " + myId)))
+                                    .build())
                             .voteTo(userRepository.findById(userId).orElseThrow(()
                                     -> new UsernameNotFoundException("User Not Found - Id : " + userId)))
                             .build());
@@ -44,7 +47,7 @@ public class VoteService {
 
     @Transactional
     public void unvote(long myId, long roomId) {
-        voteRepository.deleteByRoomIdAndUserId(roomId, myId);
+        voteRepository.deleteByIdRoomIdAndIdUserId(roomId, myId);
     }
 
     @Transactional(readOnly = true)
@@ -53,8 +56,8 @@ public class VoteService {
                 -> new IllegalArgumentException("Room not found - Id : " + roomId));
 
         return CountVoteDto.builder()
-                .ownerVote(voteRepository.countByRoomIdAndUserId(roomId, room.getOwner().getId()))
-                .opponentVote(voteRepository.countByRoomIdAndVoteToId(roomId, room.getOpponentId()))
+                .ownerVote(voteRepository.countByIdRoomIdAndIdUserId(roomId, room.getOwner().getId()))
+                .opponentVote(voteRepository.countByIdRoomIdAndVoteToId(roomId, room.getOpponentId()))
                 .build();
     }
 

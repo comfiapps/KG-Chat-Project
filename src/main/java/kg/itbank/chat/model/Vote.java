@@ -1,5 +1,6 @@
 package kg.itbank.chat.model;
 
+import kg.itbank.chat.model.embbedId.VoteId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,17 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Vote implements Serializable {
+public class Vote {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "roomId")
-    private Room room;
+    @EmbeddedId
+    private VoteId id;
 
     @ManyToOne
     @JoinColumn(name = "userId")
