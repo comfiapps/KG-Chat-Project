@@ -2,6 +2,7 @@ package kg.itbank.chat.controller.api;
 
 import kg.itbank.chat.config.PrincipalDetail;
 import kg.itbank.chat.dto.ResponseDto;
+import kg.itbank.chat.exception.GlobalExceptionHandler;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.UserService;
@@ -29,7 +30,9 @@ public class RoomApiController {
     @PostMapping
     public ResponseDto<?> createRoom(@AuthenticationPrincipal PrincipalDetail principal,
                                      @RequestBody Room room) {
-        return new ResponseDto<>(HttpStatus.OK.value(), roomService.create(room, principal.getId()));
+        long result = roomService.create(room, principal.getId());
+        if(result == -1) return new GlobalExceptionHandler().handleArgumentException(new Exception("debate ongoing"));
+        return new ResponseDto<>(HttpStatus.OK.value(), result);
     }
 
     @PostMapping("/enter/{token}")

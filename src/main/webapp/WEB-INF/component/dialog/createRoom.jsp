@@ -13,6 +13,9 @@
                            id="createRoom_name">
                     <span class="mdc-line-ripple"></span>
                 </label>
+                <div class="mdc-text-field-helper-line">
+                    <div class="mdc-text-field-helper-text--persistent mdc-theme--error" id="my-helper-id" aria-hidden="true" style="display: none">방 제목은 필수입니다</div>
+                </div>
 
                 <div class ="subject">
                     <h6>토론 주제</h6>

@@ -1,7 +1,9 @@
 let room = {
     init: function() {
         $("#createRoomBtn").on("click", () => {
-            this.createRoom();
+            $("#my-helper-id").css("display", "none");
+            if($("#createRoom_name").val().length <= 0) $("#my-helper-id").css("display", "block");
+            else this.createRoom();
         });
 
         $(".searchInput").on("keyup", (event) => {
@@ -42,6 +44,9 @@ let room = {
             if(response.status === 200) {
                 const id = response.data;
                 location.href="/discuss/" + id;
+            } else if (response.status === 500) {
+                const alreadyJoinedAlert = confirm("참여 중인 토론이 있습니다. 접속하시겠습니까?");
+                if(alreadyJoinedAlert) location.href = "/discuss"
             }
 
         }).fail(error => {

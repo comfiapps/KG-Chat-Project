@@ -2,10 +2,12 @@ package kg.itbank.chat.service;
 
 import kg.itbank.chat.dto.FeaturedDto;
 import kg.itbank.chat.dto.RoomInfoDto;
+import kg.itbank.chat.exception.GlobalExceptionHandler;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.model.User;
 import kg.itbank.chat.repository.RoomRepository;
 import kg.itbank.chat.repository.UserRepository;
+import kg.itbank.chat.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,12 +31,18 @@ public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
 
+    @Autowired
+    private VoteRepository voteRepository;
+
+    @Transactional(readOnly = true)
     private List<RoomInfoDto> convertRoomToPublic(List<Room> raw) {
         List<RoomInfoDto> result = new ArrayList<>();
 
         for(Room room : raw) {
             RoomInfoDto roomInfoDto = defaultInfo(room.getId());
             roomInfoDto.setRoomId(room.getId());
+            roomInfoDto.setCountOwnerVote(voteRepository.countByRoomIdAndUserId(room.getId(), room.getOwner().getId()));
+            roomInfoDto.setCountOpponentVote(voteRepository.countByRoomIdAndVoteToId(room.getId(), room.getOpponentId()));
             result.add(roomInfoDto);
         }
 
@@ -93,7 +101,7 @@ public class RoomService {
 
     @Transactional
     public long create(Room room, long userId) {
-        if(isUserOnDebate(userId) != -1) throw new IllegalArgumentException("Debate ongoing");
+        if(isUserOnDebate(userId) != -1) return -1;
 
         Room model = new Room();
         model.setName(room.getName());
