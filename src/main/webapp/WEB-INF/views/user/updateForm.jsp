@@ -46,9 +46,6 @@
         flex-grow: 1;
     }
 
-    .md-18 {
-        font-size: 18px
-    }
 
 </style>
 

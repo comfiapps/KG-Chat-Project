@@ -38,15 +38,11 @@
 			<div class="nav_content">
 				<div class="web">
 					<div class="nav_logo">
-						<div>
-							<a href="/">DISCUSSION</a>
-						</div>
+						<a href="/">DISCUSSION</a>
 					</div>
 					<div class="nav_search">
-						<div>
-							<input placeholder="토론방 검색하기" class="searchInput" type="text" id="desktopSearchInput" value="${keyword}">
-							<img class="searchBtn" src="${pageContext.request.contextPath}/image/baseline_search_black_48dp.png" alt="search">
-						</div>
+						<input placeholder="토론방 검색하기" class="searchInput" type="text" id="desktopSearchInput" value="${keyword}">
+						<span class="material-icons md-18 searchBtn">search</span>
 					</div>
 					<div class="nav_profile">
 						<div>
@@ -107,10 +103,8 @@
 					</div>
 
 					<div class="nav_search">
-						<div>
-							<input placeholder="토론방 검색하기" class="searchInput" type="text" id="mobileSearchInput" value="${keyword}">
-							<img class="searchBtn" src="${pageContext.request.contextPath}/image/baseline_search_black_48dp.png" alt="search">
-						</div>
+						<input placeholder="토론방 검색하기" class="searchInput" type="text" id="mobileSearchInput" value="${keyword}">
+						<span class="material-icons md-18 searchBtn">search</span>
 					</div>
 				</div>
 			</div>

@@ -2,8 +2,6 @@
 
 <%@ include file="layout/header.jsp"%>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/css.css">
-
 <style>
     .scrollmenu {
         overflow: auto;

@@ -42,11 +42,6 @@ textarea:focus {
     outline: none;
 }
 
-.no-outline:focus, .no-outline:active {
-    -webkit-box-shadow: none!important;
-    box-shadow: none!important;
-}
-
 ul,
 li,
 ol,
@@ -74,7 +69,6 @@ header{
     border-radius: 100%;
     width: 64px;
     height: 64px;
-    margin: 0 0 0 8px;
     cursor: pointer;
 }
 
@@ -110,13 +104,11 @@ header{
 .nav_content .nav_logo{
     font: normal normal normal 24px/32px Segoe UI;
     justify-self: start;
-}
-.nav_content .nav_logo div{
     margin-left: 24px;
 }
 
-.nav_content .nav_search{
-    background: #E5E5E5 0 0 no-repeat padding-box;
+.nav_content .nav_search {
+    background: #E5E5E5;
     border-radius: 4px;
     width: 80%;
     max-width: 520px;
@@ -126,10 +118,11 @@ header{
     padding: 0 8px 0 16px;
 }
 
-.nav_content .nav_search div{
-    display: flex;
-    align-items: center;
-    width: 100%;
+.nav_content .nav_search input{
+    flex-grow: 1;
+    margin-right: 8px;
+    background: transparent;
+    border: 0;
 }
 
 .nav_content .nav_search .searchBtn {
@@ -137,16 +130,10 @@ header{
     height: 20px;
 }
 
-.nav_content .nav_search input{
-    background: transparent;
-    border: 0;
-    width: 100%;
-    margin-right: 8px;
-}
-
 .nav_content .nav_profile{
     justify-self: end;
 }
+
 .nav_content .nav_profile div{
     margin-right: 30px;
 }
@@ -290,7 +277,9 @@ header{
 
 
 
-
+.md-18 {
+    font-size: 18px
+}
 
 /* home.jsp - dialog start */
 .mainbox h6 {
