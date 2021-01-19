@@ -2,6 +2,7 @@ package kg.itbank.chat.controller;
 
 
 import kg.itbank.chat.config.PrincipalDetail;
+import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.model.User;
 import kg.itbank.chat.service.RoomService;
@@ -10,11 +11,13 @@ import kg.itbank.chat.util.JwtToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,26 +53,24 @@ public class PathController {
     }
 
     @GetMapping("/discuss")
-    public String discussNull(@AuthenticationPrincipal PrincipalDetail principal, HttpSession session) {
+    public String discussNull(@AuthenticationPrincipal PrincipalDetail principal, RedirectAttributes redirectAttributes) {
         long joined = roomService.isUserOnDebate(principal.getId());
         if(joined != -1) {
-            session.setAttribute("joinedError", "토론 중이던 방으로 이동합니다");
+            redirectAttributes.addFlashAttribute("joinedError",true);
             return "redirect:/discuss/" + joined;
         }
-        session.removeAttribute("joinedError");
         return "redirect:/";
     }
 
     @GetMapping("/discuss/{id}")
     public String discussRoom(@AuthenticationPrincipal PrincipalDetail principal,
-                              @PathVariable long id, Model model, HttpSession session) {
+                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes) {
         long joined = roomService.isUserOnDebate(principal.getId());
         if(joined != -1 && joined != id) {
-            session.setAttribute("joinedError", "토론 중이던 방으로 이동합니다");
+            redirectAttributes.addFlashAttribute("joinedError",true);
             return "redirect:/discuss/" + joined;
         }
 
-        session.removeAttribute("joinedError");
         if(!roomService.roomExists(id)) return "redirect:/";
         logger.info("방번호: {}", id);
 

@@ -272,6 +272,8 @@
 
 <script>
 
+    const joinedError = "${joinedError}";
+
     const channel = "${chatId}";
     const token = "${token}";
 
@@ -298,6 +300,7 @@
     let sessionId;
 
     $(document).ready(function(){
+        if(joinedError) alert("참여 중이던 방으로 이동되었습니다")
         if(opponent == null){
             $("#enter").addClass("show");
         }
@@ -319,7 +322,6 @@
 <script src="${pageContext.request.contextPath}/js/moment.js"></script>
 
 <script>
-
     let chat = {
         init: function() {
 
