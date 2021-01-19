@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtToken {
@@ -37,6 +39,18 @@ public class JwtToken {
 
     public boolean validateToken(String jwt){
         return this.getClaims(jwt) != null;
+    }
+
+    public Map<String, String> getMessageMap(String jwt){
+        Map<String, String> map =  new HashMap<>();
+
+        String[] val = decodingToken(jwt).split("/",4);
+        map.put("chatId", val[0]);
+        map.put("userId", val[1]);
+        map.put("userName", val[2]);
+        map.put("senderType", val[3]);
+
+        return map;
     }
 
     private Jws<Claims> getClaims(String token){

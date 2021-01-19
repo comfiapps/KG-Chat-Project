@@ -38,11 +38,26 @@ public class ChatController {
 
 		log.info("받은 메시지: {}", message);
 		if(jwtToken.validateToken(message.getToken())){
-			String[] value = jwtToken.decodingToken(message.getToken()).split("/",3);
+			String[] value = jwtToken.decodingToken(message.getToken()).split("/",4);
 			HashMap<String, Object> sendMap = new HashMap<String, Object>();
-			sendMap.put("sender", value[1]);
-			sendMap.put("senderType", value[2]);
+
+			sendMap.put("senderId", value[1]);
+			sendMap.put("sender", value[2]);
+			sendMap.put("senderType", value[3]);
+
 			simpMessagingTemplate.convertAndSend("/topic/enter/"+value[0], sendMap);
+		}
+	}
+
+	@MessageMapping("/chat/info")
+	public void info(@RequestBody ChatDto message){
+		log.info("받은 메시지: {}", message);
+		if(jwtToken.validateToken(message.getToken())){
+			String[] value = jwtToken.decodingToken(message.getToken()).split("/",4);
+			HashMap<String, Object> sendMap = new HashMap<String, Object>();
+			sendMap.put("message", message.getMessage());
+			sendMap.put("messageType", message.getMessageType());
+			simpMessagingTemplate.convertAndSend("/topic/info/"+value[0], sendMap);
 		}
 	}
 
@@ -51,43 +66,18 @@ public class ChatController {
 		log.info("받은 메시지: {}", message);
 		if(jwtToken.validateToken(message.getToken())){
 
-			String[] value = jwtToken.decodingToken(message.getToken()).split("/",3);
+			String[] value = jwtToken.decodingToken(message.getToken()).split("/",4);
 			log.info("분해값 : {}", value);
 			if(	value[0].equals(message.getChatRoomId()) &&
-				value[1].equals(message.getSender()) &&
-				value[2].equals(message.getSenderType())){
+				value[2].equals(message.getSender()) &&
+				value[3].equals(message.getSenderType())){
 				log.info("일치함");
-				simpMessagingTemplate.convertAndSend("/topic/"+message.getChatRoomId(), message);
+				simpMessagingTemplate.convertAndSend("/topic/msg/"+message.getChatRoomId(), message);
 			}else{
 				log.info("조작된 데이터");
 			}
 		}else{
 			log.info("토큰 검증 실패");
 		}
-
-//		JSONObject jobj = new JSONObject(message);
-//
-//		long chatRoomId = jobj.getLong("chatRoomId");
-//		String sender = jobj.getString("sender");
-//		String receiver = jobj.getString("receiver");
-////		String sessionId = jobj.getString("sessionId");
-//		String msg = jobj.getString("message");
-
-//		log.info("chatRoomId 메시지: {}", chatRoomId);
-//		log.info("sender 메시지: {}", sender);
-//		log.info("receiver 메시지: {}", receiver);
-////		log.info("sessionId 메시지: {}", sessionId);
-//		log.info("msg 메시지: {}", msg);
-
-//		HashMap<String, Object> sendMsgMap = new HashMap<String, Object>();
-//
-//		sendMsgMap.put("sender", sender);
-//		sendMsgMap.put("receiver", receiver);
-//		sendMsgMap.put("message", msg);
-//		sendMsgMap.put("sendTime", new Date());
-		
-//		simpMessagingTemplate.convertAndSend("/topic/" + chatRoomId, sendMsgMap);
 	}
-
-
 }

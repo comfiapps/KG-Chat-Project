@@ -144,11 +144,14 @@ public class RoomService {
     }
 
     @Transactional
-    public void startDebate(long roomId, long userId) {
+    public Timestamp startDebate(long roomId, long userId) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
-        room.setStartTime(new Timestamp(System.currentTimeMillis()));
+        room.setStartTime(timestamp);
+        return timestamp;
     }
 
     @Transactional

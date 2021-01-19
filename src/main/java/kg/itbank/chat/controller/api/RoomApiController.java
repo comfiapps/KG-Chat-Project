@@ -39,7 +39,7 @@ public class RoomApiController {
 
         return new ResponseDto<>(HttpStatus.OK.value(),
                 roomService.becomeDebater(
-                        Long.parseLong(jwtToken.decodingToken(token).split("/", 3)[0]),
+                        Long.parseLong(jwtToken.decodingToken(token).split("/", 4)[0]),
                         principal.getId())
         );
     }
@@ -59,8 +59,7 @@ public class RoomApiController {
     @PutMapping("/{roomId}/start")
     public ResponseDto<?> startDebate(@AuthenticationPrincipal PrincipalDetail principal,
                                       @PathVariable long roomId) {
-        roomService.startDebate(roomId, principal.getId());
-        return new ResponseDto<>(HttpStatus.OK.value(), "success");
+        return new ResponseDto<>(HttpStatus.OK.value(),  roomService.startDebate(roomId, principal.getId()));
     }
 
     @PutMapping("/{roomId}/end")

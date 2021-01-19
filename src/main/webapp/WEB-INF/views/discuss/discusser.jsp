@@ -285,6 +285,9 @@
         background: #FF8D8D 0% 0% no-repeat padding-box;
         border-radius: 0px 5px 5px 0px;
     }
+    #discusserBox>.hidden{
+        display: none;
+    }
     .hidden{
         display: none;
     }
@@ -437,7 +440,7 @@
             </div>
             <div class="discusser_chat_container">
                 <div class="chat_box" id="discusserBox">
-                    <div class="discusser_area hidden">
+                    <div class="discusser_area">
 
                     </div>
                     <div class="discusser_box">
@@ -447,7 +450,6 @@
                             </button>
                             <div class="discusser_textArea">토론시작을 기다려주세요.</div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -513,13 +515,14 @@
     const channel = "${chatId}";
     const token = "${token}";
 
-    const user = "${principal.user.name}";
     const senderType = "${senderType}";
-
-    const owner = "${room.owner.name}";
-    let opponent = "${room.opponent.name}";
+    const user = {name: "${principal.user.name}", id: "${principal.user.id}"};
+    const owner = {name: "${room.owner.name}", id: "${room.owner.id}"};
+    let opponent = {name: "${room.opponent.name}", id: "${room.opponent.id}"};
 
     let time = "${room.startDebate}";
+    let timerHandler;
+    let timelimit = 30*60*1000;
 
     <%--let temp = "${principal.user.id}";--%>
     <%--let tempName = ""--%>
@@ -527,18 +530,24 @@
     let transData = {
         'token': token,
         'chatRoomId': channel,
-        'sender': user ,
+        'sender': user.name ,
         'sendTime': null,
         'senderType': senderType,
-        'message': null
+        'message': null,
+        'messageType': "text"
     };
 
     $(document).ready(function(){
         if(joinedError) alert("참여 중이던 방으로 이동되었습니다")
-        if(senderType != "owner" && opponent == ''){
+        if(senderType != "owner" && opponent.id == ''){
             $("#enter").addClass("show");
         }
+        if(time != ""){
+            console.log("타이머 시작")
+            screenOperation.active("begin");
+        }
     })
+
 
 </script>
 
@@ -564,7 +573,7 @@
             console.log("opponent   : ", opponent);
 
             chat.connect(channel);
-            screenOperation.addEvent();
+            screenOperation.initEvent();
             screenOperation.showArea(".discusser_area", ".discusser_area_init");
             screenOperation.nameInput();
         },
@@ -579,18 +588,34 @@
                 stompClient.subscribe('/topic/enter/' + destination, function (e) {
                     const msg = JSON.parse(e.body);
                     if(msg.senderType === "opponent"){
-                        opponent = msg.sender;
+                        opponent.name = msg.sender;
+                        opponent.id = msg.senderId;
                         console.log("상대방 입장: ", opponent);
                         screenOperation.nameInput();
                     }
                 });
-                stompClient.subscribe('/topic/' + destination, function (e) {
+                stompClient.subscribe('/topic/info/' + destination, function (e) {
+                    const msg = JSON.parse(e.body);
+
+                    if(msg.messageType == "text"){
+                        screenOperation.discusserInfo(msg.message);
+                    }else if(msg.messageType == "active"){
+                        screenOperation.active(msg.message);
+                    }
+                });
+
+                stompClient.subscribe('/topic/msg/' + destination, function (e) {
                     const msg = JSON.parse(e.body);
                     console.log("test: ",msg);
                     screenOperation.contributor(msg);
                 });
                 chat.enter();
             });
+        },
+        info: function(type, msg){
+            stompClient.send(
+                "/app/chat/info", {}, JSON.stringify({'token': token, 'message': msg, 'messageType': type})
+            )
         },
 
         enter: function(){
@@ -600,7 +625,7 @@
                 JSON.stringify({
                 'token':token,
                 'chatRoomId': channel,
-                'sender': user}));
+                'sender': user.name}));
         },
 
         send: function (msg) {
@@ -611,33 +636,39 @@
             console.log(transData);
             stompClient.send("/app/chat/msg", {}, JSON.stringify(transData));
         },
+
+        start: function(){
+            $.ajax({
+                type:"PUT",
+                url:"/api/room/"+channel +"/start"
+            }).done(response =>{
+                console.log("성공", response);
+                if(response.data == "success"){
+                    //시간
+                    time = "2002-12-12";
+                    chat.info("active", "begin")
+                }
+            }).fail(error =>{
+                console.log("error.....");
+            })
+        }
     }
 
     let screenOperation = {
-
-        addEvent: function (){
-            $("#visitor_msg_input").on("keyup", (event) => {
+        chatEvent: function () {
+            $("#discusser_msg_input").on("keyup", (event) => {
                 if (event.key === "Enter") {
                     let msg = event.target.value;
-                    if(msg != ""){
+                    if (msg != "") {
                         event.target.value = "";
                         // console.log("전송할 데이터: ", data);
                         chat.send(msg);
                     }
                 }
             });
+        },
 
-            $("#discusser_msg_input").on("keyup", (event) => {
-                if(event.key === "Enter"){
-                    let msg = event.target.value;
-                    if(msg != ""){
-                        event.target.value = "";
-                        // console.log("전송할 데이터: ", data);
-                        chat.send(msg);
-                    }
-                }
-            });
-
+        initEvent: function(){
             $("#watcher_msg_input").on("keyup", (event)=>{
                 if(event.key === "Enter"){
                     let msg = event.target.value;
@@ -659,23 +690,50 @@
                 }
             });
 
-
             $("#startDiscusser").on("click", ()=>{
                 console.log("토론시작 버튼 클릭");
                 if(owner != "" && opponent != ""){
                     console.log("토론시작");
-                //    startDiscusser
-                //    discusser_textArea
-                    $("#startDiscusser").addClass("hidden");
-                    $(".discusser_textArea").removeClass("hidden");
-
-                    $(".discusser_textArea").html("잠시 뒤 토론이 시작됩니다.");
-
+                    screenOperation.showArea(".discusser_textArea", "#startDiscusser");
+                    chat.info("잠시 후 토론이 시작됩니다.", "text");
+                    chat.start();
 
                 }else{
                     alert("아직 상대편 토론자가 준비되지 않았습니다.");
                 }
             });
+        },
+
+        active: function(msg){
+            console.log("active: ",msg);
+            if(msg == "begin"){
+                screenOperation.showArea(".discusser_area", ".discusser_box");
+                screenOperation.chatEvent();
+                timerHandler = screenOperation.timer()
+            }
+        },
+
+        timer: function(){
+            return setInterval(function(){
+                var diff = moment(new Date()).diff(moment(time))/1000;
+
+                var min = parseInt(diff/60)+"";
+                var sec = parseInt(diff%60)+"";
+
+                min = min.length<2? ("0"+min):min;
+                sec = sec.length<2? ("0"+sec):sec;
+
+                $(".time").html(min + " : " + sec);
+                if(diff >= timelimit){
+                    clearInterval(timerHandler);
+                    //서버에다가 종료시간 보낼 예정입니다.
+                }
+
+            }, 1000);
+        },
+        discusserInfo: function(msg){
+            console.log(msg);
+            $(".discusser_textArea").html(msg);
         },
 
         contributor: function (msg) {
@@ -726,7 +784,6 @@
             console.log(length);
             console.log(scrollLength);
 
-
             if(length - scrollLength <= limit){
                 $(box).scrollTop(length);
             }
@@ -734,18 +791,18 @@
 
         nameInput: function(){
 
-            if(owner == user){
+            if(owner.id == user.id){
                 $(".discusser_textArea").addClass("hidden");
             }else{
                 $("#startDiscusser").addClass("hidden");
             }
 
-            if(owner != ""){
+            if(owner.id != ""){
                 console.log($(".user1_name"));
-                $(".user1_name").html(owner);
+                $(".user1_name").html(owner.name);
             }
-            if(opponent != ""){
-                $(".user2_name").html(opponent);
+            if(opponent.id != ""){
+                $(".user2_name").html(opponent.name);
             }
         },
 

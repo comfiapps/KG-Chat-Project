@@ -21,5 +21,6 @@ public class ChatDto {
     private Timestamp sendTime;
     private String senderType;
     private String message;
+    private String messageType;
 
 }

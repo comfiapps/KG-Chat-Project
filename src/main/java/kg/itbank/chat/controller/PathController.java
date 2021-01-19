@@ -79,7 +79,7 @@ public class PathController {
         String senderType;
         RoomInfoDto room = roomService.defaultInfo(id);
 
-        //token에다가 방번호/유저이름/권한(discusser, watcher) 형태로 보낼것임
+        //token에다가 방번호/유저아이디/유저이름/권한(discusser, watcher) 형태로 보낼것임
         logger.info("room: {}", room);
 
         PrincipalDetail user = (PrincipalDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -91,7 +91,7 @@ public class PathController {
             senderType = "watcher";
         }
 
-        token = jwtToken.getToken(id + "/" + user.getUser().getName() +"/" + senderType);
+        token = jwtToken.getToken(id + "/" + user.getUser().getId() + "/" + user.getUser().getName() +"/" + senderType);
 
         model.addAttribute("chatId", id);
         model.addAttribute("token", token);
