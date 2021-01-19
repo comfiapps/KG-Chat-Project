@@ -127,24 +127,26 @@
                                 <div class="mdc-card mdc-card--outlined my-card" onclick="location.href = '/discuss/${rooms.roomId}'">
                                     <div class="mdc-card__primary-action my-card-content" tabindex="0">
                                         <c:choose>
-                                            <c:when test="${rooms.opponent.id == null}">
-                                                <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
+                                            <c:when test="${roomList.opponent.id == null}">
+                                                <sub>.</sub>
+                                            </c:when>
+                                            <c:when test="${roomList.startDebate == null}">
+                                                <sub class="mdc-theme--error">준비중...</sub>
                                             </c:when>
                                             <c:otherwise>
-                                                <sub>50명 시청 • ${rooms.startDebate}</sub>
+                                                <sub>--명 시청 • ${roomList.startDebate}</sub>
                                             </c:otherwise>
                                         </c:choose>
-
 
                                         <br>
                                         <div class="my-card-body">
                                             <div class="contributors">
                                                 <c:choose>
-                                                    <c:when test="${rooms.owner.image == null}">
-                                                        <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
+                                                    <c:when test="${rooms.owner.image != null}">
+                                                        <img src="${rooms.owner.image}" class="profile">
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <img src=${rooms.owner.image} alt="" class="profile">
+                                                        <img src="${pageContext.request.contextPath}/image/user.png" class="profile">
                                                     </c:otherwise>
                                                 </c:choose>
 
@@ -156,12 +158,11 @@
                                                     </c:when>
                                                     <c:otherwise>
                                                         <c:choose>
-                                                            <c:when test="${rooms.opponent.img = null}">
-                                                                <img src="${pageContext.request.contextPath}/image/user.png"  class="profile">
+                                                            <c:when test="${rooms.opponent.image != null}">
+                                                                <img src="${rooms.opponent.image}" class="profile">
                                                             </c:when>
                                                             <c:otherwise>
-                                                                    <img src="${rooms.opponent.img}" class="profile">
-
+                                                                <img src="${pageContext.request.contextPath}/image/user.png" class="profile">
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </c:otherwise>

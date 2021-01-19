@@ -107,8 +107,8 @@ header{
     margin-left: 24px;
 }
 
-.nav_content .nav_search {
-    background: #E5E5E5;
+.nav_content .nav_search{
+    background: #E5E5E5 0 0 no-repeat padding-box;
     border-radius: 4px;
     width: 80%;
     max-width: 520px;
@@ -118,16 +118,22 @@ header{
     padding: 0 8px 0 16px;
 }
 
-.nav_content .nav_search input{
-    flex-grow: 1;
-    margin-right: 8px;
-    background: transparent;
-    border: 0;
+.nav_content .nav_search div{
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .nav_content .nav_search .searchBtn {
     width: 20px;
     height: 20px;
+}
+
+.nav_content .nav_search input{
+    background: transparent;
+    border: 0;
+    width: 100%;
+    margin-right: 8px;
 }
 
 .nav_content .nav_profile{
@@ -277,9 +283,7 @@ header{
 
 
 
-.md-18 {
-    font-size: 18px
-}
+
 
 /* home.jsp - dialog start */
 .mainbox h6 {
