@@ -119,68 +119,76 @@
             </div>
         </div>
 
-        <h4>참여한 토론</h4>
+        <c:choose>
+            <c:when test="${myRoom.size() > 0}">
+                <h4>참여한 토론</h4>
 
-    <div class="container">
-        <div class="row">
-            <c:forEach items="${myRoom}" var="rooms">
-                <div class="col" style="display: flex; justify-content: center">
-                    <div class="mdc-card mdc-card--outlined my-card" onclick="location.href = '/discuss/${rooms.roomId}'">
-                        <div class="mdc-card__primary-action my-card-content" tabindex="0">
-                            <c:choose>
-                                <c:when test="${rooms.opponent.id == null}">
-                                    <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
-                                </c:when>
-                                <c:otherwise>
-                                    <sub>50명 시청 • ${rooms.startDebate}</sub>
-                                </c:otherwise>
-                            </c:choose>
+                <div class="container">
+                    <div class="row">
+                        <c:forEach items="${myRoom}" var="rooms">
+                            <div class="col" style="display: flex; justify-content: center">
+                                <div class="mdc-card mdc-card--outlined my-card" onclick="location.href = '/discuss/${rooms.roomId}'">
+                                    <div class="mdc-card__primary-action my-card-content" tabindex="0">
+                                        <c:choose>
+                                            <c:when test="${rooms.opponent.id == null}">
+                                                <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <sub>50명 시청 • ${rooms.startDebate}</sub>
+                                            </c:otherwise>
+                                        </c:choose>
 
 
-                            <br>
-                            <div class="my-card-body">
-                                <div class="contributors">
-                                    <c:choose>
-                                        <c:when test="${rooms.owner.image == null}">
-                                            <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img src=${rooms.owner.image} alt="" class="profile">
-                                        </c:otherwise>
-                                    </c:choose>
+                                        <br>
+                                        <div class="my-card-body">
+                                            <div class="contributors">
+                                                <c:choose>
+                                                    <c:when test="${rooms.owner.image == null}">
+                                                        <img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img src=${rooms.owner.image} alt="" class="profile">
+                                                    </c:otherwise>
+                                                </c:choose>
 
-                                </div>
-                                <div class="contributors">
-                                    <c:choose>
-                                        <c:when test="${rooms.opponent.id == null}">
-                                            <h2>대기</h2>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:choose>
-                                                <c:when test="${rooms.opponent.img = null}">
-                                                    <img src="${pageContext.request.contextPath}/image/user.png"  class="profile">
-                                                </c:when>
-                                                <c:otherwise>
-                                                        <img src="${rooms.opponent.img}" class="profile">
+                                            </div>
+                                            <div class="contributors">
+                                                <c:choose>
+                                                    <c:when test="${rooms.opponent.id == null}">
+                                                        <h2>대기</h2>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:choose>
+                                                            <c:when test="${rooms.opponent.img = null}">
+                                                                <img src="${pageContext.request.contextPath}/image/user.png"  class="profile">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                    <img src="${rooms.opponent.img}" class="profile">
 
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:otherwise>
-                                    </c:choose>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </div>
+                                        <div class="process_bar"><div class="process_left"></div></div>
+                                        <div><sub>${rooms.roomCategory}</sub></div>
+                                        <h5 class="font-weight-bold">${rooms.roomName}(1-2)</h5>
+                                        <div><sub>${rooms.createDate}</sub></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="process_bar"><div class="process_left"></div></div>
-                            <div><sub>${rooms.roomCategory}</sub></div>
-                            <h5 class="font-weight-bold">${rooms.roomName}(1-2)</h5>
-                            <div><sub>${rooms.createDate}</sub></div>
-                        </div>
+
+                        </c:forEach>
+
                     </div>
                 </div>
+            </c:when>
 
-            </c:forEach>
-
-        </div>
-
+            <c:otherwise>
+                <h4 class="mdc-theme--error font-weight-bold">참여한 토론이 없습니다</h4>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 

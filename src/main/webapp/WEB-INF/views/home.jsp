@@ -44,6 +44,18 @@
         right: 0;
         display: none;
     }
+
+    .contributors span {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contributor-name {
+        width: 100%;
+        flex-grow: 1;
+        text-align: center;
+    }
 </style>
 
 <section class="main-content">
@@ -69,14 +81,17 @@
                             <br>
                             <div class="my-card-body">
                                 <div class="contributors">
-                                    <c:choose>
-                                        <c:when test="${roomList.owner.image != null}">
-                                            <img src="${roomList.owner.image}" class="profile">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img src="${pageContext.request.contextPath}/image/user.png" class="profile">
-                                        </c:otherwise>
-                                    </c:choose>
+<%--                                    <span>--%>
+                                        <c:choose>
+                                            <c:when test="${roomList.owner.image != null}">
+                                                <img src="${roomList.owner.image}" class="profile">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img src="${pageContext.request.contextPath}/image/user.png" class="profile">
+                                            </c:otherwise>
+                                        </c:choose>
+<%--                                        <sub>${roomList.owner.name}</sub>--%>
+<%--                                    </span>--%>
                                 </div>
                                 <div class="contributors">
                                     <c:choose>
@@ -84,14 +99,17 @@
                                             <h4>대기</h4>
                                         </c:when>
                                         <c:otherwise>
-                                            <c:choose>
-                                                <c:when test="${roomList.opponent.image != null}">
-                                                    <img src="${roomList.opponent.image}" class="profile">
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <img src="${pageContext.request.contextPath}/image/user.png" class="profile">
-                                                </c:otherwise>
-                                            </c:choose>
+<%--                                            <span>--%>
+                                                <c:choose>
+                                                    <c:when test="${roomList.opponent.image != null}">
+                                                        <img src="${roomList.opponent.image}" class="profile">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img src="${pageContext.request.contextPath}/image/user.png" class="profile">
+                                                    </c:otherwise>
+                                                </c:choose>
+<%--                                                <sub>${roomList.opponent.name}</sub>--%>
+<%--                                            </span>--%>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
@@ -102,7 +120,7 @@
                         </div>
                     </div>
     <%--                                <c:out value = "${roomList.owner.id}" />--%>
-    <%--                                <c:out value = "${roomList.owner.name}" />--%>
+    <%--                                --%>
     <%--                            <c:out value = "${roomList.opponent.id}" />--%>
     <%--                            <c:out value = "${roomList.opponent.name}" />--%>
 

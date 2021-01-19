@@ -15,7 +15,6 @@
         background-color: rgb(224, 224, 224);
     }
     .chat{
-        padding-top: 54px;
         height: 100%;
     }
     .chat_container {
@@ -210,7 +209,7 @@
 
 </style>
 
-<section class="chat">
+<section class="chat main-content">
     <div class="chat_container">
         <div class="main_container">
             <div class="result_box">

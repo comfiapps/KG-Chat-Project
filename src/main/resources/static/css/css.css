@@ -260,9 +260,9 @@ header{
 }
 
 .process_bar{
-    background: #7EA5FF 0% 0% no-repeat padding-box;
-    margin: 5px auto;
-    width: 80%;
+    background: #7EA5FF 0 0 padding-box;
+    margin: 3px auto;
+    width: 90%;
     height: 5px;
 }
 .process_left{
@@ -353,11 +353,6 @@ header{
 .my-card-time {
     width: 100%;
     text-align: center;
-}
-
-.contributors {
-    display: flex;
-    flex-direction: column;
 }
 
 .contributors img {
