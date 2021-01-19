@@ -29,7 +29,7 @@ public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
 
-    private List<?> convertRoomToPublic(List<Room> raw) {
+    private List<RoomInfoDto> convertRoomToPublic(List<Room> raw) {
         List<RoomInfoDto> result = new ArrayList<>();
 
         for(Room room : raw) {
@@ -56,16 +56,9 @@ public class RoomService {
         for(String category : categories) {
             List<Room> getItems = roomRepository.findTop8ByCategory(category);
 
-            List<RoomInfoDto> roomInfoDtos = new ArrayList<>();
-            for(Room room : getItems) {
-                RoomInfoDto roomInfoDto = defaultInfo(room.getId());
-                roomInfoDto.setRoomId(room.getId());
-                roomInfoDtos.add(roomInfoDto);
-            }
-
             featuredList.add(FeaturedDto.builder()
                     .category(category)
-                    .rooms(roomInfoDtos)
+                    .rooms(convertRoomToPublic(getItems))
                     .build());
         }
 
@@ -140,6 +133,8 @@ public class RoomService {
 
     @Transactional
     public void becomeDebater(long roomId, long userId) {
+        if(isUserOnDebate(userId) != -1) throw new IllegalArgumentException("Debate ongoing");
+
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new IllegalArgumentException("Room not found - Id : " + roomId));
         if (room.getOwner().getId() != userId && room.getOpponentId() == 0) room.setOpponentId(userId);

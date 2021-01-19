@@ -35,4 +35,6 @@ public class Room {
     private Timestamp createDate;
 
     private Timestamp startTime;
+
+    private Timestamp closeDate;
 }
