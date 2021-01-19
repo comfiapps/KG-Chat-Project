@@ -38,7 +38,7 @@ public class RoomApiController {
         System.out.println("token: " + token);
 
         return new ResponseDto<>(HttpStatus.OK.value(),
-                roomService.enterRoom(
+                roomService.becomeDebater(
                         Long.parseLong(jwtToken.decodingToken(token).split("/", 3)[0]),
                         principal.getId())
         );
