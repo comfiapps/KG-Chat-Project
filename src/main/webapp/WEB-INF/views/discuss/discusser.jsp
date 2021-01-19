@@ -39,6 +39,7 @@
     }
     .chatting .watcher_container{
         width: 30%;
+        min-width: 320px;
     }
 
     .chatting .discusser_container, .chatting .watcher_container{
@@ -342,6 +343,9 @@
         justify-content: center;
         align-items: center;
     }
+    .chatting .discusser_chat_container .backgroundColor{
+        background-color: #30303031;
+    }
 
     .chatting .discusser_start_area{
         /*border: 1px solid black;*/
@@ -349,8 +353,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 20rem;
+        width: 40rem;
         height: 10rem;
+        text-align: center;
+        font-size: 3rem;
+    }
+    .chatting .user2_name, .chatting .user1_name{
+        font-size: 1.3rem;
     }
 
     @keyframes moveCotainer{
@@ -436,7 +445,9 @@
                             <button id="startDiscusser" class="mdc-button mdc-button--raised no-outline">
                                 <span class="mdc-button__label">토론시작</span>
                             </button>
+                            <div class="discusser_textArea">토론시작을 기다려주세요.</div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -528,13 +539,6 @@
             $("#enter").addClass("show");
         }
     })
-
-
-
-
-
-
-
 
 </script>
 
@@ -643,7 +647,7 @@
                         chat.send(msg);
                     }
                 }
-            })
+            });
 
             $("#watcher_scroll_view").on("click", ()=>{
                 if($(".watcher_scrollbar").hasClass("watcher_scrollbar_ani")){
@@ -653,11 +657,25 @@
                     $(".watcher_scrollbar").addClass("watcher_scrollbar_ani");
                     $(".watcher_container").addClass("watcher_container_ani");
                 }
-            })
+            });
+
 
             $("#startDiscusser").on("click", ()=>{
-                console.log("토론시작 버튼 클릭")
-            })
+                console.log("토론시작 버튼 클릭");
+                if(owner != "" && opponent != ""){
+                    console.log("토론시작");
+                //    startDiscusser
+                //    discusser_textArea
+                    $("#startDiscusser").addClass("hidden");
+                    $(".discusser_textArea").removeClass("hidden");
+
+                    $(".discusser_textArea").html("잠시 뒤 토론이 시작됩니다.");
+
+
+                }else{
+                    alert("아직 상대편 토론자가 준비되지 않았습니다.");
+                }
+            });
         },
 
         contributor: function (msg) {
@@ -715,6 +733,13 @@
         },
 
         nameInput: function(){
+
+            if(owner == user){
+                $(".discusser_textArea").addClass("hidden");
+            }else{
+                $("#startDiscusser").addClass("hidden");
+            }
+
             if(owner != ""){
                 console.log($(".user1_name"));
                 $(".user1_name").html(owner);
