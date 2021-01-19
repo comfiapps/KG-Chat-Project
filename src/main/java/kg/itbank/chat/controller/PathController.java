@@ -50,12 +50,18 @@ public class PathController {
     }
 
     @GetMapping("/discuss")
-    public String discussNull() {
+    public String discussNull(@AuthenticationPrincipal PrincipalDetail principal) {
+        long joined = roomService.isUserOnDebate(principal.getId());
+        if(joined != -1) return "redirect:/discuss/" + joined;
         return "redirect:/";
     }
 
     @GetMapping("/discuss/{id}")
-    public String discussRoom(@PathVariable long id, Model model, HttpSession session) {
+    public String discussRoom(@AuthenticationPrincipal PrincipalDetail principal,
+                              @PathVariable long id, Model model, HttpSession session) {
+        long joined = roomService.isUserOnDebate(principal.getId());
+        if(joined != -1 && joined != id) return "redirect:/discuss/" + joined;
+
         if(!roomService.roomExists(id)) return "redirect:/";
         logger.info("방번호: {}", id);
 

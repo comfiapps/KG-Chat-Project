@@ -16,6 +16,9 @@ import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static kg.itbank.chat.ChatApplication.DEBATE_TIME;
 
 @Service
 public class RoomService {
@@ -70,6 +73,14 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
+    public long isUserOnDebate(long userId) {
+        Room room = roomRepository.findByOwnerIdOrOpponentIdAndStartTimeIsLessThan(userId, userId,
+                new Timestamp(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(DEBATE_TIME)));
+        if(room == null) return -1;
+        return room.getId();
+    }
+
+    @Transactional(readOnly = true)
     public Room getRoom(long id) {
         // TODO privacy
         return roomRepository.findById(id).orElseThrow(()
@@ -89,6 +100,8 @@ public class RoomService {
 
     @Transactional
     public long create(Room room, long userId) {
+        if(isUserOnDebate(userId) != -1) throw new IllegalArgumentException("Debate ongoing");
+
         Room model = new Room();
         model.setName(room.getName());
         model.setCategory(room.getCategory());
