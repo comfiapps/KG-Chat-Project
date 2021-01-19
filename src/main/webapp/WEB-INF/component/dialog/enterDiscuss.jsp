@@ -1,12 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <style>
-    .modal-dialog{
+
+    .chatting .modal-dialog{
         width: 250px;
     }
-    .modal{
-        background-color: #30303031;
+    .chatting .modal{
+        background-color: #30303031;;
     }
+    .chatting .modal-content{
+        height: 110px;
+    }
+    .chatting .modal-content .modal-header{
+        height: 30px;
+    }
+    .chatting .modal-content .modal-footer{
+        height: 80px;
+    }
+
 </style>
 
 <script>

@@ -170,7 +170,7 @@
                                         </div>
                                         <div class="process_bar"><div class="process_left"></div></div>
                                         <div><sub>${rooms.roomCategory}</sub></div>
-                                        <h5 class="font-weight-bold">${rooms.roomName}(1-2)</h5>
+                                        <h5 class="font-weight-bold">(1-2) ${rooms.roomName}</h5>
                                         <div><sub>${rooms.createDate}</sub></div>
                                     </div>
                                 </div>

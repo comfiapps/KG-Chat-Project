@@ -337,6 +337,21 @@
     .chatting .discusser_area, .chatting .watcher_area{
         height: fit-content;
     }
+    .chatting .discusser_box{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .chatting .discusser_start_area{
+        /*border: 1px solid black;*/
+        /*border-radius: 5px;*/
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20rem;
+        height: 10rem;
+    }
 
     @keyframes moveCotainer{
         0% {left: 0%; bottom: -80%;}
@@ -384,6 +399,7 @@
 
 </style>
 
+
 <section class="chatting main-content">
     <div class="chat_container">
         <div class="discusser_container">
@@ -415,10 +431,12 @@
                     <div class="discusser_area hidden">
 
                     </div>
-                    <div class="discusser_start_area">
-                        <button id="startDiscusser" class="mdc-button mdc-button--raised no-outline">
-                            <span class="mdc-button__label">토론시작</span>
-                        </button>
+                    <div class="discusser_box">
+                        <div class="discusser_start_area">
+                            <button id="startDiscusser" class="mdc-button mdc-button--raised no-outline">
+                                <span class="mdc-button__label">토론시작</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -504,7 +522,6 @@
         'message': null
     };
 
-
     $(document).ready(function(){
         if(joinedError) alert("참여 중이던 방으로 이동되었습니다")
         if(senderType != "owner" && opponent == ''){
@@ -512,18 +529,11 @@
         }
     })
 
-    nameInput();
 
-    function nameInput(){
-        if(owner != ""){
-            console.log($(".user1_name"));
-            $(".user1_name").html(owner);
-        }
-        if(opponent != ""){
-            $(".user2_name").html(opponent);
-        }
 
-    }
+
+
+
 
 
 </script>
@@ -552,7 +562,7 @@
             chat.connect(channel);
             screenOperation.addEvent();
             screenOperation.showArea(".discusser_area", ".discusser_area_init");
-
+            screenOperation.nameInput();
         },
 
         connect: function (destination) {
@@ -567,6 +577,7 @@
                     if(msg.senderType === "opponent"){
                         opponent = msg.sender;
                         console.log("상대방 입장: ", opponent);
+                        screenOperation.nameInput();
                     }
                 });
                 stompClient.subscribe('/topic/' + destination, function (e) {
@@ -645,7 +656,7 @@
             })
 
             $("#startDiscusser").on("click", ()=>{
-
+                console.log("토론시작 버튼 클릭")
             })
         },
 
@@ -700,6 +711,16 @@
 
             if(length - scrollLength <= limit){
                 $(box).scrollTop(length);
+            }
+        },
+
+        nameInput: function(){
+            if(owner != ""){
+                console.log($(".user1_name"));
+                $(".user1_name").html(owner);
+            }
+            if(opponent != ""){
+                $(".user2_name").html(opponent);
             }
         },
 

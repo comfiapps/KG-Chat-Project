@@ -68,8 +68,11 @@
                     <div class="mdc-card mdc-card--outlined my-card room-card" onclick="location.href = '/discuss/${roomList.roomId}'">
                         <div class="mdc-card__primary-action my-card-content" tabindex="0">
                             <c:choose>
+                                <c:when test="${roomList.opponent.id == null}">
+                                    <sub>.</sub>
+                                </c:when>
                                 <c:when test="${roomList.startDebate == null}">
-                                    <sub class="mdc-theme--error">대기중 (토론자 참여 안함)</sub>
+                                    <sub class="mdc-theme--error">준비중...</sub>
                                 </c:when>
                                 <c:otherwise>
                                     <sub>--명 시청 • ${roomList.startDebate}</sub>
@@ -114,7 +117,7 @@
                             </div>
                             <div class="process_bar"><div class="process_left"></div></div>
                             <div><sub>${roomList.roomCategory}</sub></div>
-                            <h5 class="font-weight-bold">${roomList.roomName} (1-2)</h5>
+                            <h5 class="font-weight-bold">(1-2) ${roomList.roomName}</h5>
                         </div>
                     </div>
     <%--                                <c:out value = "${roomList.owner.id}" />--%>
