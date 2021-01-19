@@ -361,6 +361,7 @@
         this._config = config;
         // Lenient ordinal parsing accepts just a number in addition to
         // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
+        // TODO: Remove "ordinalParse" fallback in next major release.
         this._dayOfMonthOrdinalParseLenient = new RegExp(
             (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
             '|' +
@@ -1044,6 +1045,7 @@
             this._shortMonthsParse = [];
         }
 
+        // TODO: add sorting
         // Sorting makes sure if one month (or abbr) is a prefix of another
         // see sorting in computeMonthsParse
         for (i = 0; i < 12; i++) {
@@ -1098,6 +1100,7 @@
                 value = toInt(value);
             } else {
                 value = mom.localeData().monthsParse(value);
+                // TODO: Another silent failure?
                 if (!isNumber(value)) {
                     return mom;
                 }

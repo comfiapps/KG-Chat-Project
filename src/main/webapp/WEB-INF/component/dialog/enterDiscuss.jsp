@@ -5,7 +5,7 @@
         width: 250px;
     }
     .modal{
-        background-color: #30303031;;
+        background-color: #30303031;
     }
 </style>
 
@@ -19,26 +19,22 @@
         $("#enterWatcher").on("click", (event)=>{
             $.ajax({
                 type:"POST",
-                url:"/api/",
-                data: JSON.stringify({
-                        'toekn':token,
-                        'chatRoomId':channel,
-                    }
-                ),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json"
+                url:"/api/room/enter/"+token
 
             }).done(response => {
                 console.log("성공", response);
-
+                if (response.data === 1){
+                    location.href="/discuss/" + channel;
+                }else{
+                    alert("이미 다른 사용자가 참여하셨습니다.");
+                    $("#enter").removeClass("show");
+                }
             }).fail(error => {
                 console.log("error.....");
             });
 
         });
     });
-
-
 
 </script>
 

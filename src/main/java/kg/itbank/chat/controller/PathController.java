@@ -30,6 +30,7 @@ public class PathController {
 
     @Autowired
     private RoomService roomService;
+
     @Autowired
     private JwtToken jwtToken;
 

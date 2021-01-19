@@ -35,12 +35,13 @@ public class RoomApiController {
     @PostMapping("/enter/{token}")
     public ResponseDto<?> enterRoom(@AuthenticationPrincipal PrincipalDetail principal, @PathVariable(value = "token") String token){
 
-        if(jwtToken.validateToken(token)){
-            String chatroomId = jwtToken.decodingToken(token).split("/", 3)[1];
+        System.out.println("token: " + token);
 
-        }
-
-        return null;
+        return new ResponseDto<>(HttpStatus.OK.value(),
+                roomService.enterRoom(
+                        Long.parseLong(jwtToken.decodingToken(token).split("/", 3)[0]),
+                        principal.getId())
+        );
     }
 
     @GetMapping("/{id}")

@@ -37,4 +37,6 @@ public class Room {
     private Timestamp startTime;
 
     private Timestamp closeDate;
+
+    private long audienceCount;
 }

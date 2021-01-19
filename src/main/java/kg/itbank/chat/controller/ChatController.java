@@ -23,16 +23,19 @@ public class ChatController {
 
 	private static final Logger log = LoggerFactory.getLogger(ChatController.class);
 
-//	@Autowired
-//	private RoomService roomService;
+	@Autowired
+	private RoomService roomService;
+
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
+
 	@Autowired
 	private JwtToken jwtToken;
 
 	//enter를 통해 discusser인지 watcher판단하여 discusser 입장시
 	@MessageMapping("/chat/enter")
-	public void enter(@RequestBody ChatDto message){
+	public void enter(@RequestBody ChatDto message, SimpMessageHeaderAccessor headerAccessor){
+
 		log.info("받은 메시지: {}", message);
 		if(jwtToken.validateToken(message.getToken())){
 			String[] value = jwtToken.decodingToken(message.getToken()).split("/",3);
@@ -45,9 +48,7 @@ public class ChatController {
 
 	@MessageMapping("/chat/msg")
 	public void sendMsg(ChatDto message, SimpMessageHeaderAccessor headerAccessor) {
-
 		log.info("받은 메시지: {}", message);
-
 		if(jwtToken.validateToken(message.getToken())){
 
 			String[] value = jwtToken.decodingToken(message.getToken()).split("/",3);
@@ -63,8 +64,6 @@ public class ChatController {
 		}else{
 			log.info("토큰 검증 실패");
 		}
-
-
 
 //		JSONObject jobj = new JSONObject(message);
 //

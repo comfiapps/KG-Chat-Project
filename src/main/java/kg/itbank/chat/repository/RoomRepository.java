@@ -12,7 +12,9 @@ import java.util.Optional;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findAllByOwnerIdOrOpponentIdOrderByCreateDateDesc(long owner, long opponent);
-    boolean existsById(long id);
+
+    boolean existsByOpponentId(long id);
+
     Room findFirstByOwnerIdOrOpponentIdAndStartTimeIsLessThan(long owner, long opponent, Timestamp time);
 
     @Query(value = "SELECT category FROM Room GROUP BY category", nativeQuery = true)
@@ -21,6 +23,9 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findTop8ByCategory(String category);
 
     List<Room> findByNameIsContainingOrCategoryContainingOrOwnerNameContaining(String name, String category, String owner);
+
+
+
 
 /*
     @Query(value = "SELECT category, projectName FROM projects", nativeQuery = true)

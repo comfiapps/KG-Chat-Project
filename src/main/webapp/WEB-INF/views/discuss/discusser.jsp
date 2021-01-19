@@ -3,196 +3,286 @@
 <%@ include file="../layout/header.jsp"%>
 
 <style>
-    .hr_line{
-        margin: 10px 0;
-        height: 1px;
+    html{
+        font-size:10px;
+    }
+
+    .chatting div{
         width: 100%;
-        background-color: rgb(224, 224, 224);
-    }
-    .chat{
         height: 100%;
+        /* border: 1px solid black; */
+        box-sizing: border-box;
+        /* border-spacing: 0; */
     }
-    .chat_container {
+    .chatting .score_container{
+        /* border-bottom: 1px solid rgb(34, 27, 27); */
+    }
+
+    .chatting .discusser_chat_container, .chatting .watcher_chat_container {
+        border: 1px solid  rgb(202, 202, 202);
+        /* border-top: 1px solid rgb(214, 209, 209);
+        border-bottom: 1px solid rgb(214, 209, 209); */
+    }
+    .chatting{
+        width: 100%;
         height: 100%;
+
+    }
+    .chatting .chat_container{
         display: flex;
-        align-content: stretch;
         position: relative;
+        min-height: 72rem;
+
     }
-    .main_container{
-        display: flex;
-        flex-direction: column;
+    .chatting .discusser_container{
         width: 70%;
-        padding: 0 2%;
-        height: 100%;
     }
-    .visitor_content{
+    .chatting .watcher_container{
+        width: 30%;
+    }
+
+    .chatting .discusser_container, .chatting .watcher_container{
+        padding: 1.5rem 2rem;
         display: flex;
-        flex-direction: column;
-
-        height: 90%;
-        width: 100%;
-        padding: 0 2%;
-        background: #faf1f1 0% 0% no-repeat padding-box;
-
-        min-width: 260px;
-        overflow: auto;
-
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-
-    }
-    .visitor_content::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera*/
+        flex-flow: column nowrap;
     }
 
-    .result_box{
-        width: 50%;
-        margin: 2% auto;
+    /* 토론자 부분 */
+    .chatting .score_container, .chatting .watcher_vote{
+        height: 18%;
+        min-height: 12rem;
+    }
+    .chatting .discusser_chat_container{
+        height: 67%;
+    }
+    .chatting .discusser_send_container{
+        height: 15%;
     }
 
-    .score_box{
+    /* 점수 영역 */
+    .chatting .score_container{
         display: flex;
-        text-align: center;
         align-items: center;
-
-        min-width: 201px;
+        padding: 0 10%;
     }
-    .user_left, .user_right{
-        font: normal normal bold 16px/19px Segoe UI;
-    }
-    .compare .score{
-        font: normal normal bold 42px/56px Segoe UI;
-    }
-    .compare .time{
-        font: normal normal normal 24px/32px Segoe UI;
-    }
-    .process_bar{
-        width: 100%;
-        height: 10px;
-    }
-
-    .discusser_content::-webkit-scrollbar{
-        display: none; /* Chrome, Safari, Opera*/
-    }
-
-    .visitor_reply_area{
-        /* height: 85% */
+    .chatting .score_box{
+        /* height: 60%; */
+        padding: 1rem 0;
         height: fit-content;
     }
-    .visitor_reply_area::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera*/
-    }
-
-    .discusser_msg_trans, .visitor_reply_trans{
-        margin-bottom: 10px;
-    }
-
-    .discusser_msg_trans input {
-        width: 100%;
-        /* margin: 1% 0; */
-        text-indent: 1.5em;
-        background: #E5E5E5 0% 0% no-repeat padding-box;
-        border: 0;
-        border-radius: 25px;
-        height: 50px;
-    }
-
-    .discusser_msg_trans input:focus {
-        outline: 0;
-        border: 3px solid rgb(177, 177, 177);
-    }
-
-    .visitor_reply_trans input {
-        /* margin: 3% 0; */
-        text-indent: 1.5em;
-        background: #E5E5E5 0% 0% no-repeat padding-box;
-        border: 0;
-        border-radius: 25px;
-        width: 100%;
-        height: 50px;
-    }
-
-    .visitor_reply_trans input:focus {
-        outline: 0;
-        border: 3px solid rgb(177, 177, 177);
-    }
-
-    .discusser_box {
-        margin: 15px 5%;
-    }
-
-    .discusser_box .discusser_right p,
-    .discusser_box .discusser_left p {
-        text-align: left;
-        max-width: 70%;
-        width: fit-content;
-        /*min-width: 230px;*/
-        border-radius: 16px;
-        padding: 15px;
-        font: normal normal normal 18px/19px Segoe UI;
-        color: #FFFFFF;
-    }
-    .discusser_box .discusser_left {
-        display: grid;
-        grid-template-columns: 70px auto;
-    }
-    .discusser_box .discusser_left p {
-        background: #FF8D8D 0% 0% no-repeat padding-box;
-    }
-    .discusser_box .discusser_right {
-        display: grid;
-        grid-template-columns: auto 70px;
-        justify-items: right;
-    }
-    .discusser_box .discusser_right p {
-        background: #70A9FF 0% 0% no-repeat padding-box;
-    }
-    .discusser_box img {
-        margin: 0 10px;
-    }
-    .visitor_vote{
-        height: 20%;
-        width: 100%;
-        min-width: 260px;
-    }
-    .visitor_vote .visitor_vote_title{
-        margin: 30px 0;
-        text-align: center;
-        font: normal normal normal 24px/19px Segoe UI;
-    }
-    .visitor_vote .visitor_vote_btn{
+    .chatting .score_content{
+        height: 100%;
         display: flex;
-        width: 100%;
-        height: 45px;
-        margin-top: 10px;
+        padding: 1rem 0;
+        flex-flow: row nowrap;
+        align-items: center;
     }
-    .visitor_vote .visitor_vote_btn a{
+    .chatting .score_bar{
+        height: 2rem;
+        display: flex;
+        align-items: center;
+    }
+    .chatting .score_bar_right{
+        width: 80%;
+        height: 60%;
+        margin: 0 auto;
+        background: #70A9FF 0% 0% no-repeat padding-box;
+        border-radius: 10px;
+    }
+    .chatting .score_bar_left{
+        width: 50%;
+        background: #FF8D8D 0% 0% no-repeat padding-box;
+        border-radius: 10px 0px  0px 10px;
+    }
+    .chatting .result{
+        font-size: 4.2rem;
+    }
+    .chatting .time{
+        font-size: 2rem;
+    }
+    .chatting .score_content img{
+        border-radius: 100%;
+    }
+    .chatting .score_content div{
+        flex-flow: column wrap;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: tomato;
-        width: 50%;
+    }
+    .chatting .user div:nth-child(1), .chatting .result div:nth-child(1){
+        height: 70%;
+    }
+    .chatting .user div:nth-child(2), .chatting .result div:nth-child(2){
+        height: 30%;
+        font-size: 1.8rem;
+    }
+
+
+    /* 임시로 윤곽선 지움 */
+    .chatting .score_box *{
+        border: none;
+    }
+
+    /* 보내기 영역 */
+    .chatting .discusser_send_container, .chatting .watcher_send_container{
+        padding: 1rem 0rem;
+        min-height: 10rem;
+    }
+    .chatting .send_box{
+        /* width: 90%;
+        margin: 2rem auto; */
+        height: 50%;
+    }
+    .chatting .send_box input{
+        width: 100%;
         height: 100%;
-        box-sizing: border-box;
-        border: 0;
+        border: 1px solid rgb(185, 185, 185);
+        border-radius: 25px;
+        text-indent: 1.5rem;
+        background: #E5E5E5 0% 0% no-repeat padding-box;
     }
-    .visitor_vote .visitor_vote_btn>:nth-child(1){
-        background: #FF8D8D 0% 0% no-repeat padding-box;
+    .chatting .send_box input:hover{
+        border: 2px solid rgb(78, 105, 136);
+        border-radius: 25px;
     }
-    .visitor_vote .visitor_vote_btn>:nth-child(2){
-        background: #70A9FF 0% 0% no-repeat padding-box;
+    .chatting .send_box input:focus{
+        border: 2px solid rgb(78, 105, 136);
+        border-radius: 25px;
+        outline: 0;
     }
 
-    .visitor_vote_btn img{
-        width: 30px;
-        margin: 0 10px;
-    }
-
-    .discusser_content{
-        height: 78%;
+    /* 채팅 공통 영역 */
+    .chatting .chat_box{
         overflow: auto;
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
+    }
+    .chatting .chat_box::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera*/
+    }
+    .chatting .discusser_send_container, .chatting .watcher_send_container{
+        display: flex;
+        align-items: center;
+    }
+
+    /* 시청자 채팅 영역 */
+    .chatting .watcher_vote{
+        height: 18%;
+    }
+    .chatting .watcher_chat_container{
+        height: 67%;
+        padding: 0.5rem 2rem;
+    }
+    .chatting .watcher_send_container{
+        height: 15%;
+    }
+    .chatting .watcher_message_box{
+        height: fit-content;
+        margin-bottom: 1.2rem;
+    }
+    .chatting .watcher_content{
+        font-size: 1.5rem;
+    }
+    .chatting .watcher_user_area{
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+        color: #AFAFAF;
+    }
+    .chatting .watcher_container{
+        background-color: #faf1f1;
+    }
+
+    /* 토론자 채팅 영역 */
+    .chatting .discusser_chat_container{
+        padding: 0.5rem 2rem;
+    }
+    .chatting .discusser_message_box{
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        height: fit-content;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+    .chatting .discusser_profile_area{
+        max-width: fit-content;
+        height: fit-content;
+        padding: 5px;
+    }
+    .chatting .discusser_content{
+        max-width: 60%;
+        width: fit-content;
+        padding: 1rem;
+        border-radius: 15px;
+    }
+    .chatting .discusser_profile_area img{
+        width: 3.5rem;
+    }
+    .message_left{
+        flex-direction: row;
+    }
+    .message_right{
+        flex-direction: row-reverse;
+    }
+    .message_left p{
+        text-align: left;
+        background: #70A9FF 0% 0% no-repeat padding-box;
+        color: white;
+        margin-left: 1rem;
+    }
+    .message_right p{
+        text-align: left;
+        background: #FF8D8D 0% 0% no-repeat padding-box;
+        color: white;
+        margin-right: 1rem;
+    }
+
+    .chatting .watcher_vote{
+        padding: 0 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .chatting .vote_title{
+        height: fit-content;
+        display: flex;
+        font-size: 2.8rem;
+        text-align: center;
+        font-weight: 1000;
+        align-items: center;
+        justify-items: center;
+        padding: 1rem 0;
+    }
+    .chatting .vote_box{
+        display: flex;
+        height: 6rem;
+        font-size: 1.8rem;
+    }
+    .chatting .user_vote{
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-items: center;
+        color: white;
+    }
+    .chatting .user_vote img{
+        border-radius: 50%;
+    }
+    .chatting .user_vote div{
+        height: fit-content;
+    }
+    .chatting .user_left{
+        width: 100%;
+        padding-right: 2rem;
+        background: #70A9FF 0% 0% no-repeat padding-box;
+        border-radius: 5px 0px 0px 5px;
+    }
+    .chatting .user_right{
+        width: 100%;
+        padding-left: 2rem;
+        background: #FF8D8D 0% 0% no-repeat padding-box;
+        border-radius: 0px 5px 5px 0px;
     }
     .hidden{
         display: none;
@@ -201,70 +291,193 @@
         text-decoration: none;
         color: black;
     }
+    .chatting .watcher_scrollbar a{
+        width: 100%;
+        height: 100%;
+        color: white;
+    }
+    .chatting .watcher_scrollbar{
+        display: none;
+        position: absolute;
+        bottom: 0%;
+        z-index: 5;
+        height: 3rem;
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+    /* .chatting .watcher_scrollbar{
+        position: absolute;
+        bottom: 80%;
+        z-index: 5;
+        height: 3rem;
+        background-color: black;
+        color: white;
+        text-align: center;
+    } */
+
+
+    .watcher_scrollbar a{
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .chatting .watcher_scrollbar_ani{
+        animation-name: moveScroll;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+    }
+    .chatting .watcher_container_ani{
+        animation-name: moveCotainer;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+    }
+
+    .chatting .discusser_area, .chatting .watcher_area{
+        height: fit-content;
+    }
+
+    @keyframes moveCotainer{
+        0% {left: 0%; bottom: -80%;}
+        100% {left: 0%; bottom: 0%; animation-timing-function: ease-out;}
+    }
+    @keyframes moveScroll{
+        0% {left: 0%; bottom: 0%;}
+        100% {left: 0%; bottom: 80%; animation-timing-function: ease-out;}
+    }
+
+    /* 모바일시 작동할 부분 */
+    @media (max-width: 767px){
+        html{
+            font-size: 6.5px;
+        }
+        .chatting{
+            padding-top: 112px;
+        }
+        .chatting .chat_container{
+            overflow: hidden;
+        }
+        .chatting .discusser_container{
+            width: 100%;
+        }
+        .chatting .watcher_scrollbar{
+            display: block;
+        }
+        .chatting .watcher_container{
+            position: absolute;
+            z-index: 5;
+            width: 100%;
+            height: 80%;
+            bottom: -80%;
+            left: 0;
+        }
+        /* .chatting .watcher_container{
+            position: absolute;
+            width: 100%;
+            height: 80%;
+            bottom: 0%;
+            left: 0;
+        } */
+    }
+
 
 </style>
 
-<section class="chat main-content">
+<section class="chatting main-content">
     <div class="chat_container">
-        <div class="main_container">
-            <div class="result_box">
+        <div class="discusser_container">
+            <div class="score_container">
                 <div class="score_box">
-                    <div class="user_left">
-                        <div><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                        <div id="owner_name">owner</div>
-                    </div>
-                    <div class="compare">
-                        <div class="score">0-0</div>
-                        <div class="time">0:00</div>
-                    </div>
-                    <div class="user_right">
-                        <div><img src="${pageContext.request.contextPath}/image/user.png" alt="" class="profile"></div>
-                        <div id="opponent_name">Opponent</div>
-                    </div>
-                </div>
-                <div class="process_bar">
-                    <div class="process_left"></div>
-                </div>
-            </div>
-            <div class="discusser_content">
-                <div class="discusser_area_init" style="width: fit-content; margin: 0 auto">아직 상대방 토론자가 참여하지 않았습니다.</div>
-                <div class="discusser_area_start">
-                    <a href="#" onclick="modal();">시작</a>
-                </div>
-                <div class="discusser_area hidden"></div>
-            </div>
-
-            <div class="hr_line"></div>
-
-            <div class="discusser_msg_trans">
-                <input type="text" placeholder="Enter Message" id="discusser_msg_input">
-            </div>
-
-        </div>
-        <div class="visitor_container">
-            <div class="visitor_content">
-                <div class="visitor_reply_area">
-                    <div class="visitor_box">
+                    <div class="score_content">
                         <div class="user">
-                            <strong>User name</strong> • 13 minutes ago
+                            <div><img src="${pageContext.request.contextPath}/image/user.png" alt=""></div>
+                            <div class="user1_name">user#1</div>
                         </div>
-                        <div class="reply">
-                            <p>오늘도 이 비는 그치지 않아</p>
+                        <div class="result_box">
+                            <div class="result">0 - 0</div>
+                            <div class="time">00:00</div>
+                        </div>
+                        <div class="user">
+                            <div><img src="${pageContext.request.contextPath}/image/user.png" alt=""></div>
+                            <div class="user2_name">user#2</div>
+                        </div>
+                    </div>
+                    <div class="score_bar">
+                        <div class="score_bar_right">
+                            <div class="score_bar_left"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div>
-                <input type="text" id="watcher_msg_input">
+            <div class="discusser_chat_container">
+                <div class="chat_box" id="discusserBox">
+                    <div class="discusser_area hidden">
+
+                    </div>
+                    <div class="discusser_start_area">
+                        <button id="startDiscusser" class="mdc-button mdc-button--raised no-outline">
+                            <span class="mdc-button__label">토론시작</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="discusser_send_container">
+                <div class="send_box">
+                    <input type="text" placeholder="Enter Message" id="discusser_msg_input">
+                </div>
+            </div>
+        </div>
+
+        <div class="watcher_scrollbar" id="watcher_scroll_view">
+            <a href="#" onclick="">올리기/내리기</a>
+        </div>
+        <div class="watcher_container">
+
+            <div class="watcher_vote">
+                <div class="vote_title">
+                    <div>Vote the Best One</div>
+                </div>
+                <div class="vote_box">
+                    <a href="#" class="user_vote message_left user_left">
+                        <div><img src="${pageContext.request.contextPath}/image/user.png" alt=""></div>
+                        <div class="user1_name">User#1</div>
+                    </a>
+                    <a href="#" class="user_vote message_right user_right">
+                        <div><img src="${pageContext.request.contextPath}/image/user.png" alt=""></div>
+                        <div class="user2_name">User#2</div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="watcher_chat_container ">
+
+                <div class="chat_box" id = "watcherBox">
+                    <div class="watcher_area">
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="watcher_send_container">
+                <div class="send_box">
+                    <input type="text" placeholder="Enter Message" id ="watcher_msg_input">
+                </div>
             </div>
         </div>
     </div>
+
+
 
     <%@ include file="../../component/dialog/enterDiscuss.jsp"%>
 
 </section>
 
 <script>
+
+    let socket;
+    let stompClient;
+    let sessionId;
 
     const joinedError = "${joinedError}";
 
@@ -273,7 +486,9 @@
 
     const user = "${principal.user.name}";
     const senderType = "${senderType}";
-    let opponent = null;
+
+    const owner = "${room.owner.name}";
+    let opponent = "${room.opponent.name}";
 
     let time = "${room.startDebate}";
 
@@ -289,20 +504,25 @@
         'message': null
     };
 
-    let socket;
-    let stompClient;
-    let sessionId;
 
     $(document).ready(function(){
         if(joinedError) alert("참여 중이던 방으로 이동되었습니다")
-        if(opponent == null){
+        if(senderType != "owner" && opponent == ''){
             $("#enter").addClass("show");
         }
     })
 
+    nameInput();
 
-    function modal(){
-        console.log("안녕하세요");
+    function nameInput(){
+        if(owner != ""){
+            console.log($(".user1_name"));
+            $(".user1_name").html(owner);
+        }
+        if(opponent != ""){
+            $(".user2_name").html(opponent);
+        }
+
     }
 
 
@@ -316,14 +536,18 @@
 <script src="${pageContext.request.contextPath}/js/moment.js"></script>
 
 <script>
+
     let chat = {
         init: function() {
-
+            ${sessionScope.name}
             console.log("channel    : ", channel);
             console.log("token      : ", token);
             console.log("user       : ", user);
             console.log("senderType : ", senderType);
             console.log("time       : ", time);
+
+            console.log("owner      : ", owner);
+            console.log("opponent   : ", opponent);
 
             chat.connect(channel);
             screenOperation.addEvent();
@@ -342,7 +566,7 @@
                     const msg = JSON.parse(e.body);
                     if(msg.senderType === "opponent"){
                         opponent = msg.sender;
-                        console.log("상대방 입장");
+                        console.log("상대방 입장: ", opponent);
                     }
                 });
                 stompClient.subscribe('/topic/' + destination, function (e) {
@@ -387,6 +611,7 @@
                     }
                 }
             });
+
             $("#discusser_msg_input").on("keyup", (event) => {
                 if(event.key === "Enter"){
                     let msg = event.target.value;
@@ -408,6 +633,20 @@
                     }
                 }
             })
+
+            $("#watcher_scroll_view").on("click", ()=>{
+                if($(".watcher_scrollbar").hasClass("watcher_scrollbar_ani")){
+                    $(".watcher_scrollbar").removeClass("watcher_scrollbar_ani");
+                    $(".watcher_container").removeClass("watcher_container_ani");
+                }else{
+                    $(".watcher_scrollbar").addClass("watcher_scrollbar_ani");
+                    $(".watcher_container").addClass("watcher_container_ani");
+                }
+            })
+
+            $("#startDiscusser").on("click", ()=>{
+
+            })
         },
 
         contributor: function (msg) {
@@ -419,49 +658,45 @@
             let html = "";
 
             if(msg.senderType === "owner" || msg.senderType === "opponent"){
-                divs.setAttribute('class', "discusser_box");
-                if(msg.senderType === "owner"){
-                    html+= '    <div class="discusser_left">';
-                    html+= '        <div>';
-                    html+= '            <img src="/static/image/user.png" alt="" class="profile">';
-                    html+= '        </div>';
-                    html+= '        <p>'+msg.message+'</p>';
-                    html+= '    </div>';
 
+                if(msg.senderType === "owner"){
+                    divs.setAttribute('class', "discusser_message_box message_left");
                 } else {
-                    html+= '    <div class="discusser_right">';
-                    html+= '        <p>'+msg.message+'</p>';
-                    html+= '        <div>';
-                    html+= '            <img src="/static/image/user.png" alt="" class="profile">';
-                    html+= '        </div>';
-                    html+= '    </div>';
+                    divs.setAttribute('class', "discusser_message_box message_right");
                 }
+
+                html+= '    <div class="discusser_profile_area">';
+                html+= '        <img src="img/profile.png" alt="" class="profile">';
+                html+= '    </div>';
+                html+= '    <p class="discusser_content ">' + msg.message +' </p>';
+                html+= '</div>';
+
                 divs.innerHTML = html;
                 console.log(divs);
 
                 $(".discusser_area").append(divs);
-                this.scollMoving(".discusser_content", ".discusser_area", $(".discusser_content").innerHeight());
+                this.scollMoving("#discusserBox", ".discusser_area", $("#discusserBox").innerHeight());
 
             }else if(msg.senderType === "watcher"){
-                divs.setAttribute('class', "visitor_box");
+                divs.setAttribute('class', "watcher_message_box");
 
-                html += '    <div class="user">';
-                html += '        <strong>'+msg.sender+'</strong> • '+ screenOperation.dateformat(msg.sendTime);
-                html += '    </div>';
-                html += '    <div class="reply">';
-                html += '        <p>'+msg.message+'</p>';
-                html += '    </div>';
+                html += '    <div class="watcher_user_area"><strong>'+msg.sender+'</strong> • '+ screenOperation.dateformat(msg.sendTime)+'</div>';
+                html += '    <div class="watcher_content">'+msg.message+'</div>';
 
                 divs.innerHTML = html;
-                $(".visitor_reply_area").append(divs);
+                $(".watcher_area").append(divs);
 
-                this.scollMoving(".visitor_content", ".visitor_reply_area", $(".visitor_content").innerHeight());
+                this.scollMoving("#watcherBox ", ".watcher_area", $("#watcherBox").innerHeight());
             }
         },
 
         scollMoving: function (box, target, limit){
             let length =  $(target).innerHeight();
             let scrollLength = $(box).scrollTop() + $(box).innerHeight();
+
+            console.log(length);
+            console.log(scrollLength);
+
 
             if(length - scrollLength <= limit){
                 $(box).scrollTop(length);

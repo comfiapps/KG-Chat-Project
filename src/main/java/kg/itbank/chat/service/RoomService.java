@@ -92,6 +92,20 @@ public class RoomService {
     }
 
     @Transactional
+    public int enterRoom(long roomId, Long opponentId){
+        int result = 0;
+
+        Room room = roomRepository.findById(roomId).orElseThrow(()
+                -> new EntityNotFoundException("Room Not Found"));
+        if(room.getOpponentId() == 0){
+            room.setOpponentId(opponentId);
+            return 1;
+        }else{
+            return 2;
+        }
+    }
+
+    @Transactional
     public long create(Room room, long userId) {
         if(isUserOnDebate(userId) != -1) throw new IllegalArgumentException("Debate ongoing");
 
