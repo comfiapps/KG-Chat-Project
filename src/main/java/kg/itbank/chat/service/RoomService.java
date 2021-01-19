@@ -159,5 +159,12 @@ public class RoomService {
         room.setStartTime(null);
     }
 
+    @Transactional
+    public void close(long roomId, long userId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(()
+                -> new EntityNotFoundException("Room not found - Id : " + roomId));
+        if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
+        room.setCloseDate(new Timestamp(System.currentTimeMillis()));
+    }
 
 }

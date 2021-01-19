@@ -70,5 +70,11 @@ public class RoomApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), "success");
     }
 
+    @PutMapping("/{roomId}/close")
+    public ResponseDto<?> close(@AuthenticationPrincipal PrincipalDetail principal,
+                                    @PathVariable long roomId) {
+        roomService.close(roomId, principal.getId());
+        return new ResponseDto<>(HttpStatus.OK.value(), "success");
+    }
 
 }
