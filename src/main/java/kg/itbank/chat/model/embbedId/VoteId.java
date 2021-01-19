@@ -17,15 +17,7 @@ import java.io.Serializable;
 @Builder
 @Embeddable
 public class VoteId implements Serializable {
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "roomId")
-    private Room room;
+    private long userId;
+    private long roomId;
 
 }

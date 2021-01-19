@@ -31,18 +31,12 @@ public class VoteService {
             voteRepository.save(
                     Vote.builder()
                             .id(VoteId.builder()
-                                    .room(roomRepository.findById(roomId).orElseThrow(()
-                                            -> new IllegalArgumentException("Room not found - Id : " + roomId)))
-                                    .user(userRepository.findById(myId).orElseThrow(()
-                                            -> new UsernameNotFoundException("User Not Found - Id : " + myId)))
+                                    .roomId(roomId)
+                                    .userId(myId)
                                     .build())
-                            .voteTo(userRepository.findById(userId).orElseThrow(()
-                                    -> new UsernameNotFoundException("User Not Found - Id : " + userId)))
+                            .voteToId(userId)
                             .build());
-        } else {
-            vote.setVoteTo(userRepository.findById(userId).orElseThrow(()
-                    -> new UsernameNotFoundException("User Not Found - Id : " + userId)));
-        }
+        } else vote.setVoteToId(userId);
     }
 
     @Transactional

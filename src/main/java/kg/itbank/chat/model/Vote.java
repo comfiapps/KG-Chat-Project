@@ -18,8 +18,5 @@ public class Vote {
 
     @EmbeddedId
     private VoteId id;
-
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User voteTo;
+    private long voteToId;
 }
