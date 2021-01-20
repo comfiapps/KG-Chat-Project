@@ -2,6 +2,8 @@
 
 <%@ include file="../layout/header.jsp"%>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chat.css">
+
 <style>
     html{
         font-size:10px;

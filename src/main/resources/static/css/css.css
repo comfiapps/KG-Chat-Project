@@ -153,17 +153,6 @@ header{
 
 
 
-/* Chat */
-
-.time{
-    text-align: center;
-    font: normal normal normal 12px/16px Segoe UI;
-    letter-spacing: 0;
-}
-/* Chat End*/
-
-
-
 /* Dialog start */
 .input {
     background-color: rgba(0, 0, 0, 0.05);
@@ -178,7 +167,7 @@ header{
 .fade2 {
     transform: scale(0.7);
     opacity: 0;
-    transition: all .1s linear;
+    transition: all .1s ease-in-out;
     display: none;
 }
 
@@ -226,25 +215,14 @@ header{
 
 .process_bar{
     background: #7EA5FF 0 0 padding-box;
-    margin: 3px auto;
-    width: 90%;
+    margin: 3px 16px;
     height: 5px;
 }
 
 .process_left{
     width: 50%;
     height: 100%;
-    background: #FF7E7E 0% 0% no-repeat padding-box;
+    background: #FF7E7E;
     border: 0;
 }
 /* Card end - */
-
-
-
-
-.update_profile_img {
-    border-radius: 100%;
-    width: 64px;
-    height: 64px;
-    cursor: pointer;
-}

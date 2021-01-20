@@ -2,69 +2,24 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-<style>
-    .update-content {
-        padding-top: 36px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .box {
-        margin: 16px 0 52px 0;
-        width: 100%;
-        max-width: 720px;
-        border: 1px solid rgba(0,0,0,0.3);
-        padding: 24px;
-        border-radius: 8px;
-    }
-
-    .small-box {
-        width: 100%;
-        height: 52px;
-        border-bottom: 1px solid rgba(0,0,0,0.1);
-        padding: 15px 12px 16px 24px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .img-box {
-        height: 93px;
-        cursor: default;
-    }
-
-    .hint {
-        width: 30%;
-        min-width: 100px;
-        max-width: 174px;
-        font-size: 10px;
-    }
-
-    .privacy_detail {
-        font-size: 14px;
-        flex-grow: 1;
-    }
-
-
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/profile.css">
 
 <div class="main-content">
     <div class="update-content">
         <h4>개인정보</h4>
 
         <div class="box">
-            <div class="small-box img-box">
+            <div class="small-box img-box h-100">
                 <span class="hint">사진</span>
                 <div>
                     <c:choose>
                         <c:when test="${principal.user.image != null}">
                            <img src="${principal.user.image}" alt="profile"
-                                class="update_profile_img target_img">
+                                class="target_img">
                         </c:when>
                         <c:otherwise>
                             <img src="${pageContext.request.contextPath}/image/user.png" alt="profile"
-                                 class="update_profile_img target_img">
+                                 class="target_img">
                         </c:otherwise>
                     </c:choose>
                     <input accept="image/jpeg, image/png" type = "file" id = "fileSelector" style = "display:none;">
