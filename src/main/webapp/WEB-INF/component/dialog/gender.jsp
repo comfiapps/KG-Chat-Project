@@ -21,7 +21,9 @@
                                type="radio"
                                id="gender-select-0"
                                name="genderInput"
-                               value="null">
+                               value="null"
+                               <c:if test="${principal.user.gender == null}">checked</c:if>
+                        >
                         <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
@@ -40,7 +42,9 @@
                                type="radio"
                                value="female"
                                id="gender-select-1"
-                               name="genderInput">
+                               name="genderInput"
+                               <c:if test="${principal.user.gender == 'female'}">checked</c:if>
+                        >
                         <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
@@ -59,7 +63,9 @@
                                type="radio"
                                value="male"
                                id="gender-select-2"
-                               name="genderInput">
+                               name="genderInput"
+                               <c:if test="${principal.user.gender == 'male'}">checked</c:if>
+                        >
                         <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>

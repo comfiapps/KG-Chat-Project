@@ -29,7 +29,7 @@ let user = {
         });
 
         $("input[name='genderInput']").on('input', (e) => {
-            if(updateForm_original_gender === e.target.value) $("#genderSubmit").attr("disabled", true);
+            if(updateForm_original_gender.toString() === e.target.value) $("#genderSubmit").attr("disabled", true);
             else $("#genderSubmit").attr("disabled", false);
         });
 
