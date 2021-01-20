@@ -79,8 +79,7 @@ public class ChatController {
 				value[3].equals(message.getSenderType())){
 				log.info("일치함");
 				simpMessagingTemplate.convertAndSend("/topic/msg/"+message.getChatRoomId(), message);
-				chatService.insert(Long.parseLong(message.getChatRoomId()),
-						Long.parseLong(message.getSender()), message.getMessage());
+				chatService.insert(Long.parseLong(value[0]), Long.parseLong(value[1]), message.getMessage());
 			}else{
 				log.info("조작된 데이터");
 			}

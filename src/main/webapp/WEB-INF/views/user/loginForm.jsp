@@ -2,65 +2,7 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-<style>
-	body {
-		overflow: hidden;
-		background-color: #F7F7F7;
-	}
-
-	.loginPage {
-		height: 100vh;
-	}
-
-	.line {
-		margin: 0 auto;
-		width: fit-content;
-		height: 100%;
-		display: flex;
-		align-items: center;
-	}
-
-	.discussion h1 {
-		font-size: 50px;
-	}
-
-	.discussion h2 {
-		font-size: 16px;
-	}
-
-	.kakaoLogin {
-		margin: 0 0 0 108px;
-		text-align: center;
-		padding: 32px;
-		float: left;
-		background-color: white;
-		border-radius: 16px;
-	}
-
-	.kakaoLogin h6{
-		margin-bottom: 16px;
-		font-weight: bold;
-	}
-
-	@media(max-width : 881px) {
-		.line {
-			flex-wrap: wrap;
-			width: 500px;
-			justify-content: center;
-		}
-
-		.kakaoLogin {
-			margin: 32px 0;
-			align-self: start;
-		}
-
-		.discussion {
-			text-align: center;
-			align-self: flex-end;
-		}
-	}
-
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 
 <div class="loginPage">
 
@@ -76,12 +18,9 @@
 			<a href="https://kauth.kakao.com/oauth/authorize?client_id=2e63b44fb79b64b533648b862668b579&redirect_uri=${baseUrl}/auth/kakao/callback&response_type=code">
 				<img src="${pageContext.request.contextPath}/image/kakao_login_medium_wide.png" alt="Kakao Login"/>
 			</a>
-		</div>
 
-		<%-- TODO test login--%>
-		<div class="kakaoLogin">
-			<input placeholder="테스트 이름 입력(등록)" id="test_register"> <%-- TODO test login--%>
-			<input placeholder="DB 기준 아이디 입력" id="test_login">
+			<div style="margin-top: 56px"><input placeholder="테스트 이름 입력(등록)" id="test_register"> <%-- TODO test login--%></div>
+			<div style="margin-top: 8px"><input placeholder="DB 기준 아이디 입력" id="test_login"> <%-- TODO test login--%></div>
 		</div>
 
 	</div>
