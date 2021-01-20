@@ -18,5 +18,6 @@ public class Vote {
 
     @EmbeddedId
     private VoteId id;
+
     private long voteToId;
 }

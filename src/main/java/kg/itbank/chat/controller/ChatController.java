@@ -2,6 +2,8 @@ package kg.itbank.chat.controller;
 
 import kg.itbank.chat.dto.ChatDto;
 import kg.itbank.chat.dto.RoomInfoDto;
+import kg.itbank.chat.service.ChatService;
+import kg.itbank.chat.service.ParticipantService;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.util.JwtToken;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,10 @@ public class ChatController {
 	private static final Logger log = LoggerFactory.getLogger(ChatController.class);
 
 	@Autowired
-	private RoomService roomService;
+	private ParticipantService participantService;
+
+	@Autowired
+	private ChatService chatService;
 
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
@@ -46,6 +51,7 @@ public class ChatController {
 			sendMap.put("senderType", value[3]);
 
 			simpMessagingTemplate.convertAndSend("/topic/enter/"+value[0], sendMap);
+			participantService.join(Long.parseLong(value[0]), Long.parseLong(value[1]));
 		}
 	}
 
@@ -73,6 +79,8 @@ public class ChatController {
 				value[3].equals(message.getSenderType())){
 				log.info("일치함");
 				simpMessagingTemplate.convertAndSend("/topic/msg/"+message.getChatRoomId(), message);
+				chatService.insert(Long.parseLong(message.getChatRoomId()),
+						Long.parseLong(message.getSender()), message.getMessage());
 			}else{
 				log.info("조작된 데이터");
 			}

@@ -1,5 +1,7 @@
 package kg.itbank.chat.model;
 
+import kg.itbank.chat.model.embbedId.ParticipantId;
+import kg.itbank.chat.model.embbedId.VoteId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,19 +16,14 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Chat {
+public class Participant {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
-    private long roomId;
-
-    private long userId;
-
-    @Lob
-    private String content;
+    @EmbeddedId
+    private ParticipantId id;
 
     @CreationTimestamp
-    private Timestamp createDate;
+    private Timestamp enterDate;
+
+    private Timestamp exitDate;
+
 }
