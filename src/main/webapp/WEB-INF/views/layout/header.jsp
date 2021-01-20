@@ -47,15 +47,10 @@
 					</div>
 					<div class="nav_profile">
 						<div>
-							<button class="mdc-button no" onclick="location.href = '/logout'"/>
-								<span class="mdc-button__ripple"></span>
-								<span class="mdc-button__label">로그아웃</span>
-							</button>
 							<button class="mdc-button mdc-button--raised no-outline" data-toggle="modal" data-target="#createModal">
 								<span class="mdc-button__label">방 생성</span>
 							</button>
-							</button>
-							<a href="/profile">
+							<span class="popover-btn">
 								<c:choose>
 									<c:when test="${principal.user.image != null}">
 										<img src="${principal.user.image}" alt="profile" class="profile_img">
@@ -66,8 +61,7 @@
 											 class="profile_img">
 									</c:otherwise>
 								</c:choose>
-							</a>
-
+							</span>
 						</div>
 					</div>
 
@@ -81,14 +75,10 @@
 					</div>
 					<div class="nav_profile">
 						<div>
-							<button class="mdc-button no-outline" onclick="location.href = '/logout'"/>
-								<span class="mdc-button__ripple"></span>
-								<span class="mdc-button__label">로그아웃</span>
-							</button>
 							<button class="mdc-button mdc-button--raised no-outline" data-toggle="modal" data-target="#createModal">
 								<span class="mdc-button__label">방 생성</span>
 							</button>
-							<a href="/profile">
+							<span class="popover-btn">
 								<c:choose>
 									<c:when test="${principal.user.image != null}">
 										<img src="${principal.user.image}" alt="profile" class="profile_img">
@@ -99,7 +89,7 @@
 											 class="profile_img">
 									</c:otherwise>
 								</c:choose>
-							</a>
+							</span>
 						</div>
 					</div>
 
@@ -109,10 +99,23 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="profile-popover">
+				<button class="mdc-button" onclick="location.href = '/profile'"
+						style="text-align: center">
+					<span class="mdc-button__ripple"></span>
+					<span class="mdc-button__label">프로필 정보</span>
+				</button>
+				<button class="mdc-button" onclick="location.href = '/logout'">
+					<span class="mdc-button__ripple"></span>
+					<span class="mdc-button__label">로그아웃</span>
+				</button>
+			</div>
 		</header>
 	</c:if>
 
 	<%@ include file="../../component/dialog/createRoom.jsp"%>
 
 	<script>let searchKeyword = "";</script>
+	<script src="${pageContext.request.contextPath}/js/profile_popover.js"></script>
 	<script src="${pageContext.request.contextPath}/js/room.js"></script>
