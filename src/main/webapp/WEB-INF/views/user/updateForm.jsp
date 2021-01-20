@@ -74,7 +74,7 @@
             <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyName">
                 <span class="hint">닉네임</span>
                 <span class="privacy_detail">${principal.user.name}</span>
-                <span class="material-icons md-18">chevron_right</span>
+                <span class="material-icons md-16">chevron_right</span>
             </div>
             <div class="small-box mdc-ripple-surface">
                 <span class="hint">이메일</span>
@@ -97,7 +97,7 @@
                         <span class="privacy_detail">${principal.user.ageRange}</span>
                     </c:otherwise>
                 </c:choose>
-                <span class="material-icons md-18">chevron_right</span>
+                <span class="material-icons md-16">chevron_right</span>
             </div>
             <div class="small-box border-0 mdc-ripple-surface" data-toggle="modal" data-target="#modifyGender">
                 <span class="hint">성별</span>
@@ -112,7 +112,7 @@
                         <span class="privacy_detail" style="opacity: .5">(선택 안함)</span>
                     </c:otherwise>
                 </c:choose>
-                <span class="material-icons md-18">chevron_right</span>
+                <span class="material-icons md-16">chevron_right</span>
             </div>
         </div>
 

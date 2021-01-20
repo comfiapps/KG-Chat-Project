@@ -36,13 +36,13 @@
 	<c:if test="${principal.user != null}">
 		<header>
 			<div class="nav_content">
-				<div class="web">
+				<div class="web nav_content_inner">
 					<div class="nav_logo">
 						<a href="/">DISCUSSION</a>
 					</div>
 					<div class="nav_search">
 						<input placeholder="토론방 검색하기" class="searchInput" type="text" id="desktopSearchInput" value="${keyword}">
-						<span class="material-icons md-18 searchBtn">search</span>
+						<span class="material-icons md-16 searchBtn">search</span>
 					</div>
 					<div class="nav_profile">
 						<div>
@@ -72,7 +72,7 @@
 
 				</div>
 
-				<div class="phone">
+				<div class="phone nav_content_inner">
 					<div class="nav_logo">
 						<div>
 							<a href="/">DISCUSSION</a>
@@ -104,7 +104,7 @@
 
 					<div class="nav_search">
 						<input placeholder="토론방 검색하기" class="searchInput" type="text" id="mobileSearchInput" value="${keyword}">
-						<span class="material-icons md-18 searchBtn">search</span>
+						<span class="material-icons md-16 searchBtn">search</span>
 					</div>
 				</div>
 			</div>

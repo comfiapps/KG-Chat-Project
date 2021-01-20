@@ -1,6 +1,6 @@
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -15,21 +15,14 @@ html {
 }
 
 img {
-    /* 이미지가 반응형으로 넣다보면 일그러질 확률이 높음 */
-    /* 길이는 100% 높이는 길이에 맞춰서 하도록 설정 */
     max-width: 100%;
     height: auto;
-    /* 사이즈가 변하면 높이는 넓이에 따라서 변경 */
 }
 
 input,
 textarea,
 button,
 select {
-    /*
-    고유하게 적용되어 있는 form관련 요소들을 제거하여
-    여러 브라우저에서 동일한 form관련 디자인이 보여지도록 처리
-    */
     -webkit-appearance: none;
     -moz-appearance: none;
     -o-appearance: none;
@@ -49,8 +42,17 @@ dl {
     list-style-type: none;
 }
 
+.md-16 {
+    font-size: 16px;
+}
 
-/* header */
+.profile{
+    border-radius: 100%;
+}
+
+
+
+/* Header Start */
 header{
     width: 100%;
     position: fixed;
@@ -65,37 +67,30 @@ header{
     margin: 0 0 0 8px;
 }
 
-.update_profile_img {
-    border-radius: 100%;
-    width: 64px;
-    height: 64px;
-    cursor: pointer;
-}
-
 .web{
     height: 56px;
-    display: grid;
     grid-template-columns: 25% 50% 25%;
     grid-template-rows: 56px;
-    justify-items: center;
-    align-items: center;
-    background: #F7F7F7 0% 0% no-repeat padding-box;
 }
 
 .phone{
     height: 112px;
-    display: grid;
-    grid-template-columns: 50% 50%;
     grid-template-rows: 1fr 1fr;
-    justify-items: center;
-    align-items: center;
-    background: #F7F7F7 0% 0% no-repeat padding-box;
+}
 
+.nav_content_inner {
+    display: grid;
+    align-items: center;
+    justify-items: center;
 }
 
 .nav_content{
+    background: #F7F7F7;
+    padding-right: 24px;
+    padding-left: 24px;
     width: 100%;
 }
+
 .nav_content a{
     text-decoration: none;
     color: black;
@@ -104,11 +99,10 @@ header{
 .nav_content .nav_logo{
     font: normal normal normal 24px/32px Segoe UI;
     justify-self: start;
-    margin-left: 24px;
 }
 
-.nav_content .nav_search{
-    background: #E5E5E5 0 0 no-repeat padding-box;
+.nav_content .nav_search {
+    background: #E5E5E5;
     border-radius: 4px;
     width: 80%;
     max-width: 520px;
@@ -118,21 +112,10 @@ header{
     padding: 0 8px 0 16px;
 }
 
-.nav_content .nav_search div{
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.nav_content .nav_search .searchBtn {
-    width: 20px;
-    height: 20px;
-}
-
 .nav_content .nav_search input{
     background: transparent;
+    flex-grow: 1;
     border: 0;
-    width: 100%;
     margin-right: 8px;
 }
 
@@ -140,12 +123,7 @@ header{
     justify-self: end;
 }
 
-.nav_content .nav_profile div{
-    margin-right: 30px;
-}
-
-
-@media(min-width: 979px){
+@media(min-width: 939px){
     .web{
         display: grid;
     }
@@ -157,7 +135,7 @@ header{
     }
 }
 
-@media(max-width: 979px){
+@media(max-width: 939px){
     .web{
         display: none;
     }
@@ -171,126 +149,22 @@ header{
         padding-top: 112px;
     }
 }
+/* Header End */
 
-/*  main */
-.container{
-    width: 100%;
-    margin-bottom: 20px;
 
-}
 
-.group_box{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.content_box{
-    width: 279px;
-    height: 172px;
-    background: #ebebeb 0% 0% no-repeat padding-box;
-    color: #6B6868;
-    display: grid;
-    grid-template-rows: 25% 55% 20%;
-    padding: 10px;
-    margin: 10px;
-}
-
-.content_box .content_title{
-    text-align: left;
-    font: normal normal normal 14px/19px Segoe UI;
-    font-weight: 700;
-    color: #2D2D2D;
-}
-.hashTag{
-    font: normal normal normal 8px/19px Segoe UI;
-    font-weight: 100;
-}
-
-.content_box .content_detail{
-    display: grid;
-    grid-template-columns: 30% 40% 30%;
-    justify-items: center;
-    align-items: center;
-    text-align: center;
-}
-
-.content_box .content_footer{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-}
-
-.content_box .content_footer div:nth-child(1){
-    text-align: left;
-    font: normal normal normal 10px/14px Segoe UI;
-}
-.content_box .content_footer div:nth-child(2){
-    text-align: right;
-    font: normal normal normal 9px/12px Segoe UI;
-}
-
-.content_footer_left{
-    display: grid;
-    width: 50%;
-    grid-template-columns: 30% 70%;
-    justify-items: center;
-}
-.compare{
-    width: 100%;
-}
-.profile{
-    border-radius: 100%;
-}
+/* Chat */
 
 .time{
     text-align: center;
     font: normal normal normal 12px/16px Segoe UI;
-    letter-spacing: 0px;
+    letter-spacing: 0;
 }
-
-.process_bar{
-    background: #7EA5FF 0 0 padding-box;
-    margin: 3px auto;
-    width: 90%;
-    height: 5px;
-}
-.process_left{
-    width: 50%;
-    height: 100%;
-    background: #FF7E7E 0% 0% no-repeat padding-box;
-
-    border: 0;
-}
-.text_center{
-    display: flex;
-    align-self: center;
-}
-
-@media (max-width: 700px) {
-    .content_box{
-        width: 100%;
-    }
-}
+/* Chat End*/
 
 
 
-
-
-
-
-
-
-
-/* home.jsp - dialog start */
-.mainbox h6 {
-    margin: 0 0 4px 0;
-    font-weight: normal;
-}
-
+/* Dialog start */
 .input {
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 4px;
@@ -314,9 +188,11 @@ header{
     transform: scale(1);
 }
 
-/* home.jsp - dialog end */
+/* Dialog end */
 
-/* home.jsp - card start - */
+
+
+/* Card start - */
 .room-card {
     display: inline-block;
 }
@@ -343,13 +219,32 @@ header{
     padding: 1rem;
 }
 
-.my-card-time {
-    width: 100%;
-    text-align: center;
-}
-
 .contributors img {
     width: 56px;
     height: 56px;
 }
-/* home.jsp - card end - */
+
+.process_bar{
+    background: #7EA5FF 0 0 padding-box;
+    margin: 3px auto;
+    width: 90%;
+    height: 5px;
+}
+
+.process_left{
+    width: 50%;
+    height: 100%;
+    background: #FF7E7E 0% 0% no-repeat padding-box;
+    border: 0;
+}
+/* Card end - */
+
+
+
+
+.update_profile_img {
+    border-radius: 100%;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+}
