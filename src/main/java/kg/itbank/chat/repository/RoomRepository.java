@@ -15,7 +15,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     boolean existsByOpponentId(long id);
 
-    Room findFirstByOwnerIdOrOpponentIdAndStartTimeIsLessThan(long owner, long opponent, Timestamp time);
+    Room findFirstByOwnerIdOrOpponentIdAndCloseDateIsNotNullAndEndTimeIsGreaterThan(long owner, long opponent, Timestamp now);
 
     @Query(value = "SELECT category FROM Room GROUP BY category", nativeQuery = true)
     List<String> listCategories();

@@ -18,11 +18,11 @@
                             <c:when test="${result.opponent.id == null}">
                                 <sub>.</sub>
                             </c:when>
-                            <c:when test="${result.startDebate == null}">
+                            <c:when test="${result.endDebate == null}">
                                 <sub class="mdc-theme--error">준비중...</sub>
                             </c:when>
                             <c:otherwise>
-                                <sub>--명 시청 • ${result.startDebate}</sub>
+                                <sub>--명 시청 • ${result.endDebate}</sub>
                             </c:otherwise>
                         </c:choose>
 

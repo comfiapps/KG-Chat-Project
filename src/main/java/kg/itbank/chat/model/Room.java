@@ -34,7 +34,7 @@ public class Room {
     @CreationTimestamp
     private Timestamp createDate;
 
-    private Timestamp startTime;
+    private Timestamp endTime;
 
     private Timestamp closeDate;
 

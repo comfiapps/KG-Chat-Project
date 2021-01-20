@@ -75,8 +75,8 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public long isUserOnDebate(long userId) {
-        Room room = roomRepository.findFirstByOwnerIdOrOpponentIdAndStartTimeIsLessThan(userId, userId,
-                new Timestamp(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(DEBATE_TIME)));
+        Room room = roomRepository.findFirstByOwnerIdOrOpponentIdAndCloseDateIsNotNullAndEndTimeIsGreaterThan(userId, userId,
+                new Timestamp(System.currentTimeMillis()));
         if(room == null) return -1;
         return room.getId();
     }
@@ -135,7 +135,7 @@ public class RoomService {
                 .roomName(room.getName())
                 .roomCategory(room.getCategory())
                 .createDate(room.getCreateDate())
-                .startDebate(room.getStartTime())
+                .endDebate(room.getEndTime())
                 .build();
     }
 
@@ -153,12 +153,13 @@ public class RoomService {
 
     @Transactional
     public Timestamp startDebate(long roomId, long userId) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis() +
+                TimeUnit.MINUTES.toMillis(DEBATE_TIME) + TimeUnit.SECONDS.toSeconds(10));
 
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
-        room.setStartTime(timestamp);
+        room.setEndTime(timestamp);
         return timestamp;
     }
 
@@ -167,7 +168,7 @@ public class RoomService {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
-        room.setStartTime(null);
+        room.setEndTime(null);
     }
 
     @Transactional

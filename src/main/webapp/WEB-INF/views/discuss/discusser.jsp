@@ -522,7 +522,7 @@
     const owner = {name: "${room.owner.name}", id: "${room.owner.id}"};
     let opponent = {name: "${room.opponent.name}", id: "${room.opponent.id}"};
 
-    let time = "${room.startDebate}";
+    let time = "${room.endDebate}";
     let timerHandler;
     let timelimit = 30*60*1000;
 
