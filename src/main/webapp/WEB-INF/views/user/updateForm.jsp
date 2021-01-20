@@ -127,7 +127,9 @@
                                         <div class="process_bar"><div class="process_left"></div></div>
                                         <div><sub>${rooms.roomCategory}</sub></div>
                                         <h5 class="font-weight-bold">(1-2) ${rooms.roomName}</h5>
-                                        <div><sub>${rooms.createDate}</sub></div>
+                                        <div>
+                                            <c:set var="today" value="<%=new java.util.Date()%>" />
+                                            <sub><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${today}" /></sub>
                                     </div>
                                 </div>
                             </div>
@@ -153,6 +155,8 @@
     let updateForm_original_nick = "${principal.user.name}";
     let updateForm_original_age = "${principal.user.ageRange}";
     let updateForm_original_gender = "${principal.user.gender}";
+
+    let date = new Date(${rooms.createDate});
 </script>
 
 <script src="${pageContext.request.contextPath}/js/user.js"></script>
