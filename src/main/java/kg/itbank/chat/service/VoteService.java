@@ -21,9 +21,6 @@ public class VoteService {
     @Autowired
     private RoomRepository roomRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Transactional
     public void voteTo(long myId, long roomId, long userId) {
         Vote vote = voteRepository.findByIdRoomIdAndIdUserId(roomId, myId);

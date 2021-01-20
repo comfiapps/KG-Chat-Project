@@ -31,6 +31,8 @@ let room = {
     },
 
     createRoom: function () {
+        $("#createRoomBtn").attr("disabled", true)
+
         let data = {
             name: $("#createRoom_name").val(),
             category: $("#createRoom_category").val()
@@ -47,9 +49,12 @@ let room = {
             if(response.status === 200) {
                 const id = response.data;
                 location.href="/discuss/" + id;
+
             } else if (response.status === 500) {
                 const alreadyJoinedAlert = confirm("참여 중인 토론이 있습니다. 접속하시겠습니까?");
-                if(alreadyJoinedAlert) location.href = "/discuss"
+                if(alreadyJoinedAlert) {
+                    location.href = "/discuss"
+                } else $("#createRoomBtn").attr("disabled", false);
             }
 
         }).fail(error => {

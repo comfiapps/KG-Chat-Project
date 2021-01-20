@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100">
                     <span class="mdc-text-field__ripple"></span>
-                    <input class="mdc-text-field__input" type="text" placeholder="변경할 이름" aria-label="Label"
+                    <input class="mdc-text-field__input" type="text" maxlength="30" placeholder="변경할 이름" aria-label="Label"
                            id="nicknameInput" value="${principal.user.name}">
                     <span class="mdc-line-ripple"></span>
                 </label>
@@ -20,7 +20,7 @@
                 <span class="mdc-button__ripple"></span>
                 <span class="mdc-button__label">취소</span>
                 </button>
-                <button id="nicknameSubmit" class="mdc-button mdc-button--raised no-outline">
+                <button id="nicknameSubmit" class="mdc-button mdc-button--raised no-outline" disabled>
                     <span class="mdc-button__label">변경</span>
                 </button>
             </div>

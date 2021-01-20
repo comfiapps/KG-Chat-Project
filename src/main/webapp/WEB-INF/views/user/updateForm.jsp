@@ -189,14 +189,16 @@
         </c:choose>
     </div>
 </div>
-<script>
-    let updateForm_original_nick = ${principal.user.name};
-    let updateForm_original_age = ${principal.user.ageRange};
-</script>
 
 <%@ include file="../../component/dialog/nickname.jsp"%>
 <%@ include file="../../component/dialog/age.jsp"%>
 <%@ include file="../../component/dialog/gender.jsp"%>
+
+<script>
+    let updateForm_original_nick = "${principal.user.name}";
+    let updateForm_original_age = "${principal.user.ageRange}";
+    let updateForm_original_gender = "${principal.user.gender}";
+</script>
 
 <script src="${pageContext.request.contextPath}/js/user.js"></script>
 

@@ -21,8 +21,7 @@
                                type="radio"
                                id="gender-select-0"
                                name="genderInput"
-                               value="null"
-                               checked>
+                               value="null">
                         <div class="mdc-radio__background">
                         <div class="mdc-radio__outer-circle"></div>
                         <div class="mdc-radio__inner-circle"></div>
@@ -71,16 +70,15 @@
                                for="gender-select-2"
                                class="mdc-list-item__text">남성</label>
                     </li>
-                    <!-- ... -->
                 </ul>
             </div>
 
-            <div class="modal-footer border-top-0">
+            <div class="modal-footer">
                 <button  class="mdc-button" data-dismiss="modal"/>
                 <span class="mdc-button__ripple"></span>
                 <span class="mdc-button__label">취소</span>
                 </button>
-                <button id="genderSubmit" class="mdc-button mdc-button--raised no-outline">
+                <button id="genderSubmit" class="mdc-button mdc-button--raised no-outline" disabled>
                     <span class="mdc-button__label">변경</span>
                 </button>
             </div>
