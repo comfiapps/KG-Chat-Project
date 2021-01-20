@@ -31,7 +31,13 @@
                         <option value = "민식이법 개정">민식이법 개정</option>
                         <option value = "게임중독의 질병분류">게임중독의 질병분류</option>
                         <option value = "반려동물의 중성화">반려동물의 중성화</option>
+                        <option value = "기타">기타</option>
                     </select>
+                    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100 mdc-text-field--disabled" id = "labelStyle">
+                        <span class="mdc-text-field__ripple"></span>
+                        <input class="mdc-text-field__input" type="text" placeholder="주제를 입력하세요" aria-label="Label" id = "sub_input" disabled>
+                        <span class="mdc-line-ripple"></span>
+                    </label>
                 </div>
             </div>
 

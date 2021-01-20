@@ -5,14 +5,19 @@ let room = {
         });
 
         $("#createRoom_name").on("input", (e) => {
-            if(e.target.value.length <= 0) $("#createRoomBtn").attr("disabled", true);
-            else $("#createRoomBtn").attr("disabled", false);
+            this.validateInput(e.target.value, $("#createRoom_category").val(), $("#sub_input").val());
+        });
+
+        $("#sub_input").on("input", (e) => {
+            this.validateInput($("#createRoom_name").val(), $("#createRoom_category").val(), e.target.value);
+        });
+
+        $("#createRoom_category").on("change", (e) => {
+            this.validateInput($("#createRoom_name").val(), e.target.value, $("#sub_input").val());
         });
 
         $(".searchInput").on("keyup", (event) => {
-            if (event.key === "Enter") {
-                this.search()
-            }
+            if (event.key === "Enter") this.search();
         });
 
         $("#desktopSearchInput").on('input', (event) => {
@@ -30,13 +35,32 @@ let room = {
         });
     },
 
+    validateInput: function (name, select, custom) {
+
+
+        if(select === "기타") {
+            $("#sub_input").attr("disabled", false);
+            $("#labelStyle").removeClass("mdc-text-field--disabled");
+
+            if(name.length <= 0 || custom.length <= 0) $("#createRoomBtn").attr("disabled", true);
+            else $("#createRoomBtn").attr("disabled", false);
+
+        } else {
+            $("#sub_input").attr("disabled", true);
+            $("#labelStyle").addClass("mdc-text-field--disabled");
+
+            if(name.length <= 0) $("#createRoomBtn").attr("disabled", true);
+            else $("#createRoomBtn").attr("disabled", false);
+
+        }
+    },
+
     createRoom: function () {
         $("#createRoomBtn").attr("disabled", true)
-
         let data = {
             name: $("#createRoom_name").val(),
-            category: $("#createRoom_category").val()
-        };
+            category: $("#createRoom_category").val() === "기타" ? $("#sub_input").val() : $("#createRoom_category").val()
+        }
 
         $.ajax({
             type: "POST",
