@@ -17,18 +17,22 @@ import java.util.List;
 public class ChatService {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ChatRepository chatRepository;
 
     @Transactional(readOnly = true)
     public List<?> listChatByRoom(long roomId) {
-        return chatRepository.findAllByRoomIdAndCreateDateIsNotNullOrderByCreateDate(roomId);
+        return chatRepository.findPastChatByRoomId(roomId);
     }
 
     @Transactional
     public void insert(long roomId, long userId, String content) {
         chatRepository.save(Chat.builder()
                 .roomId(roomId)
-                .userId(userId)
+                .user(userRepository.findById(userId).orElseThrow(()
+                        -> new UsernameNotFoundException("User Not Found - KakaoId : " + userId)))
                 .content(content)
                 .build());
     }

@@ -22,7 +22,9 @@ public class Chat {
 
     private long roomId;
 
-    private long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
     @Lob
     private String content;
