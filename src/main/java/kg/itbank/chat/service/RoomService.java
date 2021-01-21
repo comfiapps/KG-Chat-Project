@@ -9,12 +9,14 @@ import kg.itbank.chat.repository.RoomRepository;
 import kg.itbank.chat.repository.UserRepository;
 import kg.itbank.chat.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -152,7 +154,7 @@ public class RoomService {
     }
 
     @Transactional
-    public Timestamp startDebate(long roomId, long userId) {
+    public void startDebate(long roomId, long userId) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() +
                 TimeUnit.MINUTES.toMillis(DEBATE_TIME) + TimeUnit.SECONDS.toSeconds(10));
 
@@ -160,8 +162,17 @@ public class RoomService {
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setEndTime(timestamp);
-        return timestamp;
     }
+
+    @Transactional
+    public Timestamp getEndDebate(long roomId, long userId){
+        Room room = roomRepository.findById(roomId).orElseThrow(()
+                -> new EntityNotFoundException("Room not found - Id : " + roomId));
+        if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
+        else if(room.getEndTime() == null) throw new NullPointerException("Do not have Endtime");
+        return room.getEndTime();
+    }
+
 
     @Transactional
     public void endDebate(long roomId, long userId) {

@@ -20,6 +20,7 @@ public class RoomInfoDto {
 
     private String roomName;
     private String roomCategory;
+
     private Timestamp createDate;
     private Timestamp endDebate;
 

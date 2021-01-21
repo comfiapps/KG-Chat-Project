@@ -7,6 +7,7 @@ import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.model.User;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.UserService;
+import kg.itbank.chat.service.VoteService;
 import kg.itbank.chat.util.JwtToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +23,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.HashMap;
 
 @Controller
 public class PathController {
 
     private static final Logger logger = LoggerFactory.getLogger(PathController.class);
+
+    @Autowired
+    private VoteService voteService;
 
     @Autowired
     private RoomService roomService;
@@ -65,7 +71,7 @@ public class PathController {
 
     @GetMapping("/discuss/{id}")
     public String discussRoom(@AuthenticationPrincipal PrincipalDetail principal,
-                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes) {
+                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
         long joined = roomService.isUserOnDebate(principal.getId());
         if(joined != -1 && joined != id) {
             redirectAttributes.addFlashAttribute("joinedError",true);
@@ -79,24 +85,38 @@ public class PathController {
         String senderType;
         RoomInfoDto room = roomService.defaultInfo(id);
 
-        //token에다가 방번호/유저아이디/유저이름/권한(discusser, watcher) 형태로 보낼것임
+//        PrincipalDetail user = (PrincipalDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //token에다가 방번호/유저번호/유저이름/권한(discusser, watcher) 형태로 보낼것임
+
         logger.info("room: {}", room);
 
-        PrincipalDetail user = (PrincipalDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(room.getOwner().getId() == user.getUser().getId()){
+        if(room.getOwner().getId() == principal.getUser().getId()){
             senderType = "owner";
-        }else if(room.getOpponent() != null && room.getOpponent().getId() == user.getUser().getId()){
+        }else if(room.getOpponent() != null && room.getOpponent().getId() == principal.getUser().getId()){
             senderType = "opponent";
         }else{
             senderType = "watcher";
         }
 
-        token = jwtToken.getToken(id + "/" + user.getUser().getId() + "/" + user.getUser().getName() +"/" + senderType);
+        if(room.getEndDebate() != null && room.getEndDebate().before(new Date())){
+            model.addAttribute("endDiscuss", true);
+        }else{
+            model.addAttribute("endDiscuss", false);
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("chatId", id);
+        map.put("senderType", senderType);
+        session.setAttribute("chatUser", map);
+
 
         model.addAttribute("chatId", id);
-        model.addAttribute("token", token);
         model.addAttribute("room", room);
         model.addAttribute("senderType", senderType);
+        model.addAttribute("vote", voteService.voteCount(id));
+
+        //토론 내용도
 
         return "discuss/discusser";
     }

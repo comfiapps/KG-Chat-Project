@@ -35,16 +35,9 @@ public class RoomApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), result);
     }
 
-    @PostMapping("/enter/{token}")
-    public ResponseDto<?> enterRoom(@AuthenticationPrincipal PrincipalDetail principal, @PathVariable(value = "token") String token){
-
-        System.out.println("token: " + token);
-
-        return new ResponseDto<>(HttpStatus.OK.value(),
-                roomService.becomeDebater(
-                        Long.parseLong(jwtToken.decodingToken(token).split("/", 4)[0]),
-                        principal.getId())
-        );
+    @PostMapping("/enter/{id}")
+    public ResponseDto<?> enterRoom(@AuthenticationPrincipal PrincipalDetail principal, @PathVariable(value = "id") long id){
+        return new ResponseDto<>(HttpStatus.OK.value(), roomService.becomeDebater(id, principal.getId()));
     }
 
     @GetMapping("/{id}")
@@ -62,7 +55,8 @@ public class RoomApiController {
     @PutMapping("/{roomId}/start")
     public ResponseDto<?> startDebate(@AuthenticationPrincipal PrincipalDetail principal,
                                       @PathVariable long roomId) {
-        return new ResponseDto<>(HttpStatus.OK.value(),  roomService.startDebate(roomId, principal.getId()));
+        roomService.startDebate(roomId, principal.getId());
+        return new ResponseDto<>(HttpStatus.OK.value(), "success");
     }
 
     @PutMapping("/{roomId}/end")

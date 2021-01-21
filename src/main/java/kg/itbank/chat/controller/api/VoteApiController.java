@@ -2,6 +2,7 @@ package kg.itbank.chat.controller.api;
 
 import kg.itbank.chat.config.PrincipalDetail;
 import kg.itbank.chat.dto.ResponseDto;
+import kg.itbank.chat.model.Vote;
 import kg.itbank.chat.service.UserService;
 import kg.itbank.chat.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +19,22 @@ public class VoteApiController {
     @Autowired
     private VoteService voteService;
 
-    @PutMapping
+    @PutMapping("{userId}/{roomId}")
     public ResponseDto<?> vote(@AuthenticationPrincipal PrincipalDetail principal,
-                               @PathParam("userId") long userId,
-                               @PathParam("roomId") long roomId) {
-        voteService.voteTo(principal.getId(), roomId, userId);
-        return new ResponseDto<>(HttpStatus.OK.value(), HttpStatus.OK.toString());
+                               @PathVariable("userId") long userId,
+                               @PathVariable("roomId") long roomId) {
+        return new ResponseDto<>(HttpStatus.OK.value(),
+                voteService.voteTo(principal.getId(), roomId, userId));
     }
 
-    @GetMapping
-    public ResponseDto<?> countVotes(@PathParam("roomId") long roomId) {
+    @GetMapping("{roomId}")
+    public ResponseDto<?> countVotes(@PathVariable("roomId") long roomId) {
         return new ResponseDto<>(HttpStatus.OK.value(), voteService.voteCount(roomId));
     }
 
-    @DeleteMapping
+    @DeleteMapping("{roomId}")
     public ResponseDto<?> unvote(@AuthenticationPrincipal PrincipalDetail principal,
-                                 @PathParam("roomId") long roomId) {
+                                 @PathVariable("roomId") long roomId) {
         voteService.unvote(principal.getId(), roomId);
         return new ResponseDto<>(HttpStatus.OK.value(), HttpStatus.OK.toString());
     }

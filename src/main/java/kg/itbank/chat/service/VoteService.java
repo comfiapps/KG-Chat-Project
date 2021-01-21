@@ -22,7 +22,12 @@ public class VoteService {
     private RoomRepository roomRepository;
 
     @Transactional
-    public void voteTo(long myId, long roomId, long userId) {
+    public Vote getVote(long myId, long roomId){
+        return voteRepository.findByIdRoomIdAndIdUserId(roomId, myId);
+    }
+
+    @Transactional
+    public long voteTo(long myId, long roomId, long userId) {
         Vote vote = voteRepository.findByIdRoomIdAndIdUserId(roomId, myId);
         if(vote == null) {
             voteRepository.save(
@@ -33,7 +38,13 @@ public class VoteService {
                                     .build())
                             .voteToId(userId)
                             .build());
-        } else vote.setVoteToId(userId);
+        }else if(vote.getVoteToId() == userId){
+            return -1L;
+        }else{
+          vote.setVoteToId(userId);
+        }
+        return userId;
+
     }
 
     @Transactional
@@ -47,7 +58,7 @@ public class VoteService {
                 -> new IllegalArgumentException("Room not found - Id : " + roomId));
 
         return CountVoteDto.builder()
-                .ownerVote(voteRepository.countByIdRoomIdAndIdUserId(roomId, room.getOwner().getId()))
+                .ownerVote(voteRepository.countByIdRoomIdAndVoteToId(roomId, room.getOwner().getId()))
                 .opponentVote(voteRepository.countByIdRoomIdAndVoteToId(roomId, room.getOpponentId()))
                 .build();
     }

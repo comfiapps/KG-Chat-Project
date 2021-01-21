@@ -30,8 +30,7 @@
         $("#enterWatcher").on("click", (event)=>{
             $.ajax({
                 type:"POST",
-                url:"/api/room/enter/"+token
-
+                url:"/api/room/enter/"+channel
             }).done(response => {
                 console.log("성공", response);
                 if (response.data === 1){
@@ -43,7 +42,6 @@
             }).fail(error => {
                 console.log("error.....");
             });
-
         });
     });
 

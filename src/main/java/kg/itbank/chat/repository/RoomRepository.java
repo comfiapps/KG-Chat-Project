@@ -24,10 +24,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room> findByNameIsContainingOrCategoryContainingOrOwnerNameContaining(String name, String category, String owner);
 
-
-
-
-/*
+    /*
     @Query(value = "SELECT category, projectName FROM projects", nativeQuery = true)
     public List<Room> ();*/
 }
