@@ -115,9 +115,25 @@
                                     </c:choose>
                                 </div>
                             </div>
-                            <div class="process_bar"><div class="process_left"></div></div>
+                            <c:choose>
+                                <c:when test="${roomList.endDebate == null}">
+                                    <div class="process_bar" style="visibility: hidden"><div class="process_left"></div></div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="process_bar"><div class="process_left"></div></div>
+                                </c:otherwise>
+                            </c:choose>
                             <div><sub>${roomList.roomCategory}</sub></div>
-                            <h5 class="font-weight-bold">(1-2) ${roomList.roomName}</h5>
+
+                            <c:choose>
+                                <c:when test="${roomList.endDebate == null}">
+                                    <h5 class="font-weight-bold">${roomList.roomName}</h5>
+                                </c:when>
+                                <c:otherwise>
+                                    <h5 class="font-weight-bold">(${roomList.countOwnerVote}-${roomList.countOpponentVote}) ${roomList.roomName}</h5>
+                                </c:otherwise>
+                            </c:choose>
+
                         </div>
                     </div>
     <%--                                <c:out value = "${roomList.owner.id}" />--%>
