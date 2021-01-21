@@ -31,7 +31,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/css.css">
-
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/profile.css">
 </head>
 <body>
 	<c:if test="${principal.user != null}">
@@ -101,12 +101,33 @@
 			</div>
 
 			<div class="profile-popover">
-				<button class="mdc-button" onclick="location.href = '/profile'"
-						style="text-align: center">
-					<span class="mdc-button__ripple"></span>
-					<span class="mdc-button__label">프로필 정보</span>
-				</button>
-				<button class="mdc-button" onclick="location.href = '/logout'">
+				<c:choose>
+					<c:when test="${principal.user.image != null}">
+						<img src="${principal.user.image}" alt="profile"
+							 onclick="location.href = '/profile'"
+							 class="profile popover-img">
+					</c:when>
+					<c:otherwise>
+						<img src="${pageContext.request.contextPath}/image/user.png" alt="profile"
+							 onclick="location.href = '/profile'"
+							 class="profile popover-img">
+					</c:otherwise>
+				</c:choose>
+
+				<div class="popover-content">
+					<p>${principal.user.name}</p>
+					<div><sub>${principal.user.email}</sub></div>
+
+					<button class="mdc-button w-100 mdc-button--outlined" onclick="location.href = '/profile'"
+							style="text-align: center">
+						<span class="mdc-button__ripple"></span>
+						<span class="mdc-button__label">프로필 정보 수정하기</span>
+					</button>
+				</div>
+
+				<div class="divider w-100"></div>
+
+				<button class="mdc-button w-100" onclick="location.href = '/logout'">
 					<span class="mdc-button__ripple"></span>
 					<span class="mdc-button__label">로그아웃</span>
 				</button>
