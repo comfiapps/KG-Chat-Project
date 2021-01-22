@@ -8,7 +8,6 @@ import kg.itbank.chat.model.User;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.UserService;
 import kg.itbank.chat.service.VoteService;
-import kg.itbank.chat.util.JwtToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,6 @@ public class PathController {
 
     @Autowired
     private RoomService roomService;
-
-    @Autowired
-    private JwtToken jwtToken;
 
     @GetMapping({"", "/", "/home"})
     public String home(@AuthenticationPrincipal PrincipalDetail principal, Model model) {

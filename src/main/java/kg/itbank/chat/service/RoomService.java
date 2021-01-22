@@ -77,8 +77,7 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public long isUserOnDebate(long userId) {
-        Room room = roomRepository.findFirstByOwnerIdOrOpponentIdAndCloseDateIsNotNullAndEndTimeIsGreaterThan(userId, userId,
-                new Timestamp(System.currentTimeMillis()));
+        Room room = roomRepository.findDebatingRoom(userId);
         if(room == null) return -1;
         return room.getId();
     }

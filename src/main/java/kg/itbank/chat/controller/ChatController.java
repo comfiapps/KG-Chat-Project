@@ -9,7 +9,6 @@ import kg.itbank.chat.service.ChatService;
 import kg.itbank.chat.service.ParticipantService;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.VoteService;
-import kg.itbank.chat.util.JwtToken;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,9 +50,6 @@ public class ChatController {
 
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
-
-	@Autowired
-	private JwtToken jwtToken;
 
 	//enter를 통해 discusser인지 watcher판단하여 discusser 입장시
 	//SimpMessageHeaderAccessor headerAccessor, @Header("destination") String destination 주입 가능한 매개변수

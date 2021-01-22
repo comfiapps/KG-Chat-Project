@@ -6,7 +6,6 @@ import kg.itbank.chat.exception.GlobalExceptionHandler;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.UserService;
-import kg.itbank.chat.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,9 +17,6 @@ public class RoomApiController {
 
     @Autowired
     private RoomService roomService;
-
-    @Autowired
-    private JwtToken jwtToken;
 
     @GetMapping
     public ResponseDto<?> listFeaturedRoom() {
