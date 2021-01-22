@@ -194,7 +194,10 @@ public class RoomService {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() == userId) room.setCloseDate(new Timestamp(System.currentTimeMillis()));
-        else room.setOpponentId(0);
+        else {
+            room.setOpponentId(0);
+            room.setEndTime(null);
+        }
     }
 
 }
