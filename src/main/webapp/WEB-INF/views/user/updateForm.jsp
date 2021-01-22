@@ -129,7 +129,7 @@
                                         <h5 class="font-weight-bold">(1-2) ${rooms.roomName}</h5>
                                         <div>
                                             <c:set var="today" value="<%=new java.util.Date()%>" />
-                                            <sub><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${today}" /></sub>
+                                            <sub><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rooms.createDate}" /></sub>
                                     </div>
                                 </div>
                             </div>
