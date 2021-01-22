@@ -71,8 +71,9 @@ public class ChatController {
 		msg.setSender(principalDetail.getUsername());
 		msg.setSenderId(userId);
 		msg.setSenderType((String) sendMap.get("senderType"));
+		msg.setMessage(principalDetail.getUser().getImage());
 
-		log.info("enter 받은 메시지: {}", msg);
+
 		if(msg.getSenderType().equals("opponent") && room.getEndTime() != null && room.getEndTime().before(new Date())){
 			msg.setSenderType("watcher");
 		}
@@ -109,6 +110,8 @@ public class ChatController {
 		}else{
 			msg.setMessageType("error");
 		}
+
+		log.info("진입 테스트 {} ", principalDetail.getUser().getImage());
 
 		simpMessagingTemplate.convertAndSend("/topic/info/"+chatId, msg);
 

@@ -68,7 +68,9 @@ public class PathController {
     @GetMapping("/discuss/{id}")
     public String discussRoom(@AuthenticationPrincipal PrincipalDetail principal,
                               @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+
         long joined = roomService.isUserOnDebate(principal.getId());
+
         if(joined != -1 && joined != id) {
             redirectAttributes.addFlashAttribute("joinedError",true);
             return "redirect:/discuss/" + joined;
@@ -77,12 +79,8 @@ public class PathController {
         if(!roomService.roomExists(id)) return "redirect:/";
         logger.info("방번호: {}", id);
 
-        String token;
         String senderType;
         RoomInfoDto room = roomService.defaultInfo(id);
-
-//        PrincipalDetail user = (PrincipalDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //token에다가 방번호/유저번호/유저이름/권한(discusser, watcher) 형태로 보낼것임
 
         logger.info("room: {}", room);
 
@@ -104,15 +102,13 @@ public class PathController {
 
         map.put("chatId", id);
         map.put("senderType", senderType);
-        session.setAttribute("chatUser", map);
 
+        session.setAttribute("chatUser", map);
 
         model.addAttribute("chatId", id);
         model.addAttribute("room", room);
         model.addAttribute("senderType", senderType);
         model.addAttribute("vote", voteService.voteCount(id));
-
-        //토론 내용도
 
         return "discuss/discusser";
     }
