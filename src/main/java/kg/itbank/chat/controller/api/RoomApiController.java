@@ -5,7 +5,6 @@ import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.exception.GlobalExceptionHandler;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.service.RoomService;
-import kg.itbank.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -58,7 +57,7 @@ public class RoomApiController {
     @PutMapping("/{roomId}/end")
     public ResponseDto<?> endDebate(@AuthenticationPrincipal PrincipalDetail principal,
                                     @PathVariable long roomId) {
-        roomService.endDebate(roomId, principal.getId());
+        roomService.resetDebate(roomId, principal.getId());
         return new ResponseDto<>(HttpStatus.OK.value(), "success");
     }
 
@@ -66,6 +65,13 @@ public class RoomApiController {
     public ResponseDto<?> close(@AuthenticationPrincipal PrincipalDetail principal,
                                     @PathVariable long roomId) {
         roomService.close(roomId, principal.getId());
+        return new ResponseDto<>(HttpStatus.OK.value(), "success");
+    }
+
+    @PutMapping("/{roomId}/leave")
+    public ResponseDto<?> leave(@AuthenticationPrincipal PrincipalDetail principal,
+                                    @PathVariable long roomId) {
+        roomService.leave(roomId, principal.getId());
         return new ResponseDto<>(HttpStatus.OK.value(), "success");
     }
 

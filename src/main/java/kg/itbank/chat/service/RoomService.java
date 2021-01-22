@@ -174,7 +174,7 @@ public class RoomService {
 
 
     @Transactional
-    public void endDebate(long roomId, long userId) {
+    public void resetDebate(long roomId, long userId) {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
@@ -187,6 +187,14 @@ public class RoomService {
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setCloseDate(new Timestamp(System.currentTimeMillis()));
+    }
+
+    @Transactional
+    public void leave(long roomId, long userId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(()
+                -> new EntityNotFoundException("Room not found - Id : " + roomId));
+        if(room.getOwner().getId() == userId) room.setCloseDate(new Timestamp(System.currentTimeMillis()));
+        else room.setOpponentId(0);
     }
 
 }
