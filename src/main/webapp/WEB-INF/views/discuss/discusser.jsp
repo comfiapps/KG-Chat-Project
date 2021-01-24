@@ -403,21 +403,89 @@
         }
 
     }
-    .warn_modal{
-        position: fixed; top: 0px; left: 0px; z-index: 10; width: 100%; height: 100%; background-color: #30303031;
-    }
-
     .user_vote div:nth-child(1){
         margin: 0.5rem 1rem;
     }
 
+    /*모달 css*/
+    .warn_modal{
+        position: fixed; top: 0px; left: 0px; z-index: 10; width: 100%; height: 100%; background-color: #30303031;
+    }
+    .warn_modal_center{
+        position: relative;
+        top: 30%;
+        margin: 0 auto;
+        transform: translateY(-20%);
+        width: fit-content;
+        height: fit-content;
+    }
+    .warn_modal_container{
+        color: #616060;
+        background-color: white;
+        box-shadow: 0px 3px 6px #00000029;
+        border: 1px solid rgb(185, 185, 185);
+        border-radius: 5px;
+        padding: 2.5rem;
+    }
+    .warn_modal_title{
 
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+    .warn_modal_body{
+        min-width: 30rem;
+        max-width: 40rem;
+        max-height: 40rem;
+        text-align: center;
+        font-size: 1.7rem;
+        font-weight: 500;
+
+        overflow-wrap: anywhere;
+        overflow-y: auto;
+
+        margin: 1rem;
+    }
+    .warn_modal_footer{
+        text-align: right;
+    }
+    .warn_modal_footer span{
+        font-size: 1.8rem;
+    }
 
 </style>
 
-<div class="warn_modal hidden">
-    <div></div>
+<%--경고 창 대신 사용할 모달창--%>
+<div class="warn_modal fade2" id="warn_disscuss">
+    <div class="warn_modal_center">
+        <div class="warn_modal_container">
+            <div class="warn_modal_title">
+                알림 메시지:
+            </div>
+            <div class="warn_modal_body">
+                아직 상대편 토론자가 아직 준비되지 않았습니다.
+            </div>
+            <div class="warn_modal_footer">
+                <button class="mdc-button no-outline" id="warnModalBtn">
+                    <span class="mdc-button__label">확인</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+
+
+
+    $(document).ready(function(){
+
+
+    })
+
+
+
+</script>
 
 <section class="chatting main-content">
 
@@ -847,7 +915,7 @@
         // 시간 초과시 동작 선택
         timeOut: function(handler){
             clearInterval(handler);
-            if(roomStats.owner.id == roomStats.user.id) ajax.endDiscuss();
+            if(roomStats.owner.id == user.id) ajax.endDiscuss();
             screenOperation.endWin();
         },
 
@@ -946,7 +1014,6 @@
             util.hiddenArea(".discusser_textArea", ".discusser_start_btn")
             util.showAndHiddenArea(".discusser_area", ".discusser_box");
             util.setText("토론종료", ".time");
-
         },
 
     }
@@ -1256,13 +1323,54 @@
             }else{
                 return user;
             }
-        }
+        },
+
     }
+
+    // 아직 만드는 중
+    // 경고창 대신 사용할 모달창
+    //
+    // function warnModal(id){
+    //
+    //     this.id = id;
+    //
+    //     if(!(this instanceof  warnModal)){
+    //         return new warnModal();
+    //     }
+    //
+    //     document.querySelector(".warn_modal").addEventListener("click", function(event){
+    //         event.preventDefault();
+    //         if(event.target.id == this.id){
+    //             document.querySelector("#warn_disscuss").classList.remove("show");
+    //         }
+    //     });
+    //
+    //     this.show = function(){
+    //         document.querySelector("#warn_disscuss").classList.add("show");
+    //     };
+    //
+    //     this.hidden = function(){
+    //         document.querySelector("#warn_disscuss").classList.remove("show");
+    //     };
+    //
+    //     this.msg = function(msg){
+    //         document.querySelector(".warn_modal_body").innerHTML = msg;
+    //     };
+    //
+    //     this.event = function (id, handler){
+    //         document.getElementById(id).addEventListener("click", handler);
+    //     };
+    // }
+    //
+    //
+    //
+    // myModal.show();
+    // myModal.event("warnModalBtn", myModal.hidden);
+    //
 
     // main
     function init() {
         roomStats.opponent = util.defaultUserForm(roomStats.opponent);
-
         ajax.getRoomStats();
         ajax.getChat();                 //1. 채팅 받아오기
         chat.connect(roomStats.roomId);          //2. 웹소켓 연결
