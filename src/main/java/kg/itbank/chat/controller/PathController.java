@@ -1,6 +1,9 @@
 package kg.itbank.chat.controller;
 
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kg.itbank.chat.config.PrincipalDetail;
 import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.dto.RoomInfoDto;
@@ -11,7 +14,9 @@ import kg.itbank.chat.service.VoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.gson.GsonBuilderCustomizer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -67,7 +72,7 @@ public class PathController {
 
     @GetMapping("/discuss/{id}")
     public String discussRoom(@AuthenticationPrincipal PrincipalDetail principal,
-                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session){
 
         long joined = roomService.isUserOnDebate(principal.getId());
 
@@ -91,24 +96,25 @@ public class PathController {
         }else{
             senderType = "watcher";
         }
-
-        if(room.getEndDebate() != null && room.getEndDebate().before(new Date())){
+        if(room.getCloseDate() != null){
             model.addAttribute("endDiscuss", true);
         }else{
             model.addAttribute("endDiscuss", false);
         }
 
         HashMap<String, Object> map = new HashMap<>();
-
         map.put("chatId", id);
         map.put("senderType", senderType);
 
         session.setAttribute("chatUser", map);
 
-        model.addAttribute("chatId", id);
-        model.addAttribute("room", room);
-        model.addAttribute("senderType", senderType);
-        model.addAttribute("vote", voteService.voteCount(id));
+        try{
+            model.addAttribute("room", new ObjectMapper().writeValueAsString(room));
+        }catch (Exception e){
+            return "redirect:/";
+        }
+//        model.addAttribute("room", room);
+//        model.addAttribute("vote", voteService.voteCount(id));
 
         return "discuss/discusser";
     }

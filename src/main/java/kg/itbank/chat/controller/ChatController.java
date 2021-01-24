@@ -1,10 +1,9 @@
 package kg.itbank.chat.controller;
 
 import kg.itbank.chat.config.PrincipalDetail;
-import kg.itbank.chat.dto.ChatDto;
+import kg.itbank.chat.dto.ChatMsgDto;
 import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.model.Room;
-import kg.itbank.chat.model.User;
 import kg.itbank.chat.service.ChatService;
 import kg.itbank.chat.service.ParticipantService;
 import kg.itbank.chat.service.RoomService;
@@ -13,20 +12,16 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -54,8 +49,14 @@ public class ChatController {
 	//enter를 통해 discusser인지 watcher판단하여 discusser 입장시
 	//SimpMessageHeaderAccessor headerAccessor, @Header("destination") String destination 주입 가능한 매개변수
 
+
+	@SubscribeMapping
+	public void test(){
+
+	}
+
 	@MessageMapping("/chat/enter")
-	public void enter(StompHeaderAccessor stompHeaderAccessor){
+	public void enter(StompHeaderAccessor stompHeaderAccessor, SimpMessageHeaderAccessor sha){
 
 		HashMap<String, Object> sendMap = (HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser");
 		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
@@ -63,107 +64,68 @@ public class ChatController {
 		long chatId = (long)sendMap.get("chatId");
 		long userId = principalDetail.getId();
 
-		Room room = roomService.getRoom(chatId);
-
-		ChatDto msg = new ChatDto();
-
-		msg.setChatId(chatId);
-		msg.setSender(principalDetail.getUsername());
-		msg.setSenderId(userId);
-		msg.setSenderType((String) sendMap.get("senderType"));
-		msg.setMessage(principalDetail.getUser().getImage());
-
-
-		if(msg.getSenderType().equals("opponent") && room.getEndTime() != null && room.getEndTime().before(new Date())){
-			msg.setSenderType("watcher");
+		RoomInfoDto room = roomService.defaultInfo(chatId);
+		if(room.getOpponent().getId() == userId){
+			simpMessagingTemplate.convertAndSend("/topic/enter/"+chatId, room);
 		}
 
-		simpMessagingTemplate.convertAndSend("/topic/enter/"+chatId, msg);
 		participantService.join(chatId, userId);
-
 	}
 
 	@MessageMapping("/chat/info")
-	public void info(ChatDto message, StompHeaderAccessor stompHeaderAccessor){
-		log.info("info 받은 메시지: {}", message);
+	public void info(ChatMsgDto message, StompHeaderAccessor stompHeaderAccessor, SimpMessageHeaderAccessor sha){
 
 		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
 		HashMap<String, Object> userMap = (HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser");
 
 		long chatId = (long)(userMap.get("chatId"));
-		Room room = roomService.getRoom(chatId);
 
-		ChatDto msg =  new ChatDto();
-		msg.setMessageType(message.getMessageType());
-		msg.setSenderType((String)userMap.get("senderType"));
+		ChatMsgDto msg = ChatMsgDto.builder()
+				.chatId(chatId)
+				.sender(principalDetail.getUser().getName())
+				.senderId(principalDetail.getId())
+				.senderType((String)userMap.get("senderType"))
+				.messageType(message.getMessageType())
+				.message(message.getMessage())
+				.build();
 
-		if(message.getMessageType().equals("vote")){
-			msg.setMessage(voteService.voteCount(chatId));
-		}else if(room.getOwner().getId() == principalDetail.getId()){
-			if(message.getMessageType().equals("text")){
-				msg.setMessage(message.getMessage());
-			}else if(message.getMessageType().equals("start")){
-				msg.setMessage(roomService.getEndDebate(chatId, principalDetail.getId()));
-			}else if(message.getMessageType().equals("end")){
+		if(	msg.getSenderType().equals("owner") ||
+			msg.getSenderType().equals("opponent") ||
+			msg.getMessageType().equals("vote")) {
 
-			}
-		}else{
-			msg.setMessageType("error");
+			simpMessagingTemplate.convertAndSend("/topic/info/"+chatId, msg);
 		}
-
-		log.info("진입 테스트 {} ", principalDetail.getUser().getImage());
-
-		simpMessagingTemplate.convertAndSend("/topic/info/"+chatId, msg);
-
 	}
 
-	@MessageMapping("/chat/msg")
-	public void sendMsg(ChatDto message, StompHeaderAccessor stompHeaderAccessor) {
 
+	@MessageMapping("/chat/msg")
+	public void sendMsg(ChatMsgDto message, StompHeaderAccessor stompHeaderAccessor, SimpMessageHeaderAccessor sha) {
 		log.info("msg 받은 메시지 {}" , message);
 		log.info("stompHeader: {}", stompHeaderAccessor);
 
 		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
+		HashMap userMap = ((HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser"));
 
-		long chatId = (long)(((HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser")).get("chatId"));
-
-		Room room = roomService.getRoom(chatId);
+		long chatId = (long)(userMap.get("chatId"));
+		RoomInfoDto room = roomService.defaultInfo(chatId);
 
 		log.info("room: {}", room);
 
-		if(room.getEndTime().after(new Date())){
-			log.info("메시지 전송");
+		if(room.getCloseDate() == null && message.getMessageType().equals("text")){
 
-			long userId = principalDetail.getId();
-			message.setSender(principalDetail.getUsername());
+			ChatMsgDto msg = ChatMsgDto.builder()
+					.chatId(chatId)
+					.sender(principalDetail.getUser().getName())
+					.senderId(principalDetail.getId())
+					.senderType((String)userMap.get("senderType"))
+					.messageType(message.getMessageType())
+					.message(message.getMessage())
+					.build();
 
-			if(room.getOwner().getId() == userId || room.getOpponentId() == userId){
-				if(room.getOpponentId() == userId){
-					message.setSenderType("opponent");
-				}else{
-					message.setSenderType("owner");
-				}
-			}else{
-				message.setSenderType("watcher");
-			}
+			log.info("메시지 전송: {}", msg);
 
-			if(message.getMessageType().equals("text")){
-				chatService.insert(chatId, userId, (String)message.getMessage());
-			}
-
-			simpMessagingTemplate.convertAndSend("/topic/msg/"+chatId, message);
-
-
-		}else{
-			log.info("종료된 토론방");
-
-			ChatDto msg =  new ChatDto();
-
-			msg.setChatId(chatId);
-			msg.setSenderType("owner");
-			msg.setMessageType("end");
-
-			simpMessagingTemplate.convertAndSend("topic/info/"+chatId, msg);
+			chatService.insert(chatId, principalDetail.getId(), (String)message.getMessage());
+			simpMessagingTemplate.convertAndSend("/topic/msg/"+chatId, msg);
 		}
 	}
 }

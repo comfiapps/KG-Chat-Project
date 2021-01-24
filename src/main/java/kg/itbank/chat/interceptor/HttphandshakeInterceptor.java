@@ -7,6 +7,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class HttphandshakeInterceptor extends HttpSessionHandshakeInterceptor {
@@ -16,5 +17,9 @@ public class HttphandshakeInterceptor extends HttpSessionHandshakeInterceptor {
         attributes.put("chatUser", ((ServletServerHttpRequest)request).getServletRequest().getSession().getAttribute("chatUser"));
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }
+
+
+
+
 }
 

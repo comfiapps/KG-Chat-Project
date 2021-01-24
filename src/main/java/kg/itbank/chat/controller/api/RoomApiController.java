@@ -71,8 +71,13 @@ public class RoomApiController {
     @PutMapping("/{roomId}/leave")
     public ResponseDto<?> leave(@AuthenticationPrincipal PrincipalDetail principal,
                                     @PathVariable long roomId) {
-        roomService.leave(roomId, principal.getId());
-        return new ResponseDto<>(HttpStatus.OK.value(), "success");
+        return new ResponseDto<>(HttpStatus.OK.value(), roomService.leave(roomId, principal.getId()));
+    }
+
+    @GetMapping("/{roomId}/stats")
+    public  ResponseDto<?> stats(@PathVariable long roomId){
+
+        return new ResponseDto<>(HttpStatus.OK.value(), roomService.defaultInfo(roomId));
     }
 
 }

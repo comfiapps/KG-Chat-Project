@@ -33,4 +33,5 @@ public class User {
     private String ageRange;
 
     private String gender;
+
 }
