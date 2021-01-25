@@ -1,4 +1,4 @@
-let scroll = {
+    let scroll = {
     init: function() {
         $(document).ready(function() {
             $( ".scrollmenu" ).each(function() {

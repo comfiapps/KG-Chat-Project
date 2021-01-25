@@ -2,6 +2,7 @@ package kg.itbank.chat.controller;
 
 import kg.itbank.chat.config.PrincipalDetail;
 import kg.itbank.chat.dto.ChatDto;
+import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.model.User;
@@ -13,11 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +30,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,30 +96,25 @@ public class ChatController {
 		HashMap<String, Object> userMap = (HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser");
 
 		long chatId = (long)(userMap.get("chatId"));
-		Room room = roomService.getRoom(chatId);
+		RoomInfoDto room = roomService.defaultInfo(chatId);
 
-		ChatDto msg =  new ChatDto();
-		msg.setMessageType(message.getMessageType());
-		msg.setSenderType((String)userMap.get("senderType"));
+		try {
+			if(room.getOwner().getId() != principalDetail.getId() && room.getOpponent().getId() != principalDetail.getId()) throw new AccessDeniedException("");
 
-		if(message.getMessageType().equals("vote")){
-			msg.setMessage(voteService.voteCount(chatId));
-		}else if(room.getOwner().getId() == principalDetail.getId()){
-			if(message.getMessageType().equals("text")){
-				msg.setMessage(message.getMessage());
-			}else if(message.getMessageType().equals("start")){
-				msg.setMessage(roomService.getEndDebate(chatId, principalDetail.getId()));
-			}else if(message.getMessageType().equals("end")){
+
+			if(message.getMessage().equals("startDiscuss")) {
+				simpMessagingTemplate.convertAndSend("/topic/info/"+chatId, new ResponseDto(HttpStatus.OK.value(), roomService.startDebate(room.getRoomId(), principalDetail.getId())));
+			}else if(message.getMessage().equals("endDiscuss")){
+
+			}else if(message.getMessage().equals("leaveDiscuss")){
 
 			}
-		}else{
-			msg.setMessageType("error");
+
+		}catch (EntityNotFoundException | AccessDeniedException d){
+			simpMessagingTemplate.convertAndSend("/topic/info/"+chatId, new ResponseDto(HttpStatus.BAD_REQUEST.value(), "fail"));
 		}
 
 		log.info("진입 테스트 {} ", principalDetail.getUser().getImage());
-
-		simpMessagingTemplate.convertAndSend("/topic/info/"+chatId, msg);
-
 	}
 
 	@MessageMapping("/chat/msg")
@@ -124,7 +124,6 @@ public class ChatController {
 		log.info("stompHeader: {}", stompHeaderAccessor);
 
 		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
-
 		long chatId = (long)(((HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser")).get("chatId"));
 
 		Room room = roomService.getRoom(chatId);

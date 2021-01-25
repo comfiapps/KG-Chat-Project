@@ -123,6 +123,7 @@ public class RoomService {
                 : null;
 
         return RoomInfoDto.builder()
+                .roomId(roomId)
                 .owner(User.builder()
                         .id(room.getOwner().getId())
                         .name(room.getOwner().getName())
@@ -137,6 +138,8 @@ public class RoomService {
                 .roomCategory(room.getCategory())
                 .createDate(room.getCreateDate())
                 .endDebate(room.getEndTime())
+                .countOwnerVote(voteRepository.countByIdRoomIdAndIdUserId(roomId, room.getOwner().getId()))
+                .countOpponentVote(voteRepository.countByIdRoomIdAndVoteToId(roomId, room.getOpponentId()))
                 .build();
     }
 
@@ -153,7 +156,7 @@ public class RoomService {
     }
 
     @Transactional
-    public void startDebate(long roomId, long userId) {
+    public Timestamp startDebate(long roomId, long userId) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() +
                 TimeUnit.MINUTES.toMillis(DEBATE_TIME) + TimeUnit.SECONDS.toSeconds(10));
 
@@ -161,6 +164,7 @@ public class RoomService {
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setEndTime(timestamp);
+        return room.getEndTime();
     }
 
     @Transactional

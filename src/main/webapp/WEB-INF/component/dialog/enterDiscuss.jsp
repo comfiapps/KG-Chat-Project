@@ -30,11 +30,11 @@
         $("#enterWatcher").on("click", (event)=>{
             $.ajax({
                 type:"POST",
-                url:"/api/room/enter/"+channel
+                url:"/api/room/enter/"+roomStatus.roomId
             }).done(response => {
                 console.log("성공", response);
                 if (response.data === 1){
-                    location.href="/discuss/" + channel;
+                    location.href="/discuss/" + roomStatus.roomId;
                 }else{
                     alert("이미 다른 사용자가 참여하셨습니다.");
                     $("#enter").removeClass("show");

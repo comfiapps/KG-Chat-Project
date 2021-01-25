@@ -1,6 +1,8 @@
 package kg.itbank.chat.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kg.itbank.chat.config.PrincipalDetail;
 import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.dto.RoomInfoDto;
@@ -8,6 +10,7 @@ import kg.itbank.chat.model.User;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.UserService;
 import kg.itbank.chat.service.VoteService;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +70,7 @@ public class PathController {
 
     @GetMapping("/discuss/{id}")
     public String discussRoom(@AuthenticationPrincipal PrincipalDetail principal,
-                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session)  {
 
         long joined = roomService.isUserOnDebate(principal.getId());
 
@@ -103,12 +106,22 @@ public class PathController {
         map.put("chatId", id);
         map.put("senderType", senderType);
 
+        try{
+            model.addAttribute("room", new ObjectMapper().writeValueAsString(room));
+        }catch (Exception e){
+
+        }
+
+
         session.setAttribute("chatUser", map);
 
+
         model.addAttribute("chatId", id);
-        model.addAttribute("room", room);
+//        model.addAttribute("room", room);
         model.addAttribute("senderType", senderType);
         model.addAttribute("vote", voteService.voteCount(id));
+
+
 
         return "discuss/discusser";
     }

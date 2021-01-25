@@ -7,10 +7,7 @@
 <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/css/chat.css">--%>
 
 <style>
-
-    html{
-        font-size:10px;
-    }
+    html{ font-size:10px;}
 
     div{
          border: 1px solid black;
@@ -393,7 +390,6 @@
             bottom: -80%;
             left: 0;
         }
-
     }
     .closeBtnArea{
         width: 30px;
@@ -437,6 +433,7 @@
             <div class="discusser_chat_container">
                 <div class="chat_box" id="discusserBox">
                     <div class="discusser_area">
+                        <%--토론자 채팅 입력 부분--%>
                     </div>
                     <div class="discusser_box">
                         <div class="discusser_start_area">
@@ -452,8 +449,8 @@
             </div>
 
             <div class="discusser_send_container">
-                <div class="send_box">
-                    <input type="text" placeholder="Enter Message" id="discusser_msg_input">
+                <div class="send_box ">
+                    <input type="text" placeholder="Enter Message" class="hidden" id="discusser_msg_input">
                 </div>
             </div>
 
@@ -469,11 +466,11 @@
                     <div>Vote the Best One</div>
                 </div>
                 <div class="vote_box">
-                    <a class="user_vote message_left user_left" onclick="active.voteActive(this)">
+                    <a class="user_vote message_left user_left" id="vote_left">
                         <div class="user1_img"><img src="${pageContext.request.contextPath}/image/user.png" alt=""></div>
                         <div class="user1_name">미입장</div>
                     </a>
-                    <a class="user_vote message_right user_right" onclick="active.voteActive(this)">
+                    <a class="user_vote message_right user_right" id="vote_right">
                         <div class="user2_img"><img src="${pageContext.request.contextPath}/image/user.png" alt=""></div>
                         <div class="user2_name">미입장</div>
                     </a>
@@ -481,17 +478,15 @@
 
             </div>
             <div class="watcher_chat_container ">
-
                 <div class="chat_box" id = "watcherBox">
                     <div class="watcher_area">
-
+                        <%--사용자 채팅 입력 부분--%>
                     </div>
-
                 </div>
             </div>
             <div class="watcher_send_container">
                 <div class="send_box">
-                    <input type="text" placeholder="Enter Message" id ="watcher_msg_input">
+                    <input type="text" placeholder="Enter Message" class="hidden" id ="watcher_msg_input">
                 </div>
             </div>
         </div>
@@ -505,22 +500,21 @@
 
     let socket;
     let stompClient;
-    let transData = {'message': null, 'messageType': null, 'sendTime': null,};
 
     const joinedError = "${joinedError}";
-    const channel = "${chatId}";
-    const user = {name: "${principal.user.name}", id: "${principal.user.id}"};
 
-    const owner = {name: "${room.owner.name}", id: "${room.owner.id}", img:"${room.owner.image}"==''?"${pageContext.request.contextPath}/image/user.png":"${room.owner.image}",};
-    let opponent = {name: "${room.opponent.name}", id: "${room.opponent.id}", img:"${room.opponent.image}"==''?"${pageContext.request.contextPath}/image/user.png":"${room.opponent.image}",};
+    const user = {id: "${principal.user.id}", name:"${principal.user.name}"};
 
-    let ownerVote = ${empty vote? 0: vote.ownerVote};
-    let opponentVote = ${empty vote? 0: vote.opponentVote};
+    let roomStatus = ${room};
 
-    let time = "${room.endDebate}";
-
-    let endDiscuss = ${endDiscuss};
+    let endDiscuss = false;
     let chatAble = false;
+
+    let transData = {'message': null, 'messageType': null, 'sendTime': null,};
+
+    console.log("roomStatus: ", roomStatus);
+    console.log("user: ", user);
+
 
 </script>
 
@@ -530,477 +524,172 @@
 <%--<script src="${pageContext.request.contextPath}/js/chat.js"></script>--%>
 
 <script>
-    // 채팅 관련 처리
-    let chat = {
-        //웹 세션 연결 및 메시지 받기
-        connect: function (destination) {
-            socket = new SockJS("/chat");
-            stompClient = Stomp.over(socket);
-            stompClient.connect({}, function () {
 
-                //입장 관려 처리 부분: opponent가 들어오면 값을 받아 입장 처리
-                stompClient.subscribe('/topic/enter/' + destination, function (e) {
-                    const msg = JSON.parse(e.body);
-                    if (msg.senderType === "opponent" && !endDiscuss) {
-                        console.log("토론자 입장");
-                        opponent.name = msg.sender;
-                        opponent.id = msg.senderId;
-                        opponent.img = msg.message;
-                        console.log(opponent.img);
-                        active.selectWin();
-                    } else {
-                        console.log("시청자 입장: ", msg.sender);
-                    }
-                });
+    //1: 토론자 입장 전 대기 화면
+    //2: 토론자 입장 완료 및 토론 시작 전 화면
+    //3: 토론 중 화면
+    //4: 토론 종료 화면
 
-                //입력 값에 따라 기능시작 처리
-                stompClient.subscribe('/topic/info/' + destination, function (e) {
-                    const msg = JSON.parse(e.body);
-                    console.log("info 받은 메시지: ", msg);
-
-                    if (msg.messageType == "text") {
-                        partWinOperation.infoMsg(msg.message);
-                    } else if (msg.messageType == "start") {
-                        time = msg.message;
-                        screenOperation.beginWin();
-                    } else if (msg.messageType == "end") {
-                        endDiscuss = true;
-                    } else if(msg.messageType == "vote"){
-                        ownerVote = msg.message.ownerVote;
-                        opponentVote = msg.message.opponentVote;
-                        partWinOperation.voteChangeWin(ownerVote, opponentVote, ".result", ".score_bar_left");
-                    }
-
-                });
-
-                // 채팅 메시지 부분
-                stompClient.subscribe('/topic/msg/' + destination, function (e) {
-                    partWinOperation.contributor(JSON.parse(e.body));
-                });
-
-                // 입장시 보내기
-                chat.enter();
-            });
+    //스코어 부분 제어
+    let scoreBoard = {
+        active: function(){
+            scoreBoard.scoreValue(roomStatus.countOwnerVote, roomStatus.countOpponentVote);
+            scoreBoard.scoreBar(roomStatus.countOwnerVote, roomStatus.countOpponentVote);
+            this.timer(roomStatus.endDebate, 7, this.timeIn, this.timeOut);
         },
 
-        //info 메시지 보내기
-        info: function (type, msg) {
-            stompClient.send("/app/chat/info",
-                {},
-                JSON.stringify({
-                    'message': msg,
-                    'messageType': type
-                }))
+        //점수 조작
+        scoreValue: function(ownerVote, opponentVote){
+            $(".result").html(ownerVote + " - " + opponentVote);
         },
 
-        //입장 메시지 보내기
-        enter: function () {
-            if (user.id == opponent.id){
-
-                console.log(transData);
-                stompClient.send("/app/chat/enter", {}, "");
-            }
-        },
-
-        //일반 메시지 보내기
-        sendMessage: function (msg) {
-            transData.sendTime = new Date();
-            transData.message = msg;
-            transData.messageType = "text";
-
-            stompClient.send("/app/chat/msg", {}, JSON.stringify(transData));
-        },
-    }
-
-    // 비동기 처리
-    let ajax = {
-        //토론 시작 요청
-        startDiscuss: function(){
-            if(!endDiscuss){
-                $.ajax({
-                    type:"PUT",
-                    url:"/api/room/"+channel +"/start"
-                }).done(response =>{
-                    if(response.data == "success"){
-                        chat.info("start","");
-                    }
-                }).fail(error =>{
-                    console.log("startDiscuss error.....");
-                })
-            }
-        },
-
-        //토론 종료 요청
-        endDiscuss: function(){
-            if(!endDiscuss) {
-                $.ajax({
-                    type:"PUT",
-                    url :"/api/room/"+channel + "/close",
-                }).done(response =>{
-                    if(response.data == "success"){
-                        chat.info("end","");
-                    }
-                }).fail(error=>{
-                    console.log("endDiscuss error.....");
-                })
-            }
-        },
-
-        //토론 초기화 요청
-        reSetDiscuss: function(){
-            if(!endDiscuss){
-                $.ajax({
-                    type: "",
-
-                    url: "",
-                })
-            }
-        },
-
-        //투표 요청
-        voteDiscuss: function(voteUser){
-            if(!endDiscuss) {
-                $.ajax({
-                    type: "PUT",
-                    url: "/api/vote/" + voteUser.id + "/" + channel,
-                }).done(response => {
-                    if (response.data == -1) {
-                        ajax.unvoteDiscuss();
-                    } else if (response.data == owner.id || response.data == opponent.id) {
-                        chat.info("vote", "");
-                        alert(voteUser.name + "에게 투표 하였습니다.");
-                    }
-                }).fail(error => {
-                    console.log("voteDiscuss error.....");
-                })
-            }
-        },
-
-        //투표취소 요청
-        unvoteDiscuss: function(){
-            if(!endDiscuss) {
-                $.ajax({
-                    type: "DELETE",
-                    url: "/api/vote/" + channel
-                }).done(response => {
-                    if (response.data == "success"){
-                        chat.info("vote", "")
-                        alert(voteUser.name + "의 투표를 취소하였습니다.");
-                    }
-                }).fail(error=>{
-                    console.log("unvoteDiscuss error.....");
-                })
-            }
-        },
-
-        //과거 채팅 데이터 요청
-        getChat: function(){
-            $.ajax({
-                type: "GET",
-                url: "/api/chat/"+ channel
-            }).done(response=>{
-                if(response.data != null && response.data != ''){
-                    partWinOperation.chatLoadingWin(response.data);
-                }
-            }).fail(error=>{
-                console.log("getChat error...")
-            })
-        },
-
-    }
-
-    //
-    let active = {
-        // 투표 동작 부분
-        voteActive: function(event){
-            if(!endDiscuss){
-                let voteUser;
-                if (event.classList.contains("user_left")) {
-                    voteUser = owner;
-                } else {
-                    voteUser = opponent;
-                }
-                ajax.voteDiscuss(voteUser);
-            }
-        },
-
-        // 보여줄 화면 선택
-        selectWin: function(){
-            let selectNum;
-            if(!endDiscuss){
-                if(opponent.id == ""){
-                    selectNum = 1;
+        //점수바 조작
+        scoreBar: function(ownerVote, opponentVote){
+            if(ownerVote != 0 || opponentVote != 0){
+                var rate = (ownerVote /(ownerVote + opponentVote)*100);
+                if(rate == 100){
+                    $(".result").css('border-radius', '5px 5px 5px 5px');
+                    $(".result").css('width', rate+"%");
                 }else{
-                    if(time == ''){
-                        selectNum = 2;
-                    }else{
-                        selectNum = 3;
-                    }
+                    $(".result").css('border-radius', '5px 0px 0px 5px');
+                    $(".result").css('width', rate+"%");
                 }
             }else{
-                selectNum = 4;
+                $(".result").css('border-radius', '5px 0px 0px 5px');
+                $(".result").css('width', '50%');
             }
-            screenOperation.viewWin(selectNum);
+        },
+
+        //타이머 - 현재시간과 종료시간을 넘어간 경우에는 토론 종료, 아닐 시에는 시계 값 바꿈,
+        timer: function(time, additionalTime, timeInCallback, timeOutCallback){
+            if(time == null || time == '') $(".time").html("00:00");
+            else{
+                let handler = setInterval(function(){
+                    var diff = moment(time).diff(moment(new Date()))/1000+additionalTime;
+                    if(diff <= 0){
+                        timeOutCallback(handler);
+                        return;
+                    }else{
+                        timeInCallback(diff);
+                    }
+                }, 1000);
+            }
         },
 
         // 시간 초과시 동작 선택
         timeOut: function(handler){
-            clearInterval(handler);
-            if(owner.id == user.id) ajax.endDiscuss();
-            screenOperation.endWin();
+            clearInterval(handler)
+            console.log("토론 종료")
+            if(roomStatus.owner.id == user.id) chat.info("chatEnd");
         },
 
         // 시간 미초과시 동작 선택
         timeIn: function(diff){
-            util.setText(util.timeFormat(diff), ".time");
+            $(".time").html(scoreBoard.timeFormat(diff));
+        },
+        //초형태의 숫자 데이터를 받아 MM:ss의 형태로 문자열 데이터 반환
+        timeFormat: function(diff){
+            if(diff == 0) return "00:00";
+            var min = parseInt(diff/60)+"";
+            var sec = parseInt(diff%60)+"";
+            return (min.length<2? ("0"+min):min) + " : " + (sec.length<2? ("0"+sec):sec);
         },
     }
 
-    // 전체 화면 처리
-    let screenOperation = {
-
-        // 선택된 화면에 따라 화면 보여주기
-        viewWin: function (selectNum){
-            screenOperation.initWin();
-            switch (selectNum){
-                case 1: screenOperation.waitWin(); break;           //토론자 입장 전 대기 화면
-                case 2: screenOperation.waitStartWin(); break;      //토론자 입장 완료 및 토론 시작 전 화면
-                case 3: screenOperation.processWin(); break;        //토론 중 화면
-                case 4: screenOperation.endWin(); break;            //토론 종료 화면
-                default: break;
+    //토론자 채팅 부분 제어
+    let discussChat = {
+        active: function(id){
+            //토론자라면 input열어주기
+            if(roomStatus.owner.id == user.id || roomStatus.opponent.id == user.id)
+                util.showArea("#discusser_msg_input");
+            this.beginDiscussEvent();
+            switch(id){
+                case 1: //1: 토론자 입장 전 대기 화면
+                    console.log("토론자 입장 전 대기 화면")
+                    this.infoMsg("아직 토론자가 입장하지 않았습니다.");
+                    break;
+                case 2: //2: 토론자 입장 완료 및 토론 시작 전 화면
+                    console.log("토론자 입장 완료 및 토란 시작 전 화면");
+                    this.waitStartWin();
+                    break;
+                case 3: //3: 토론 중 화면
+                    console.log("토론 중 화면");
+                    this.processWin();
+                    break;
+                case 4: //4: 토론 종료 화면
+                    console.log("토론 종료 화면 호출");
+                    this.endWin();
+                    break;
+                default:
+                    break;
             }
         },
-
-        // 0.기본 화면
-        initWin: function(){
-            console.log("기본화면 호출");
-            partWinOperation.inputDiscusser();
-            partWinOperation.inputSelect();
-        },
-
-        // 1.토론자 입장 전 대기 화면
-        waitWin: function(){
-            console.log("토론자 입장 전 대기화면 호출")
-            util.showAndHiddenArea(".discusser_box", ".discusser_area");
-            util.showAndHiddenArea(".discusser_textArea", ".discusser_start_btn");
-            partWinOperation.enterDiscusserWin();
-            partWinOperation.infoMsg("아직 상대방 토론자가 입장하지 않았습니다.");
-        },
-
         // 2.토론자 입장 완료 및 토론 시작 전 화면
         waitStartWin: function(){
-            console.log("토론자 입장 완료 및 토론 시작 전 화면 호출")
-            partWinOperation.inputDiscusser();
             util.showAndHiddenArea(".discusser_box", ".discusser_area");
-            if(user.id == owner.id){
+            if(user.id == roomStatus.owner.id){
                 util.showAndHiddenArea(".discusser_start_btn", ".discusser_textArea");
             }else{
                 util.showAndHiddenArea(".discusser_textArea", ".discusser_start_btn");
-                partWinOperation.infoMsg("토론 시작을 기다려주세요");
+                this.infoMsg("토론 시작을 기다려주세요");
             }
         },
-
-        // 2-1.토론 시작 화면
-        beginWin: function(){
-            console.log("토론 시작 화면 호출");
-            util.showAndHiddenArea(".discusser_box", ".discusser_area");
-            util.showAndHiddenArea(".discusser_textArea", ".discusser_start_btn");
-
-            let count = 3;
-            (function(){
-                let handler = setInterval(function(){
-                    if(count < 0){
-                        clearInterval(handler);
-                        screenOperation.processWin(); //여기가 아니라 winMode가 들어오면 시작해야함
-                        return;
-                    }
-                    if(count == 0){
-                        partWinOperation.infoMsg("토론시작!");
-                    }else{
-                        partWinOperation.infoMsg(count);
-                    }
-                    count--;
-                },1000);
-            })();
-        },
-
         // 3.토론 중 화면
         processWin:function(){
-            console.log("토론 중 화면 호출");
-            util.hiddenArea(".discusser_textArea", ".discusser_start_btn")
             util.showAndHiddenArea(".discusser_area", ".discusser_box");
-            partWinOperation.voteChangeWin(ownerVote, opponentVote,".result", ".score_bar_left");
-
-            chatAble = true;
-            util.timer(time, 0,active.timeOut, active.timeIn);
         },
-
         // 4.토론 종료 화면
         endWin: function(){
-            console.log("토론 종료 화면 호출")
+
             util.hiddenArea(".discusser_textArea", ".discusser_start_btn")
             util.showAndHiddenArea(".discusser_area", ".discusser_box");
-            util.setText("토론종료", ".time");
-
+        },
+        //토론방 토론자 채팅란에 메시지 보이기
+        infoMsg: function(msg){
+            util.hiddenArea(".discusser_area, .discusser_start_btn");
+            util.showArea(".discusser_box", ".discusser_textArea");
+            $(".discusser_textArea").html(msg);
         },
 
-    }
-
-    // 부분화면 처리
-    let partWinOperation = {
-
-        //스코어바 조작
-        scoreScollbar: function(ownerVote, opponentVote, targetTag){
-            if(ownerVote != 0 || opponentVote != 0){
-                var rate = (ownerVote /(ownerVote + opponentVote)*100);
-                if(rate == 100){
-                    $(targetTag).css('border-radius', '5px 5px 5px 5px');
-                    $(targetTag).css('width', rate+"%");
-                }else{
-                    $(targetTag).css('border-radius', '5px 0px 0px 5px');
-                    $(targetTag).css('width', rate+"%");
-                }
-            }else{
-                $(targetTag).css('border-radius', '5px 0px 0px 5px');
-                $(targetTag).css('width', '50%');
-            }
-        },
-
-        //스크롤 제어 - 화면 크기이상으로 스크롤이 올라가있는 경우 자동 내리기 안함
-        scollMoving: function (parentTag, targetTag, limit){
-            let length =  $(targetTag).innerHeight();
-            let scrollLength = $(parentTag).scrollTop() + $(parentTag).innerHeight();
-            if(length - scrollLength <= limit){
-                $(parentTag).scrollTop(length);
-            }
-        },
-
-        //투표수 조작 화면
-        voteChangeWin: function(ownerVote, opponentVote, targetTag, scollTag){
-            util.setText(ownerVote + " - " + opponentVote, targetTag);
-            partWinOperation.scoreScollbar(ownerVote, opponentVote, scollTag);
-        },
-
-        //토론자 입장 확인 버튼, 모달 출력 여부
-        enterDiscusserWin: function (){
-            console.log("토론자 입장 버튼 화면")
-            if (user.id != owner.id && opponent.id == ''){
-                $("#enter").addClass("show");
-            }
-        },
-
-        //받아온 채팅리스트 출력
-        chatLoadingWin: function(list){
-            let msg = {sender:null, senderType: null,  message:null};
-
-            for (var i in list){
-                if(list[i].user.id == owner.id){
-                    msg.senderType = "owner";
-                }else if(list[i].user.id == opponent.id){
-                    msg.senderType = "opponent";
-                }else{
-                    msg.senderType = "watcher";
-                }
-                msg.sender = list[i].user.name;
-                msg.message = list[i].content;
-                partWinOperation.contributor(msg);
-            }
+        //토론시작 이벤트
+        beginDiscussEvent: function(){
+            $("#startDiscusser").on("click", function(){
+                chat.info("startDiscuss");
+            })
         },
 
         //메세지 띄우기 - 시청자는 시청자 화면, 토론자는 토론자 화면
         contributor: function (msg) {
             let divs = document.createElement("div");
             let html = "";
+            let img;
 
-
-            if(msg.senderType == "owner" || msg.senderType == "opponent"){
-                let img;
-
-                if(msg.senderType === "owner"){
-                    divs.setAttribute('class', "discusser_message_box message_left");
-                    img = owner.img;
-                } else {
-                    divs.setAttribute('class', "discusser_message_box message_right");
-                    img = opponent.img;
-                }
-
-                html+= '    <div class="discusser_profile_area">';
-                html+= '        <img src='+ img + ' alt="" class="profile">';
-                html+= '    </div>';
-                html+= '    <p class="discusser_content ">' + msg.message +' </p>';
-                html+= '</div>';
-
-                divs.innerHTML = html;
-
-                $(".discusser_area").append(divs);
-                partWinOperation.scollMoving("#discusserBox", ".discusser_area", $("#discusserBox").innerHeight());
-
-            }else if(msg.senderType === "watcher"){
-                divs.setAttribute('class', "watcher_message_box");
-
-                html += '    <div class="watcher_user_area"><strong>'+msg.sender+'</strong></div>';
-                html += '    <div class="watcher_content">'+msg.message+'</div>';
-
-                divs.innerHTML = html;
-                $(".watcher_area").append(divs);
-
-                partWinOperation.scollMoving("#watcherBox ", ".watcher_area", $("#watcherBox").innerHeight());
+            if(roomStatus.owner.id == msg.senderId){
+                divs.setAttribute('class', "discusser_message_box message_left");
+                img = roomStatus.owner.image;
+            } else {
+                divs.setAttribute('class', "discusser_message_box message_right");
+                img = roomStatusopponent.image;
             }
-        },
 
-        //토론자/시청자 입력박스 구분
-        inputSelect: function(){
-            if(user.id == opponent.id || user.id == owner.id){
-                util.showAndHiddenArea("#discusser_msg_input", "#watcher_msg_input");
-            }else{
-                util.showAndHiddenArea("#watcher_msg_input", "#discusser_msg_input");
-            }
-        },
+            html+= '    <div class="discusser_profile_area">';
+            html+= '        <img src='+ img + ' alt="" class="profile">';
+            html+= '    </div>';
+            html+= '    <p class="discusser_content ">' + msg.message +' </p>';
+            html+= '</div>';
 
-        //토론자 정보 입력
-        inputDiscusser: function(){
-            console.log('토론자 정보 입력')
-            if(owner.id != ""){
-                util.setText(owner.name, ".user1_name");
-                util.setImage(owner.img, ".user1_img img");
-            }
-            if(opponent.id != ""){
-                util.setText(opponent.name, ".user2_name");
-                util.setImage(opponent.img, ".user2_img img");
-            }
+            divs.innerHTML = html;
+            $(".discusser_area").append(divs);
+            common.scollMoving("#discusserBox", ".discusser_area", $("#discusserBox").innerHeight());
         },
-
-        //토론방 토론자 채팅란에 메시지 보이기
-        infoMsg: function(msg){
-            console.log("info 정보 출력: ", msg);
-            util.showAndHiddenArea(".discusser_box", ".discusser_area");
-            util.showAndHiddenArea(".discusser_textArea",".discusser_start_btn");
-            $(".discusser_textArea").html(msg);
-        },
-
     }
 
-    // 이벤트 관련 처리
-    let eventOperation = {
-        //기본 이벤트들
-        initEvent: function(){
-            eventOperation.watcherInputEvent();
-            eventOperation.watcherScollViewEvent();
-            eventOperation.startDiscussBtnEvent();
-            eventOperation.discusserInputEvent();
-        },
-
-        //토론자 채팅입력 이벤트
-        discusserInputEvent:function(){
-            $("#discusser_msg_input").on("keyup", (event) => {
-                if (event.key === "Enter") {
-                    let msg = event.target.value;
-                    if (msg != "") {
-                        event.target.value = "";
-                        if(!endDiscuss && chatAble) chat.sendMessage(msg);
-                    }
-                }
-            });
+    //시청자 채팅 부분 제어
+    let watcherChat = {
+        active: function(){
+            if(roomStatus.owner.id == user.id || roomStatus.opponent.id == user.id)
+                util.showArea("#watcher_msg_input");
+            watcherChat.watcherInputEvent();
         },
 
         //시청자 채팅입력 이벤트
@@ -1015,112 +704,173 @@
                 }
             });
         },
+    }
 
-        //모바일용 시청자 채팅 보이기/감추기 이벤트
-        watcherScollViewEvent: function(){
-            $("#watcher_scroll_view").on("click", ()=>{
-                if($(".watcher_scrollbar").hasClass("watcher_scrollbar_ani")){
-                    $(".watcher_scrollbar").removeClass("watcher_scrollbar_ani");
-                    $(".watcher_container").removeClass("watcher_container_ani");
+    //토론방 전체 부분
+    let discussRoom = {
+        active : function(){
+            discussRoom.inputDiscusser();    //상태 상관없이 토론자 정보 넣기
+            //만약 opponent 정보가 없으면 참여하기 버튼 호출
+            if (user.id != roomStatus.owner.id && roomStatus.opponent.id == '') $("#enter").addClass("show");
+        },
+
+        //출력할 화면 선택
+        selectView: function(roomStatsVal){
+            roomStatus = roomStatsVal==undefined? roomStatus: roomStatsVal;
+            roomStatus.opponent = util.userCheck(roomStatus.opponent);
+
+            let selectNum;
+            if(!endDiscuss){
+                if(roomStatus.opponent.id == ""){
+                    selectNum = 1;
                 }else{
-                    $(".watcher_scrollbar").addClass("watcher_scrollbar_ani");
-                    $(".watcher_container").addClass("watcher_container_ani");
+                    if(roomStatus.endDebate == ''|| roomStatus.endDebate == null){ selectNum = 2;}
+                    else{ selectNum = 3;}
                 }
+            }else{
+                selectNum = 4;
+            }
+            scoreBoard.active();
+            discussChat.active(selectNum);
+            watcherChat.active();
+            discussRoom.active();
+        },
+
+        //토론자 정보 입력
+        inputDiscusser: function(){
+            console.log('토론자 정보 입력')
+            if(roomStatus.owner.id != ""){
+                $(".user1_name").html(roomStatus.owner.name);
+                $(".user1_img").attr("src", roomStatus.owner.image);
+            }
+            if(roomStatus.opponent.id != ""){
+                $(".user2_name").html(roomStatus.opponent.name);
+                $(".user2_img").attr("src", roomStatus.opponent.image);
+            }
+        },
+
+        warnModal: function(msg){
+            //구현할 예정;
+        },
+
+    }
+
+    //메세지  처리
+    let chat = {
+        //웹 세션 연결 및 메시지 받기
+        connect: function (destination) {
+            socket = new SockJS("/chat");
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function () {
+
+                //입장 관려 처리 부분: opponent가 들어오면 값을 받아 입장 처리
+                stompClient.subscribe('/topic/enter/' + destination, function (e) {
+                    const msg = JSON.parse(e.body);
+                    if (msg.senderId == roomStatus.opponent.id && !endDiscuss) {
+                        console.log("토론자 입장: ", msg.sender);
+                        roomStatus = msg.message;
+                        discussRoom.selectView();
+                        // active.selectWin();
+                    } else {
+                        console.log("시청자 입장: ", msg.sender);
+                    }
+                });
+                //입력 값에 따라 기능시작 처리
+                stompClient.subscribe('/topic/info/' + destination, function (e) {
+                    const msg = JSON.parse(e.body);
+                    console.log("info 받은 메시지: ", msg);
+                    if (msg.messageType == "text") {
+                        partWinOperation.infoMsg(msg.message);
+                    } else if (msg.messageType == "start") {
+                        time = msg.message;
+                        screenOperation.beginWin();
+                    } else if (msg.messageType == "end") {
+                        endDiscuss = true;
+                    } else if(msg.messageType == "vote"){
+                        ownerVote = msg.message.ownerVote;
+                        opponentVote = msg.message.opponentVote;
+                        partWinOperation.voteChangeWin(ownerVote, opponentVote, ".result", ".score_bar_left");
+                    }
+                });
+                // 채팅 메시지 부분
+                stompClient.subscribe('/topic/msg/' + destination, function (e) {
+                    partWinOperation.contributor(JSON.parse(e.body));
+                });
+                // 입장시 보내기
+                chat.enter();
             });
         },
 
-        //토론시작 버튼 이벤트
-        startDiscussBtnEvent: function(){
-            $("#startDiscusser").on("click", ()=>{
-                if(!endDiscuss) {
-                    if (owner.id != "" && opponent.id != "" && user.id == owner.id) {
-                        util.showAndHiddenArea(".discusser_textArea", "#startDiscusser");
-                        chat.info("text", "잠시 후 토론이 시작됩니다.");
-                        ajax.startDiscuss();
-                    } else {
-                        alert("아직 상대편 토론자가 준비되지 않았습니다.");
-                    }
-                }
-            });
+        //info 메시지 보내기
+        info: function (msg) {
+            transData.sendTime = new Date();
+            transData.message = msg;
+            transData.messageType = "info";
+            stompClient.send("/app/chat/info", {}, JSON.stringify(transData));
+        },
+
+        //입장 메시지 보내기
+        enter: function () {
+            if (user.id == roomStatus.opponent.id){
+                console.log(transData);
+                stompClient.send("/app/chat/enter", {}, "");
+            }
+        },
+        //일반 메시지 보내기
+        sendMessage: function (msg) {
+            transData.sendTime = new Date();
+            transData.message = msg;
+            transData.messageType = "text";
+            stompClient.send("/app/chat/msg", {}, JSON.stringify(transData));
         },
     }
 
-    // 유틸
+    //사용자 함수
     let util = {
-
         //선택한 화면 보이고 감추기
         showAndHiddenArea: function(show, hidden){
             $(show).removeClass("hidden");
             $(hidden).addClass("hidden");
         },
-
         //선택한 화면 모두 보이기
         showArea: function(...targets){
             for(var i in targets){
                 $(targets[i]).removeClass("hidden");
             }
         },
-
         //선택한 화면 모두 감추기
         hiddenArea: function(...targets){
             for(var i in targets){
                 $(targets[i]).addClass("hidden");
             }
         },
-
-        //화면 정보 바꾸기
-        setText: function(text, targetTag){
-            $(targetTag).html(text);
-        },
-
-        //이미지 정보를 받아 타겟에 집어넣음 없으면 기본값으로 셋팅
-        setImage: function(imgData, targetTag){
-            $(targetTag).attr("src", imgData);
-        },
-
-        //타이머 - 현재시간과 종료시간을 넘어간 경우에는 토론 종료, 아닐 시에는 시계 값 바꿈,
-        timer: function(time, additionalTime, timeOutCallback, timeInCallback){
-            let handler = setInterval(function(){
-                var diff = moment(time).diff(moment(new Date()))/1000+additionalTime;
-                if(diff <= 0){
-                    timeOutCallback(handler);
-                    return;
-                }else{
-                    timeInCallback(diff);
-                }
-            }, 1000);
-        },
-
-        //초형태의 숫자 데이터를 받아 MM:ss의 형태로 문자열 데이터 반환
-        timeFormat: function(diff){
-            if(diff == 0){
-                return "00:00";
+        //스크롤 제어 - 화면 크기이상으로 스크롤이 올라가있는 경우 자동 내리기 안함
+        scollMoving: function (parentTag, targetTag, limit){
+            let length =  $(targetTag).innerHeight();
+            let scrollLength = $(parentTag).scrollTop() + $(parentTag).innerHeight();
+            if(length - scrollLength <= limit){
+                $(parentTag).scrollTop(length);
             }
-            var min = parseInt(diff/60)+"";
-            var sec = parseInt(diff%60)+"";
-
-            min = min.length<2? ("0"+min):min;
-            sec = sec.length<2? ("0"+sec):sec;
-
-            return min + " : " + sec;
         },
+
+        userCheck: function (user){
+            return (user == null || user == '')?{id: "", name:"알수없음", image:"${pageContext.request.contextPath}/image/user.png"}:user;
+        }
     }
 
-
     // main
-    function init() {
-        ajax.getChat();                 //1. 채팅 받아오기
-        chat.connect(channel);          //2. 웹소켓 연결
-        eventOperation.initEvent();     //3. 이벤트 처리
-        active.selectWin();             //4. 화면 처리
+    function discussMain() {
+        chat.connect(roomStatus.roomId);
+        discussRoom.selectView();
     }
 
     $(document).ready(function(){
         if(joinedError) alert("참여 중이던 방으로 이동되었습니다")
     })
 
-    init();
+    // init();
 
+    discussMain();
 
 </script>
 
