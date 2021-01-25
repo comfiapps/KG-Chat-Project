@@ -22,6 +22,12 @@ let user = {
             else $("#nicknameSubmit").attr("disabled", false);
         });
 
+        $('#emailInput').on('input', (e) => {
+            if(updateForm_original_email === e.target.value
+                || e.target.value.length <= 0) $("#emailSubmit").attr("disabled", true);
+            else $("#emailSubmit").attr("disabled", false);
+        });
+
         $('#ageInput').on('input', (e) => {
             if(updateForm_original_age === e.target.value
                 || e.target.value.length <= 0 || e.target.value.length > 2) $("#ageSubmit").attr("disabled", true);
@@ -34,9 +40,14 @@ let user = {
         });
 
         $('#nicknameSubmit').on('click', () => {
-            console.log(updateForm_original_nick)
             this.modify({
                 name:  $("#nicknameInput").val()
+            })
+        });
+
+        $('#emailSubmit').on('click', () => {
+            this.emailRequest({
+                email:  $("#emailInput").val()
             })
         });
 
@@ -53,8 +64,28 @@ let user = {
         });
     },
 
+    emailRequest: function (data) {
+        $("#emailSubmit").attr("disabled", true);
+
+        $.ajax({
+            type:"POST",
+            url:"/api/me/email",
+            data:JSON.stringify(data),
+            contentType: "application/json; charset = utf-8",
+            dataType: "json"
+
+        }).done(response => {
+            // 인증번호 입력란 disable false
+        }).fail(error => {
+            alert(JSON.stringify(error))
+
+            $("#emailSubmit").attr("disabled", false);
+        })
+    },
+
     modify: function (data) {
         $("#nicknameSubmit").attr("disabled", true);
+        $("#codeSubmit").attr("disabled", true);
         $("#ageSubmit").attr("disabled", true);
         $("#genderSubmit").attr("disabled", true);
 

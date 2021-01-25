@@ -31,14 +31,21 @@ spring:
     serialization:
       fail-on-empty-beans: false
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kgdiscussion@gmail.com
+    password: qwer1234$
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
   port: 5000
   servlet:
     context-path: /
     encoding:
       charset: UTF-8
-
-jwt:
-  secret:
-    key: jwtisnoteasy
-

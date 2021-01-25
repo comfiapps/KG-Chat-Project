@@ -1,6 +1,8 @@
 package kg.itbank.chat.service;
 
+import kg.itbank.chat.model.Code;
 import kg.itbank.chat.model.User;
+import kg.itbank.chat.repository.CodeRepository;
 import kg.itbank.chat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +14,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CodeRepository codeRepository;
 
     @Transactional(readOnly = true)
     public User findUserById(long id) {
@@ -62,11 +67,17 @@ public class UserService {
     }
 
     @Transactional
-    public long update(long id, User user) {
+    public long update(long id, User user, int code) {
         User model = userRepository.findById(id).orElseThrow(()
                 -> new UsernameNotFoundException("User Not Found - Id : " + id));
 
-        if(user.getEmail() != null) model.setEmail(user.getEmail());
+        if(user.getEmail() != null && code != 0) {
+            Code codeObj = codeRepository.findByIdUserIdAndEmailEqualsAndCodeEquals(id, user.getEmail(), code);
+            if(codeObj != null) {
+                model.setEmail(codeObj.getEmail());
+                codeObj.setUsed(true);
+            }
+        }
         if(user.getName() != null) model.setName(user.getName());
         if(user.getImage() != null) model.setImage(user.getImage());
         if(user.getGender() != null) {

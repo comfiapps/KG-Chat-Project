@@ -31,7 +31,7 @@
                 <span class="privacy_detail">${principal.user.name}</span>
                 <span class="material-icons md-16">chevron_right</span>
             </div>
-            <div class="small-box mdc-ripple-surface">
+            <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyEmail">
                 <span class="hint">이메일</span>
                 <c:choose>
                     <c:when test="${principal.user.email == null}">
@@ -41,6 +41,7 @@
                         <span class="privacy_detail">${principal.user.email}</span>
                     </c:otherwise>
                 </c:choose>
+                <span class="material-icons md-16">chevron_right</span>
             </div>
             <div class="small-box mdc-ripple-surface" data-toggle="modal" data-target="#modifyAge">
                 <span class="hint">나이</span>
@@ -148,11 +149,13 @@
 </div>
 
 <%@ include file="../../component/dialog/nickname.jsp"%>
+<%@ include file="../../component/dialog/email.jsp"%>
 <%@ include file="../../component/dialog/age.jsp"%>
 <%@ include file="../../component/dialog/gender.jsp"%>
 
 <script>
     let updateForm_original_nick = "${principal.user.name}";
+    let updateForm_original_email = "${principal.user.email}";
     let updateForm_original_age = "${principal.user.ageRange}";
     let updateForm_original_gender = "${principal.user.gender}";
 
