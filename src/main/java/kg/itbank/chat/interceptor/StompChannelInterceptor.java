@@ -35,44 +35,44 @@ public class StompChannelInterceptor implements ChannelInterceptor {
         return message;
     }
 
-    @Override
-    public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
-
-//        log.info("postSend-message: {}", message);
-//        log.info("postSend-channel: {}", channel);
-
-    }
-
-    @Override
-    public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
-//        log.info("afterSendCompletion-message: {}", message);
-//        log.info("afterSendCompletion-channel: {}", channel);
-//        log.info("afterSendCompletion-Exception: {}", ex);
-    }
-
-    @Override
-    public boolean preReceive(MessageChannel channel) {
-
-//        log.info("channel-MessageChannel: {}", channel);
-
-        return true;
-    }
-
-    @Override
-    public Message<?> postReceive(Message<?> message, MessageChannel channel) {
+//    @Override
+//    public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
 //
-//        log.info("postReceive-message: {}", message);
-//        log.info("postReceive-channel: {}", channel);
-
-        return message;
-    }
-
-    @Override
-    public void afterReceiveCompletion(Message<?> message, MessageChannel channel, Exception ex) {
-
-//        log.info("afterReceiveCompletion-message: {}", message);
-//        log.info("afterReceiveCompletion-channel: {}", channel);
-//        log.info("afterReceiveCompletion-Exception: {}", ex);
-
-    }
+////        log.info("postSend-message: {}", message);
+////        log.info("postSend-channel: {}", channel);
+//
+//    }
+//
+//    @Override
+//    public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
+////        log.info("afterSendCompletion-message: {}", message);
+////        log.info("afterSendCompletion-channel: {}", channel);
+////        log.info("afterSendCompletion-Exception: {}", ex);
+//    }
+//
+//    @Override
+//    public boolean preReceive(MessageChannel channel) {
+//
+////        log.info("channel-MessageChannel: {}", channel);
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public Message<?> postReceive(Message<?> message, MessageChannel channel) {
+////
+////        log.info("postReceive-message: {}", message);
+////        log.info("postReceive-channel: {}", channel);
+//
+//        return message;
+//    }
+//
+//    @Override
+//    public void afterReceiveCompletion(Message<?> message, MessageChannel channel, Exception ex) {
+//
+////        log.info("afterReceiveCompletion-message: {}", message);
+////        log.info("afterReceiveCompletion-channel: {}", channel);
+////        log.info("afterReceiveCompletion-Exception: {}", ex);
+//
+//    }
 }
