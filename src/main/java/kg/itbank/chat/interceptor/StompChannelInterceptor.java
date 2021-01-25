@@ -7,8 +7,11 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 
+@Component
 public class StompChannelInterceptor implements ChannelInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(StompChannelInterceptor.class);
@@ -18,14 +21,15 @@ public class StompChannelInterceptor implements ChannelInterceptor {
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-
+        long roomId = (long)((HashMap<String, Object>)accessor.getSessionAttributes().get("chatUser")).get("chatId");
         //연결 메시지의 경우
         if(StompCommand.CONNECT.equals(accessor.getCommand())){
             log.info("연결됨: {}", accessor.getSessionAttributes().get("chatUser"));
+            UserCounter.upCountRoomUser(roomId);
 
         }else if(StompCommand.DISCONNECT.equals(accessor.getCommand())){
             log.info("연결이 종료됨");
-
+            UserCounter.downCountRoomUser(roomId);
         }
 
         return message;

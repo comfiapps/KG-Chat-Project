@@ -8,39 +8,22 @@
 
 <style>
 
-    html{
-        font-size:10px;
+    html{ font-size:10px; }
 
-    }
-
-    div{
-        /*border: 1px solid black;*/
-        box-sizing: border-box;
-    }
+    div{ /*border: 1px solid black;*/ box-sizing: border-box; }
 
     .closeBtnArea{
-        width: fit-content;
-        height: fit-content;
-        position: absolute;
-        right: 0px;
-        top: 0px;
+        width: fit-content; height: fit-content; position: absolute; right: 0px; top: 0px;
     }
 
-    .chatting, .chat_container{
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
+    .chatting, .chat_container{ width: 100%; height: 100%; position: relative; }
 
-    /*flex 적용?을 한번에 모아서..??*/
     .vote_title, .vote_box, .user_vote, .discusser_box, .discusser_start_area,
     .chat_container, .score_container, .score_box, .score_content, .score_content div, .score_bar, .discusser_send_container, .watcher_send_container, .discusser_message_box, .watcher_vote{
         display: flex; flex-wrap: nowrap;
     }
 
-    .chat_container{
-        position: relative; min-height: 72rem;
-    }
+    .chat_container{ position: relative; min-height: 72rem; }
 
     .discusser_chat_container, .watcher_chat_container {
         height: 100%; border: 1px solid  rgb(202, 202, 202);
@@ -49,12 +32,10 @@
         width: 70%;
     }
     .watcher_container{
-        width: 30%;
-        min-width: 320px;
+        width: 30%; min-width: 320px;
     }
     .discusser_container, .watcher_container{
-        padding: 1.5rem 2rem;
-        flex-flow: column nowrap;
+        padding: 1.5rem 2rem; flex-flow: column nowrap;
     }
 
     /* 토론자 부분 */
@@ -86,18 +67,14 @@
         width: 100%;
         height: 100%;
         padding: 0.5rem 0;
-
         align-content: center;
         justify-content: center;
     }
     .score_content div{
         flex-direction: column;
-
         width: fit-content;
-
         align-items: center;
         justify-content: center;
-
         padding: 0 1rem;
     }
 
@@ -153,16 +130,11 @@
         font-size: 1.5rem;
         background: #E5E5E5 0% 0% no-repeat padding-box;
     }
-    .send_box input:hover{
-        border: 2px solid rgb(78, 105, 136);
-        border-radius: 25px;
-    }
-    .send_box input:focus{
+    .send_box input:hover, .send_box input:focus{
         border: 2px solid rgb(78, 105, 136);
         border-radius: 25px;
         outline: 0;
     }
-
     /* 채팅 공통 영역 */
     .chat_box{
         height: 100%;
@@ -207,7 +179,6 @@
     .discusser_chat_container{
         padding: 0.5rem 2rem;
     }
-
     .discusser_message_box{
         margin-bottom: 1rem;
         font-size: 2rem;
@@ -225,7 +196,6 @@
         padding: 1rem;
         border-radius: 15px;
     }
-
     .user div img, .watcher_vote img{
         height: 5rem;
         width: 5rem;
@@ -244,18 +214,13 @@
     .message_right{
         flex-direction: row-reverse;
     }
-
     .message_left p, .message_right p{
         text-align: left;
         color: white;
         margin-left: 1rem;
     }
-    .message_left p{
-        background: #70A9FF 0% 0% no-repeat padding-box;
-    }
-    .message_right p{
-        background: #FF8D8D 0% 0% no-repeat padding-box;
-    }
+    .message_left p{ background: #70A9FF 0% 0% no-repeat padding-box; }
+    .message_right p{ background: #FF8D8D 0% 0% no-repeat padding-box; }
 
     .watcher_vote{
         padding: 0 1rem;
@@ -264,16 +229,11 @@
     }
 
     .vote_title, .user_vote, .user{
-        text-align: center;
-        align-items: center;
-        justify-items: center;
-        font-weight: 1000;
+        text-align: center; align-items: center; justify-items: center; font-weight: 1000;
     }
 
     .vote_title{
-        height: fit-content;
-        font-size: 2.8rem;
-        padding: 1rem 0;
+        height: fit-content; font-size: 2.8rem; padding: 1rem 0;
     }
     .vote_title div{
         width: 100%;
@@ -301,17 +261,10 @@
         background: #FF8D8D 0% 0% no-repeat padding-box;
         border-radius: 0px 5px 5px 0px;
     }
-    #discusserBox>.hidden{
-        display: none;
-    }
-    .hidden{
-        display: none;
-    }
+    #discusserBox>.hidden{ display: none;}
+    .hidden{ display: none; }
 
-    a{
-        text-decoration: none;
-        color: black;
-    }
+    a{ text-decoration: none; color: black; }
 
     .watcher_scrollbar{
         display: none;
@@ -355,11 +308,12 @@
     .user2_name, .user1_name{
         font-size: 1.3rem;
     }
-
-    .watcher_scrollbar_ani{
-        animation-name: moveScroll;
+    .watcher_scrollbar_ani, .watcher_container_ani{
         animation-duration: 1s;
         animation-fill-mode: forwards;
+    }
+    .watcher_scrollbar_ani{
+        animation-name: moveScroll;
     }
     .watcher_container_ani{
         animation-name: moveCotainer;
@@ -407,85 +361,9 @@
         margin: 0.5rem 1rem;
     }
 
-    /*모달 css*/
-    .warn_modal{
-        position: fixed; top: 0px; left: 0px; z-index: 10; width: 100%; height: 100%; background-color: #30303031;
-    }
-    .warn_modal_center{
-        position: relative;
-        top: 30%;
-        margin: 0 auto;
-        transform: translateY(-20%);
-        width: fit-content;
-        height: fit-content;
-    }
-    .warn_modal_container{
-        color: #616060;
-        background-color: white;
-        box-shadow: 0px 3px 6px #00000029;
-        border: 1px solid rgb(185, 185, 185);
-        border-radius: 5px;
-        padding: 2.5rem;
-    }
-    .warn_modal_title{
 
-        font-size: 2rem;
-        font-weight: 600;
-        margin-bottom: 2rem;
-    }
-    .warn_modal_body{
-        min-width: 30rem;
-        max-width: 40rem;
-        max-height: 40rem;
-        text-align: center;
-        font-size: 1.7rem;
-        font-weight: 500;
-
-        overflow-wrap: anywhere;
-        overflow-y: auto;
-
-        margin: 1rem;
-    }
-    .warn_modal_footer{
-        text-align: right;
-    }
-    .warn_modal_footer span{
-        font-size: 1.8rem;
-    }
 
 </style>
-
-<%--경고 창 대신 사용할 모달창--%>
-<div class="warn_modal fade2" id="warn_disscuss">
-    <div class="warn_modal_center">
-        <div class="warn_modal_container">
-            <div class="warn_modal_title">
-                알림 메시지:
-            </div>
-            <div class="warn_modal_body">
-                아직 상대편 토론자가 아직 준비되지 않았습니다.
-            </div>
-            <div class="warn_modal_footer">
-                <button class="mdc-button no-outline" id="warnModalBtn">
-                    <span class="mdc-button__label">확인</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-
-
-
-    $(document).ready(function(){
-
-
-    })
-
-
-
-</script>
 
 <section class="chatting main-content">
 
@@ -584,8 +462,9 @@
     </div>
 
     <%@ include file="../../component/dialog/enterDiscuss.jsp"%>
-
+    <%@ include file="../../component/dialog/warnDiscuss.jsp"%>
 </section>
+
 
 <script>
 
@@ -615,6 +494,8 @@
 <%--<script src="${pageContext.request.contextPath}/js/chat.js"></script>--%>
 
 <script>
+
+
     // 채팅 관련 처리
     let chat = {
         //웹 세션 연결 및 메시지 받기
@@ -654,11 +535,14 @@
                     } else if(msg.messageType == "vote"){
                         ajax.countVoteDiscuss();
                         partWinOperation.voteChangeWin(roomStats.countOwnerVote, roomStats.countOpponentVote, ".result", ".score_bar_left");
-                    } else if(msg.messageType == "reset"){
+                    } else if(msg.messageType == "reset" && roomStats.opponent.id != user.id){
                         console.log("리셋");
+                        warnModal.msg("상대방 토론자가 현재 방을 나갔습니다.", function(){warnModal.hidden()});
+                        ajax.getRoomStats();
+                        active.selectWin();
                     } else if(msg.messageType == "delete"){
-                        alert("토론자가 현재 방을 나갔습니다.");
-                        location.href = "/";
+                        warnModal.msg("토론자가 현재 방을 나갔습니다.", function(){ location.href="/" });
+                        // location.href = "/";
                     }
                 });
 
@@ -712,7 +596,7 @@
                 if (response.data === 1){
                     location.href="/discuss/" + roomStats.roomId;
                 }else{
-                    alert("이미 다른 사용자가 참여하셨습니다.");
+                    warnModal.msg("이미 다른 사용자가 참여하셨습니다.", function(){warnModal.hidden()});
                     $("#enter").removeClass("show");
                 }
             }).fail(error => {
@@ -766,7 +650,7 @@
                     // 토론 시작전 opponet라면 방 초기화 및 opponet정보 삭제
                     if(response.data == "reset"){
                         chat.info("reset","");
-                        location.href="/";
+                        warnModal.msg("토론 참여를 취소하였습니다.", function (){location.href="/"});
                     }
 
                     // 토론시작 전 owner라면 방 정보 삭제
@@ -803,7 +687,7 @@
                         ajax.unvoteDiscuss(voteUser);
                     } else if (response.data == roomStats.owner.id || response.data == roomStats.opponent.id) {
                         chat.info("vote", "");
-                        alert(voteUser.name + "에게 투표 하였습니다.");
+                        warnModal.msg(voteUser.name + "에게 투표 하였습니다.", function(){warnModal.hidden()});
                     }
                 }).fail(error => {
                     console.log("voteDiscuss error.....");
@@ -820,7 +704,8 @@
                 }).done(response => {
                     if (response.data == "success"){
                         chat.info("vote", "")
-                        alert(voteUser.name + "의 투표를 취소하였습니다.");
+                        warnModal.msg(voteUser.name + "의 투표를 취소하였습니다.", function(){warnModal.hidden()});
+
                     }
                 }).fail(error=>{
                     console.log("unvoteDiscuss error.....");
@@ -868,13 +753,15 @@
                 if(response.data != null && response.data !=''){
                     roomStats = response.data;
                     roomStats.opponent = util.defaultUserForm(roomStats.opponent);
+                    endDiscuss = roomStats.closeDate != null ? true: false;
+                    chatAble = false;
+
                     console.log(response.data);
                 }
             }).fail(error=>{
                 console.log("getRoomStats error....");
             })
         }
-
     }
 
     //
@@ -1141,17 +1028,12 @@
         },
 
         //토론방 토론자 채팅란에 메시지 보이기
-        infoMsg: function(msg){
+        infoMsg : function(msg){
             console.log("info 정보 출력: ", msg);
             util.showAndHiddenArea(".discusser_box", ".discusser_area");
             util.showAndHiddenArea(".discusser_textArea",".discusser_start_btn");
             $(".discusser_textArea").html(msg);
         },
-
-        //경고 모달창
-        warnModal: function(){
-
-        }
     }
 
     // 이벤트 관련 처리
@@ -1164,6 +1046,7 @@
             eventOperation.discusserInputEvent();
             eventOperation.endDiscussBtnEvent();
             eventOperation.enterDiscussBtnEvent();
+
         },
 
         //토론자로 참여하기 버튼 이벤트
@@ -1224,7 +1107,7 @@
                         chat.info("text", "잠시 후 토론이 시작됩니다.");
                         ajax.startDiscuss();
                     } else {
-                        alert("아직 상대편 토론자가 준비되지 않았습니다.");
+                        warnModal.msg("아직 상대편 토론자가 준비되지 않았습니다.", function(){warnModal.hidden()});
                     }
                 }
             });
@@ -1243,9 +1126,6 @@
                         console.log("토론 나가기 실행");
                         ajax.leaveDiscuss();
                     }
-                    //else{
-                    //     console.log("endBtn error...");
-                    // }
                 }
             })
         },
@@ -1290,7 +1170,7 @@
                 var diff = moment(time).diff(moment(new Date()))/1000+additionalTime;
                 if(diff <= 0){
                     timeOutCallback(handler);
-                    return;
+
                 }else{
                     timeInCallback(diff, handler);
                 }
@@ -1324,58 +1204,23 @@
                 return user;
             }
         },
-
     }
 
-    // 아직 만드는 중
-    // 경고창 대신 사용할 모달창
-    //
-    // function warnModal(id){
-    //
-    //     this.id = id;
-    //
-    //     if(!(this instanceof  warnModal)){
-    //         return new warnModal();
-    //     }
-    //
-    //     document.querySelector(".warn_modal").addEventListener("click", function(event){
-    //         event.preventDefault();
-    //         if(event.target.id == this.id){
-    //             document.querySelector("#warn_disscuss").classList.remove("show");
-    //         }
-    //     });
-    //
-    //     this.show = function(){
-    //         document.querySelector("#warn_disscuss").classList.add("show");
-    //     };
-    //
-    //     this.hidden = function(){
-    //         document.querySelector("#warn_disscuss").classList.remove("show");
-    //     };
-    //
-    //     this.msg = function(msg){
-    //         document.querySelector(".warn_modal_body").innerHTML = msg;
-    //     };
-    //
-    //     this.event = function (id, handler){
-    //         document.getElementById(id).addEventListener("click", handler);
-    //     };
-    // }
-    //
-    //
-    //
-    // myModal.show();
-    // myModal.event("warnModalBtn", myModal.hidden);
-    //
+    // 경고용 모달창
+    let warnModal = myModal("warn_disscuss");
+
+
+
 
     // main
     function init() {
         roomStats.opponent = util.defaultUserForm(roomStats.opponent);
-        ajax.getRoomStats();
-        ajax.getChat();                 //1. 채팅 받아오기
+        // ajax.getRoomStats();
+        ajax.getChat();                          //1. 채팅 받아오기
         chat.connect(roomStats.roomId);          //2. 웹소켓 연결
-        eventOperation.initEvent();     //3. 이벤트 처리
-        active.selectWin();             //4. 화면 처리
+        eventOperation.initEvent();              //3. 이벤트 처리
+        active.selectWin();                      //4. 화면 처리
+
     }
 
     $(document).ready(function(){

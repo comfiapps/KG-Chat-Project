@@ -1,24 +1,16 @@
 package kg.itbank.chat.controller;
 
 
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kg.itbank.chat.config.PrincipalDetail;
-import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.dto.RoomInfoDto;
-import kg.itbank.chat.model.User;
+import kg.itbank.chat.interceptor.UserCounter;
 import kg.itbank.chat.service.RoomService;
-import kg.itbank.chat.service.UserService;
 import kg.itbank.chat.service.VoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.gson.GsonBuilderCustomizer;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.HashMap;
 
 @Controller
@@ -116,6 +107,8 @@ public class PathController {
 //        model.addAttribute("room", room);
 //        model.addAttribute("vote", voteService.voteCount(id));
 
+        logger.info("현재 접속자수: {}", UserCounter.getCountRoomUser(id));
+        
         return "discuss/discusser";
     }
 
