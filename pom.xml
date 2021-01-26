@@ -82,12 +82,7 @@
             <artifactId>jstl</artifactId>
         </dependency>
 
-        <!--  jwt를 사용하기위한 라이브러리  -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-        </dependency>
+
 
         <!-- Chat -->
         <dependency>
@@ -106,6 +101,15 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20190722</version>
+        </dependency>
+
+
+
+        <!-- Mailer -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>2.4.2</version>
         </dependency>
 
 
