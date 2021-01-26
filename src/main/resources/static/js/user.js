@@ -62,6 +62,18 @@ let user = {
                 gender:  $("input[name='genderInput']:checked").val()
             })
         });
+
+        $('#emailCancel').on('click', () => {
+            $("#codeInput").attr("disabled", true);
+            $("#emailLabel").addClass("mdc-text-field--disabled");
+        });
+
+        $('#codeInput').on('change', (e) => {
+           if(e.target.value.length == 6) {
+               $('#codeSubmit').attr("disabled", false)
+           }
+        });
+
     },
 
     emailRequest: function (data) {
@@ -75,7 +87,18 @@ let user = {
             dataType: "json"
 
         }).done(response => {
-            // 인증번호 입력란 disable false
+
+            if(response.status === 200) {
+                alert("메일이 성공적으로 발송되었습니다");
+                $("#codeInput").attr("disabled", false);
+                $("#emailLabel").removeClass("mdc-text-field--disabled");
+                return;
+
+            } else {
+                alert("이메일 발송에 실패하였습니다 다시 확인하세요")
+                return;
+            }
+
         }).fail(error => {
             alert(JSON.stringify(error))
 
