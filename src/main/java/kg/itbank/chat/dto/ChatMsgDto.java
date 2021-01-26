@@ -13,13 +13,12 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatDto {
+public class ChatMsgDto {
 
     private long chatId;
     private String sender;
     private long senderId;
     private Timestamp sendTime;
-    private String senderType;
     private Object message;
     private String messageType;
 

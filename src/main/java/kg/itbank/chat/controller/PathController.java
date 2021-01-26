@@ -1,19 +1,17 @@
 package kg.itbank.chat.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kg.itbank.chat.config.PrincipalDetail;
-import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.dto.RoomInfoDto;
-import kg.itbank.chat.model.User;
+import kg.itbank.chat.interceptor.UserCounter;
+import kg.itbank.chat.model.Vote;
 import kg.itbank.chat.service.RoomService;
-import kg.itbank.chat.service.UserService;
 import kg.itbank.chat.service.VoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.HashMap;
 
 @Controller
@@ -67,52 +64,31 @@ public class PathController {
 
     @GetMapping("/discuss/{id}")
     public String discussRoom(@AuthenticationPrincipal PrincipalDetail principal,
-                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+                              @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session){
+
         long joined = roomService.isUserOnDebate(principal.getId());
+
         if(joined != -1 && joined != id) {
             redirectAttributes.addFlashAttribute("joinedError",true);
             return "redirect:/discuss/" + joined;
         }
 
         if(!roomService.roomExists(id)) return "redirect:/";
-        logger.info("방번호: {}", id);
 
-        String token;
-        String senderType;
         RoomInfoDto room = roomService.defaultInfo(id);
+        Vote vote = voteService.getVote(principal.getId(), id);
 
-//        PrincipalDetail user = (PrincipalDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //token에다가 방번호/유저번호/유저이름/권한(discusser, watcher) 형태로 보낼것임
-
-        logger.info("room: {}", room);
-
-        if(room.getOwner().getId() == principal.getUser().getId()){
-            senderType = "owner";
-        }else if(room.getOpponent() != null && room.getOpponent().getId() == principal.getUser().getId()){
-            senderType = "opponent";
-        }else{
-            senderType = "watcher";
+        try{
+            session.setAttribute("roomId", id);
+            model.addAttribute("room", new ObjectMapper().writeValueAsString(room));
+            model.addAttribute("endDiscuss", room.getCloseDate() != null?true: false);
+            model.addAttribute("myVote", vote != null?vote.getVoteToId():0);
+        }catch (Exception e){
+            return "redirect:/";
         }
 
-        if(room.getEndDebate() != null && room.getEndDebate().before(new Date())){
-            model.addAttribute("endDiscuss", true);
-        }else{
-            model.addAttribute("endDiscuss", false);
-        }
-
-        HashMap<String, Object> map = new HashMap<>();
-
-        map.put("chatId", id);
-        map.put("senderType", senderType);
-        session.setAttribute("chatUser", map);
-
-
-        model.addAttribute("chatId", id);
-        model.addAttribute("room", room);
-        model.addAttribute("senderType", senderType);
-        model.addAttribute("vote", voteService.voteCount(id));
-
-        //토론 내용도
+        logger.info("Discuss room: {}", room);
+        logger.info("현재 접속자수: {}", UserCounter.getCountRoomUser(id));
 
         return "discuss/discusser";
     }

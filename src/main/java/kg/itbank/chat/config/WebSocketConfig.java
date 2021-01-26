@@ -1,13 +1,13 @@
 package kg.itbank.chat.config;
 
 import kg.itbank.chat.interceptor.HttphandshakeInterceptor;
+import kg.itbank.chat.interceptor.StompChannelInterceptor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
-import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 // spring-messaging 와 spring-websocket 모듈이 필요
 // maven에서 다운받읍시다.
@@ -36,7 +36,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic", "queue");
+		config.enableSimpleBroker("/topic", "/queue");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 	
@@ -52,7 +52,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 				.withSockJS();
 	}
 
-//	@Override
+	@Override
+	public void configureClientInboundChannel(ChannelRegistration registration) {
+		registration.interceptors(new StompChannelInterceptor());
+	}
+
+	//	@Override
 //	public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
 //		메시지에 최대 크기, 최대 대기시간, 버퍼 사이즈를 정할 수 있음
 //		registry.setMessageSizeLimit(160 * 64 * 1024);	default : 64 * 1024

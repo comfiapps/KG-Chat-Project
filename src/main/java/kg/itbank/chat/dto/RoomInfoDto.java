@@ -22,6 +22,7 @@ public class RoomInfoDto {
     private String roomCategory;
 
     private Timestamp createDate;
+    private Timestamp closeDate;
     private Timestamp endDebate;
 
     private long countOwnerVote;

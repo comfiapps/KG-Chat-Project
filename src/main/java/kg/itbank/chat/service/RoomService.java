@@ -1,10 +1,12 @@
 package kg.itbank.chat.service;
 
+import kg.itbank.chat.dto.CountVoteDto;
 import kg.itbank.chat.dto.FeaturedDto;
 import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.exception.GlobalExceptionHandler;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.model.User;
+import kg.itbank.chat.repository.ParticipantRepository;
 import kg.itbank.chat.repository.RoomRepository;
 import kg.itbank.chat.repository.UserRepository;
 import kg.itbank.chat.repository.VoteRepository;
@@ -35,6 +37,9 @@ public class RoomService {
 
     @Autowired
     private VoteRepository voteRepository;
+
+    @Autowired
+    private ParticipantRepository participantRepository;
 
     @Transactional(readOnly = true)
     private List<RoomInfoDto> convertRoomToPublic(List<Room> raw) {
@@ -123,6 +128,7 @@ public class RoomService {
                 : null;
 
         return RoomInfoDto.builder()
+                .roomId(roomId)
                 .owner(User.builder()
                         .id(room.getOwner().getId())
                         .name(room.getOwner().getName())
@@ -136,7 +142,10 @@ public class RoomService {
                 .roomName(room.getName())
                 .roomCategory(room.getCategory())
                 .createDate(room.getCreateDate())
+                .closeDate(room.getCloseDate())
                 .endDebate(room.getEndTime())
+                .countOwnerVote(voteRepository.countByIdRoomIdAndVoteToId(roomId, room.getOwner().getId()))
+                .countOpponentVote(voteRepository.countByIdRoomIdAndVoteToId(roomId, room.getOpponentId()))
                 .build();
     }
 
@@ -153,14 +162,16 @@ public class RoomService {
     }
 
     @Transactional
-    public void startDebate(long roomId, long userId) {
+    public Timestamp startDebate(long roomId, long userId) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() +
                 TimeUnit.MINUTES.toMillis(DEBATE_TIME) + TimeUnit.SECONDS.toSeconds(10));
-
+//        Timestamp timestamp = new Timestamp(System.currentTimeMillis() + TimeUnit.SECONDS.toSeconds(20));
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setEndTime(timestamp);
+
+        return room.getEndTime();
     }
 
     @Transactional
@@ -182,22 +193,41 @@ public class RoomService {
     }
 
     @Transactional
-    public void close(long roomId, long userId) {
+    public Timestamp close(long roomId, long userId) {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
-        if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
+        if(room.getOwner().getId() != userId && room.getOpponentId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setCloseDate(new Timestamp(System.currentTimeMillis()));
+        return room.getCloseDate();
     }
 
     @Transactional
-    public void leave(long roomId, long userId) {
+    public int leave(long roomId, long userId, RoomInfoDto roomInfoDto) {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
-        if(room.getOwner().getId() == userId) room.setCloseDate(new Timestamp(System.currentTimeMillis()));
-        else {
+        // 토론 시작전 opponet라면 방 초기화 및 opponet정보 삭제
+        if(room.getEndTime() == null && room.getOpponentId() == userId){
             room.setOpponentId(0);
             room.setEndTime(null);
+            roomInfoDto.setOpponent(null);
+            roomInfoDto.setEndDebate(room.getEndTime());
+            return 3;
         }
+        // 토론시작 전 owner라면 방 정보 삭제
+        else if(room.getEndTime() == null && room.getOwner().getId() == userId){
+            participantRepository.delete(roomId);
+            roomRepository.deleteRoom(roomId, userId);
+            return 4;
+        }
+        // 토론 시작 후라면 토론 종료
+        else if(room.getOwner().getId() == userId || room.getOpponentId() == userId){
+            room.setCloseDate(new Timestamp(System.currentTimeMillis()));
+            roomInfoDto.setCloseDate(room.getCloseDate());
+            return 2;
+        }
+
+        // 해당 안되면 fail
+        return 5;
     }
 
 }
