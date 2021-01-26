@@ -45,16 +45,16 @@ let voteBoard = {
     //투표 요청
     voteDiscuss: function(voteUser){
         if(roomStatus.owner.id == voteUser){
-            alert(roomStatus.owner.name + "에게 투표하였습니다");
+            modal.msg(roomStatus.owner.name + "에게 투표하였습니다", modal.hidden);
             myVote = roomStatus.owner.id;
         }else if(roomStatus.opponent.id == voteUser){
-            alert(roomStatus.opponent.name + "에게 투표하였습니다");
+            modal.msg(roomStatus.opponent.name + "에게 투표하였습니다", modal.hidden);
             myVote = roomStatus.opponent.id;
         }else if(roomStatus.owner.id == -voteUser){
-            alert(roomStatus.owner.name + "의 투표를 취소하셨습니다.");
+            modal.msg(roomStatus.owner.name + "의 투표를 취소하셨습니다.", modal.hidden);
             myVote = 0;
         }else if(roomStatus.opponent.id == -voteUser){
-            alert(roomStatus.opponent.name + "의 투표를 취소하셨습니다.");
+            modal.msg(roomStatus.opponent.name + "의 투표를 취소하셨습니다.", modal.hidden);
             myVote = 0;
         }
         this.voteDisplay();

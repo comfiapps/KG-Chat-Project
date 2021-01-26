@@ -5,11 +5,22 @@ let scoreBoard = {
         scoreBoard.scoreValue(roomStatus.countOwnerVote, roomStatus.countOpponentVote);
         scoreBoard.scoreBar(roomStatus.countOwnerVote, roomStatus.countOpponentVote);
         switch (id){
+            case 1:
+            case 2:
+                this.socreBareShow(true);
+                break;
             case 3:
-            case 4: this.timer(roomStatus.endDebate, 7, this.timeIn, this.timeOut); break
+            case 4:
+                this.timer(roomStatus.endDebate, 7, this.timeIn, this.timeOut);
+                this.socreBareShow(false);
+                break;
         }
     },
 
+    socreBareShow : function(boolean){
+        if(boolean) $(".score_bar").addClass("hidden");
+        else $(".score_bar").removeClass("hidden");
+    },
     //점수 조작
     scoreValue: function(ownerVote, opponentVote){
         $(".result").html(ownerVote + " - " + opponentVote);

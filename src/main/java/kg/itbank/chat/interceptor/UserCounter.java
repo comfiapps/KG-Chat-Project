@@ -16,7 +16,12 @@ public class UserCounter {
         roomUserCounterMap.put(roomId, roomUserCounterMap.getOrDefault(roomId, 0) + 1);
     }
     public static void downCountRoomUser(long roomId) {
-        roomUserCounterMap.put(roomId, (roomUserCounterMap.get(roomId) == null? 0: roomUserCounterMap.get(roomId)-1));
+        if(roomUserCounterMap.containsKey(roomId)){
+            if(roomUserCounterMap.get(roomId)>2){
+                roomUserCounterMap.put(roomId, roomUserCounterMap.get(roomId)-1);
+            }else{
+                roomUserCounterMap.remove(roomId);
+            }
+        }
     }
-
 }
