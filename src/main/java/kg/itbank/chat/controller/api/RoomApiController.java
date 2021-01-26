@@ -62,26 +62,25 @@ public class RoomApiController {
         // 토론 시작 후 만약 30분 5초가 지난 경우에도 종료되지 않으면 서버에서 강제 종료
         // 얼마나 무리가 갈지는 모르겠지만 일단 넣어보겠음
         // 클래스로 만드는게 나으려나.
-        Timer timer = new Timer(true);
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                ChatMsgDto msg = ChatMsgDto.builder()
-                        .chatId(roomId)
-                        .sender(principal.getUser().getName())
-                        .senderId(principal.getId())
-                        .senderType("owner")
-                        .messageType("end")
-                        .message("")
-                        .build();
-                if(roomService.roomExists(roomId)){
-                    simpMessagingTemplate.convertAndSend("/topic/info/"+ roomId,msg);
-                    roomService.close(roomId, principal.getId());
-                }
-            }
-        };
-
-        timer.schedule(timerTask, 1805000);
+//        Timer timer = new Timer(true);
+//        TimerTask timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                ChatMsgDto msg = ChatMsgDto.builder()
+//                        .chatId(roomId)
+//                        .sender(principal.getUser().getName())
+//                        .senderId(principal.getId())
+//                        .messageType("end")
+//                        .message("")
+//                        .build();
+//                if(roomService.roomExists(roomId)){
+//                    simpMessagingTemplate.convertAndSend("/topic/info/"+ roomId,msg);
+//                    roomService.close(roomId, principal.getId());
+//                }
+//            }
+//        };
+//
+//        timer.schedule(timerTask, 1805000);
 
         roomService.startDebate(roomId, principal.getId());
         return new ResponseDto<>(HttpStatus.OK.value(), "success");
@@ -101,11 +100,11 @@ public class RoomApiController {
         return new ResponseDto<>(HttpStatus.OK.value(), "success");
     }
 
-    @PutMapping("/{roomId}/leave")
-    public ResponseDto<?> leave(@AuthenticationPrincipal PrincipalDetail principal,
-                                    @PathVariable long roomId) {
-        return new ResponseDto<>(HttpStatus.OK.value(), roomService.leave(roomId, principal.getId()));
-    }
+//    @PutMapping("/{roomId}/leave")
+//    public ResponseDto<?> leave(@AuthenticationPrincipal PrincipalDetail principal,
+//                                    @PathVariable long roomId) {
+//        return new ResponseDto<>(HttpStatus.OK.value(), roomService.leave(roomId, principal.getId()));
+//    }
 
     @GetMapping("/{roomId}/stats")
     public  ResponseDto<?> stats(@PathVariable long roomId){

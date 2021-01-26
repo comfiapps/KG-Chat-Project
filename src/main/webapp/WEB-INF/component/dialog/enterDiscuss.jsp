@@ -20,33 +20,6 @@
 
 </style>
 
-<script>
-
-    // $(document).ready(function(){
-    //     $("#enterDiscusser").on("click", (event)=>{
-    //         $("#enter").removeClass("show");
-    //     });
-    //
-    //     $("#enterWatcher").on("click", (event)=>{
-    //         $.ajax({
-    //             type:"POST",
-    //             url:"/api/room/enter/"+roomStats.roomId
-    //         }).done(response => {
-    //             console.log("성공", response);
-    //             if (response.data === 1){
-    //                 location.href="/discuss/" + roomStats.roomId;
-    //             }else{
-    //                 alert("이미 다른 사용자가 참여하셨습니다.");
-    //                 $("#enter").removeClass("show");
-    //             }
-    //         }).fail(error => {
-    //             console.log("error.....");
-    //         });
-    //     });
-    // });
-
-</script>
-
 <div class="modal fade2" id="enter">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -65,3 +38,30 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    $(document).ready(function(){
+        $("#enterDiscusser").on("click", (event)=>{
+            $("#enter").removeClass("show");
+        });
+
+        $("#enterWatcher").on("click", (event)=>{
+            $.ajax({
+                type:"POST",
+                url:"/api/room/enter/"+roomStatus.roomId
+            }).done(response => {
+                console.log("성공", response);
+                if (response.data === 1){
+                    location.href="/discuss/" + roomStatus.roomId;
+                }else{
+                    alert("이미 다른 사용자가 참여하셨습니다.");
+                    $("#enter").removeClass("show");
+                }
+            }).fail(error => {
+                console.log("error.....");
+            });
+        });
+    });
+
+</script>

@@ -19,7 +19,6 @@ public class ChatMsgDto {
     private String sender;
     private long senderId;
     private Timestamp sendTime;
-    private String senderType;
     private Object message;
     private String messageType;
 

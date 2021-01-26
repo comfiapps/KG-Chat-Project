@@ -21,7 +21,7 @@ public class VoteService {
     @Autowired
     private RoomRepository roomRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Vote getVote(long myId, long roomId){
         return voteRepository.findByIdRoomIdAndIdUserId(roomId, myId);
     }
@@ -39,7 +39,8 @@ public class VoteService {
                             .voteToId(userId)
                             .build());
         }else if(vote.getVoteToId() == userId){
-            return -1L;
+            voteRepository.deleteByIdRoomIdAndIdUserId(roomId, myId);
+            return -userId;
         }else{
           vote.setVoteToId(userId);
         }

@@ -14,7 +14,7 @@ public class HttphandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        attributes.put("chatUser", ((ServletServerHttpRequest)request).getServletRequest().getSession().getAttribute("chatUser"));
+        attributes.put("roomId", ((ServletServerHttpRequest)request).getServletRequest().getSession().getAttribute("roomId"));
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }
 

@@ -19,5 +19,4 @@ import java.io.Serializable;
 public class VoteId implements Serializable {
     private long userId;
     private long roomId;
-
 }

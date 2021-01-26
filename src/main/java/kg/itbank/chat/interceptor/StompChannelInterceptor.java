@@ -21,7 +21,8 @@ public class StompChannelInterceptor implements ChannelInterceptor {
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        long roomId = (long)((HashMap<String, Object>)accessor.getSessionAttributes().get("chatUser")).get("chatId");
+        long roomId = (long)accessor.getSessionAttributes().get("roomId");
+
         //연결 메시지의 경우
         if(StompCommand.CONNECT.equals(accessor.getCommand())){
             log.info("연결됨: {}", accessor.getSessionAttributes().get("chatUser"));

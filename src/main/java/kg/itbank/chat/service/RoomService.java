@@ -144,7 +144,7 @@ public class RoomService {
                 .createDate(room.getCreateDate())
                 .closeDate(room.getCloseDate())
                 .endDebate(room.getEndTime())
-                .countOwnerVote(voteRepository.countByIdRoomIdAndIdUserId(roomId, room.getOwner().getId()))
+                .countOwnerVote(voteRepository.countByIdRoomIdAndVoteToId(roomId, room.getOwner().getId()))
                 .countOpponentVote(voteRepository.countByIdRoomIdAndVoteToId(roomId, room.getOpponentId()))
                 .build();
     }
@@ -162,14 +162,16 @@ public class RoomService {
     }
 
     @Transactional
-    public void startDebate(long roomId, long userId) {
+    public Timestamp startDebate(long roomId, long userId) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() +
                 TimeUnit.MINUTES.toMillis(DEBATE_TIME) + TimeUnit.SECONDS.toSeconds(10));
-
+//        Timestamp timestamp = new Timestamp(System.currentTimeMillis() + TimeUnit.SECONDS.toSeconds(20));
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setEndTime(timestamp);
+
+        return room.getEndTime();
     }
 
     @Transactional
@@ -191,36 +193,41 @@ public class RoomService {
     }
 
     @Transactional
-    public void close(long roomId, long userId) {
+    public Timestamp close(long roomId, long userId) {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         if(room.getOwner().getId() != userId && room.getOpponentId() != userId) throw new AccessDeniedException("Permission Denied");
         room.setCloseDate(new Timestamp(System.currentTimeMillis()));
+        return room.getCloseDate();
     }
 
     @Transactional
-    public String leave(long roomId, long userId) {
+    public int leave(long roomId, long userId, RoomInfoDto roomInfoDto) {
         Room room = roomRepository.findById(roomId).orElseThrow(()
                 -> new EntityNotFoundException("Room not found - Id : " + roomId));
         // 토론 시작전 opponet라면 방 초기화 및 opponet정보 삭제
         if(room.getEndTime() == null && room.getOpponentId() == userId){
             room.setOpponentId(0);
             room.setEndTime(null);
-            return "reset";
+            roomInfoDto.setOpponent(null);
+            roomInfoDto.setEndDebate(room.getEndTime());
+            return 3;
         }
         // 토론시작 전 owner라면 방 정보 삭제
         else if(room.getEndTime() == null && room.getOwner().getId() == userId){
             participantRepository.delete(roomId);
             roomRepository.deleteRoom(roomId, userId);
-            return "delete";
+            return 4;
         }
         // 토론 시작 후라면 토론 종료
         else if(room.getOwner().getId() == userId || room.getOpponentId() == userId){
             room.setCloseDate(new Timestamp(System.currentTimeMillis()));
-            return "end";
+            roomInfoDto.setCloseDate(room.getCloseDate());
+            return 2;
         }
+
         // 해당 안되면 fail
-        return "fail";
+        return 5;
     }
 
 }

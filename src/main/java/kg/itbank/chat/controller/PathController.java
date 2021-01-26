@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kg.itbank.chat.config.PrincipalDetail;
 import kg.itbank.chat.dto.RoomInfoDto;
 import kg.itbank.chat.interceptor.UserCounter;
+import kg.itbank.chat.model.Vote;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.VoteService;
 import org.slf4j.Logger;
@@ -73,42 +74,22 @@ public class PathController {
         }
 
         if(!roomService.roomExists(id)) return "redirect:/";
-        logger.info("방번호: {}", id);
 
-        String senderType;
         RoomInfoDto room = roomService.defaultInfo(id);
-
-        logger.info("room: {}", room);
-
-        if(room.getOwner().getId() == principal.getUser().getId()){
-            senderType = "owner";
-        }else if(room.getOpponent() != null && room.getOpponent().getId() == principal.getUser().getId()){
-            senderType = "opponent";
-        }else{
-            senderType = "watcher";
-        }
-        if(room.getCloseDate() != null){
-            model.addAttribute("endDiscuss", true);
-        }else{
-            model.addAttribute("endDiscuss", false);
-        }
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("chatId", id);
-        map.put("senderType", senderType);
-
-        session.setAttribute("chatUser", map);
+        Vote vote = voteService.getVote(principal.getId(), id);
 
         try{
+            session.setAttribute("roomId", id);
             model.addAttribute("room", new ObjectMapper().writeValueAsString(room));
+            model.addAttribute("endDiscuss", room.getCloseDate() != null?true: false);
+            model.addAttribute("myVote", vote != null?vote.getVoteToId():0);
         }catch (Exception e){
             return "redirect:/";
         }
-//        model.addAttribute("room", room);
-//        model.addAttribute("vote", voteService.voteCount(id));
 
+        logger.info("Discuss room: {}", room);
         logger.info("현재 접속자수: {}", UserCounter.getCountRoomUser(id));
-        
+
         return "discuss/discusser";
     }
 

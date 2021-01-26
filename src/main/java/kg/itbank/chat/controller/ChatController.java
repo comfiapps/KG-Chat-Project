@@ -1,8 +1,11 @@
 package kg.itbank.chat.controller;
 
 import kg.itbank.chat.config.PrincipalDetail;
+import kg.itbank.chat.dto.ChatInfoDto;
 import kg.itbank.chat.dto.ChatMsgDto;
+import kg.itbank.chat.dto.ResponseDto;
 import kg.itbank.chat.dto.RoomInfoDto;
+import kg.itbank.chat.model.Chat;
 import kg.itbank.chat.model.Room;
 import kg.itbank.chat.service.ChatService;
 import kg.itbank.chat.service.ParticipantService;
@@ -14,16 +17,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,51 +59,92 @@ public class ChatController {
 	//SimpMessageHeaderAccessor headerAccessor, @Header("destination") String destination 주입 가능한 매개변수
 
 
-	@SubscribeMapping
-	public void test(){
+//	@SubscribeMapping
+//	public void test(){
+//
+//	}
 
+	@MessageMapping("/chat/getVoteCount")
+	public void voteCount(StompHeaderAccessor stompHeaderAccessor){
+		long roomId = (long) stompHeaderAccessor.getSessionAttributes().get("roomId");
+		simpMessagingTemplate.convertAndSend("/topic/getVoteCount/"+ roomId, new ResponseDto<>(HttpStatus.OK.value(), voteService.voteCount(roomId)));
 	}
+
+	@MessageMapping("/chat/vote")
+	public void vote(long voteUserId, StompHeaderAccessor stompHeaderAccessor){
+		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
+		long roomId = (long) stompHeaderAccessor.getSessionAttributes().get("roomId");
+		log.info("voteUserId: {}", voteUserId);
+		RoomInfoDto room = roomService.defaultInfo(roomId);
+
+		if(room.getEndDebate() != null){
+			simpMessagingTemplate.convertAndSendToUser(principalDetail.getUsername(), "/queue/vote/"+roomId, new ResponseDto<>(HttpStatus.OK.value(),voteService.voteTo(principalDetail.getId(), roomId, voteUserId)));
+			simpMessagingTemplate.convertAndSend("/topic/getVoteCount/"+ roomId, new ResponseDto<>(HttpStatus.OK.value(), voteService.voteCount(roomId)));
+		}else{
+			simpMessagingTemplate.convertAndSendToUser(principalDetail.getUsername(), "/queue/vote/"+roomId, new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "Request Fail"));
+		}
+	}
+
+
+	@Transactional
+	@MessageMapping("/chat/getChat")
+	public void getChatting(StompHeaderAccessor stompHeaderAccessor){
+		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
+		long roomId = (long) stompHeaderAccessor.getSessionAttributes().get("roomId");
+		simpMessagingTemplate.convertAndSendToUser(principalDetail.getUsername(),"/queue/list/"+roomId, new ResponseDto<>(HttpStatus.OK.value(), chatService.listChatByRoom(roomId)));
+	}
+
 
 	@MessageMapping("/chat/enter")
 	public void enter(StompHeaderAccessor stompHeaderAccessor, SimpMessageHeaderAccessor sha){
 
-		HashMap<String, Object> sendMap = (HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser");
 		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
 
-		long chatId = (long)sendMap.get("chatId");
+		long roomId = (long) stompHeaderAccessor.getSessionAttributes().get("roomId");
+
 		long userId = principalDetail.getId();
 
-		RoomInfoDto room = roomService.defaultInfo(chatId);
+		RoomInfoDto room = roomService.defaultInfo(roomId);
 		if(room.getOpponent().getId() == userId){
-			simpMessagingTemplate.convertAndSend("/topic/enter/"+chatId, room);
+			simpMessagingTemplate.convertAndSend("/topic/enter/"+roomId, room);
 		}
 
-		participantService.join(chatId, userId);
+		participantService.join(roomId, userId);
 	}
 
 	@MessageMapping("/chat/info")
-	public void info(ChatMsgDto message, StompHeaderAccessor stompHeaderAccessor, SimpMessageHeaderAccessor sha){
+	public void info(ChatInfoDto msg, StompHeaderAccessor stompHeaderAccessor, SimpMessageHeaderAccessor sha){
+
+		log.info("받은 메시지: {}", msg);
 
 		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
-		HashMap<String, Object> userMap = (HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser");
+		long roomId = (long) stompHeaderAccessor.getSessionAttributes().get("roomId");
 
-		long chatId = (long)(userMap.get("chatId"));
+		RoomInfoDto room = roomService.defaultInfo(roomId);
 
-		ChatMsgDto msg = ChatMsgDto.builder()
-				.chatId(chatId)
-				.sender(principalDetail.getUser().getName())
-				.senderId(principalDetail.getId())
-				.senderType((String)userMap.get("senderType"))
-				.messageType(message.getMessageType())
-				.message(message.getMessage())
-				.build();
+		try {
+			if(room.getOwner().getId() != principalDetail.getId() && room.getOpponent().getId() != principalDetail.getId()) throw new AccessDeniedException("");
 
-		if(	msg.getSenderType().equals("owner") ||
-			msg.getSenderType().equals("opponent") ||
-			msg.getMessageType().equals("vote")) {
+			if(msg.getType() == 1) {
+				log.info("토론 시작 요청");
+				room.setEndDebate(roomService.startDebate(roomId, principalDetail.getId()));
+			}else if(msg.getType() == 2){
+				log.info("토론 종료 요청");
+				room.setCloseDate(roomService.close(roomId, principalDetail.getId()));
+			}else if(msg.getType() == 3){
+				log.info("토론 나가기 요청");
+				msg.setType(roomService.leave(roomId, principalDetail.getId(), room));
+			}
+			msg.setData(room);
+			simpMessagingTemplate.convertAndSend("/topic/info/"+roomId, new ResponseDto(HttpStatus.OK.value(), msg));
 
-			simpMessagingTemplate.convertAndSend("/topic/info/"+chatId, msg);
+		}catch (EntityNotFoundException | AccessDeniedException e){
+			simpMessagingTemplate.convertAndSend("/topic/info/"+roomId, new ResponseDto(HttpStatus.BAD_REQUEST.value(), "Request Fail"));
 		}
+
+		log.info("진입 테스트 {} ", principalDetail.getUser().getImage());
+
+
 	}
 
 
@@ -104,28 +154,26 @@ public class ChatController {
 		log.info("stompHeader: {}", stompHeaderAccessor);
 
 		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
-		HashMap userMap = ((HashMap<String, Object>) stompHeaderAccessor.getSessionAttributes().get("chatUser"));
 
-		long chatId = (long)(userMap.get("chatId"));
-		RoomInfoDto room = roomService.defaultInfo(chatId);
+		long roomId = ((long)stompHeaderAccessor.getSessionAttributes().get("roomId"));
+		RoomInfoDto room = roomService.defaultInfo(roomId);
 
 		log.info("room: {}", room);
 
 		if(room.getCloseDate() == null && message.getMessageType().equals("text")){
 
 			ChatMsgDto msg = ChatMsgDto.builder()
-					.chatId(chatId)
+					.chatId(roomId)
 					.sender(principalDetail.getUser().getName())
 					.senderId(principalDetail.getId())
-					.senderType((String)userMap.get("senderType"))
-					.messageType(message.getMessageType())
 					.message(message.getMessage())
+					.messageType(message.getMessageType())
 					.build();
 
 			log.info("메시지 전송: {}", msg);
 
-			chatService.insert(chatId, principalDetail.getId(), (String)message.getMessage());
-			simpMessagingTemplate.convertAndSend("/topic/msg/"+chatId, msg);
+			chatService.insert(roomId, principalDetail.getId(), (String)message.getMessage());
+			simpMessagingTemplate.convertAndSend("/topic/msg/"+roomId, msg);
 		}
 	}
 }
