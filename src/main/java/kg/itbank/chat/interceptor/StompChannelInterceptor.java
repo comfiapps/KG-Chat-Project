@@ -16,7 +16,6 @@ public class StompChannelInterceptor implements ChannelInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(StompChannelInterceptor.class);
 
-
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
 
@@ -25,12 +24,12 @@ public class StompChannelInterceptor implements ChannelInterceptor {
 
         //연결 메시지의 경우
         if(StompCommand.CONNECT.equals(accessor.getCommand())){
-            log.info("연결됨: {}", accessor.getSessionAttributes().get("chatUser"));
             UserCounter.upCountRoomUser(roomId);
+            log.info("연결됨: {}", UserCounter.getCountRoomUser(roomId));
 
         }else if(StompCommand.DISCONNECT.equals(accessor.getCommand())){
-            log.info("연결이 종료됨");
             UserCounter.downCountRoomUser(roomId);
+            log.info("연결이 종료됨: ", UserCounter.getCountRoomUser(roomId));
         }
 
         return message;
