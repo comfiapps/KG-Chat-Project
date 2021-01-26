@@ -4,7 +4,7 @@ let discussChat = {
         //토론자라면 input열어주기
         chatAble = false;
 
-        if((roomStatus.owner.id == user.id || roomStatus.opponent.id == user.id) && !endDiscuss)
+        if((roomStatus.owner.id == user.id || roomStatus.opponent.id == user.id))
             util.showArea("#discusser_msg_input");
         this.beginDiscussEvent();
         this.discusserInputEvent();
@@ -113,23 +113,23 @@ let discussChat = {
     },
     //알림 메시지 관련 부분
     endDiscuss : function(){
-        alert("토론이 종료되었습니다.");
+        modal.msg("토론이 종료되었습니다.",modal.hidden);
         endDiscuss = "true";
         chat.disconnect();
     },
     //상대방 나감
     leaveOpponent: function(oppoentId){
         if(user.id == oppoentId){
-            alert("현재 토론방 참여를 취소하고 메인으로 돌아갑니다.");
-            location.href = "/";
+            modal.msg("현재 토론방 참여를 취소하고 메인으로 돌아갑니다.", function(){location.href = "/";});
+
         }else{
-            alert("상대방 토론자가 현재 토론방을 나갔습니다.");
+            modal.msg("상대방 토론자가 현재 토론방을 나갔습니다.",modal.hidden);
         }
     },
     //생성자 나감
     leaveOwner: function(){
-        alert("토론 생성자가 현재 토론방을 나갔습니다.");
-        location.href = "/";
+        modal.msg("토론 생성자가 현재 토론방을 나갔습니다.", function(){location.href="/";});
+        // location.href = "/";
     },
     //채팅입력 이벤트
     discusserInputEvent:function(){

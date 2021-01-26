@@ -1,7 +1,7 @@
 //시청자 채팅
 let watcherChat = {
     active: function(){
-        if((roomStatus.owner.id != user.id && roomStatus.opponent.id != user.id) && !endDiscuss)
+        if((roomStatus.owner.id != user.id && roomStatus.opponent.id != user.id))
             util.showArea("#watcher_msg_input");
         watcherChat.watcherInputEvent();
     },
