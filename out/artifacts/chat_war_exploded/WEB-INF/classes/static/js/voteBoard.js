@@ -1,7 +1,6 @@
 //투표
 let voteBoard = {
     active: function(id){
-        console.log("이벤트 부여")
         this.voteEvent();
         switch (id){
             case 1: break;
@@ -45,16 +44,16 @@ let voteBoard = {
     //투표 요청
     voteDiscuss: function(voteUser){
         if(roomStatus.owner.id == voteUser){
-            modal.msg(roomStatus.owner.name + "에게 투표하였습니다", modal.hidden);
+            // modal.msg(roomStatus.owner.name + "에게 투표하였습니다", modal.hidden);
             myVote = roomStatus.owner.id;
         }else if(roomStatus.opponent.id == voteUser){
-            modal.msg(roomStatus.opponent.name + "에게 투표하였습니다", modal.hidden);
+            // modal.msg(roomStatus.opponent.name + "에게 투표하였습니다", modal.hidden);
             myVote = roomStatus.opponent.id;
         }else if(roomStatus.owner.id == -voteUser){
-            modal.msg(roomStatus.owner.name + "의 투표를 취소하셨습니다.", modal.hidden);
+            // modal.msg(roomStatus.owner.name + "의 투표를 취소하셨습니다.", modal.hidden);
             myVote = 0;
         }else if(roomStatus.opponent.id == -voteUser){
-            modal.msg(roomStatus.opponent.name + "의 투표를 취소하셨습니다.", modal.hidden);
+            // modal.msg(roomStatus.opponent.name + "의 투표를 취소하셨습니다.", modal.hidden);
             myVote = 0;
         }
         this.voteDisplay();

@@ -130,7 +130,6 @@ let discussChat = {
         }
 
         endDiscuss = "true";
-
         chat.disconnect();
     },
 

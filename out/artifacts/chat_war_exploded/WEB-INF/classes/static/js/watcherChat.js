@@ -28,7 +28,6 @@ let watcherChat = {
                 let msg = event.target.value;
                 if(msg != ""){
                     event.target.value = "";
-                    console.log("시청자 입력: ", msg)
                     chat.sendMessage(msg);
                 }
             }

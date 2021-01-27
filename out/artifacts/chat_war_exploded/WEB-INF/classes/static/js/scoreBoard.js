@@ -76,4 +76,5 @@ let scoreBoard = {
         var sec = parseInt(diff%60)+"";
         return (min.length<2? ("0"+min):min) + " : " + (sec.length<2? ("0"+sec):sec);
     },
+
 }
