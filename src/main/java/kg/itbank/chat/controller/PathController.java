@@ -36,9 +36,10 @@ public class PathController {
     private RoomService roomService;
 
     @GetMapping({"", "/", "/home"})
-    public String home(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
+    public String home(@AuthenticationPrincipal PrincipalDetail principal, Model model,
+                       @RequestParam(value = "c", required = false) String categorize) {
         if(principal == null) return "redirect:/login";
-        model.addAttribute("recommend", roomService.listFeaturedRoom());
+        model.addAttribute("recommend", roomService.listFeaturedRoom(categorize));
         model.addAttribute("roomCounter", participantService.getRoomLoopupList());
 
         return "home";

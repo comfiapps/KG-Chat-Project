@@ -63,24 +63,48 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public List<?> listFeaturedRoom() {
+    public List<?> listFeaturedRoom(String categorize) {
+        if(categorize == null) categorize = "";
         List<FeaturedDto> featuredList = new ArrayList<>();
+        List<String> categories;
 
-        List<String> categories = roomRepository.listCategories();
+        switch (categorize) {
+            case "w":
+                categories = roomRepository.listWaitCategories();
 
-        List<Room> waitItems = roomRepository.findAllByOpponentIdOrderByCreateDateDesc(0);
+                for(String category : categories) {
+                    List<Room> getItems = roomRepository.findTop8ByCategoryAndOpponentId(category, 0);
+                    featuredList.add(FeaturedDto.builder()
+                            .category(category)
+                            .rooms(convertRoomToPublic(getItems))
+                            .build());
+                }
 
-        featuredList.add(FeaturedDto.builder()
-                .category("대기중인 방...")
-                .rooms(convertRoomToPublic(waitItems))
-                .build());
+                break;
 
-        for(String category : categories) {
-            List<Room> getItems = roomRepository.findTop8ByCategory(category);
-            featuredList.add(FeaturedDto.builder()
-                    .category(category)
-                    .rooms(convertRoomToPublic(getItems))
-                    .build());
+            case "d":
+                categories = roomRepository.listDoneCategories();
+
+                for(String category : categories) {
+                    List<Room> getItems = roomRepository.findTop8DoneByCategory(category);
+                    featuredList.add(FeaturedDto.builder()
+                            .category(category)
+                            .rooms(convertRoomToPublic(getItems))
+                            .build());
+                }
+
+                break;
+
+            default:
+                categories = roomRepository.listOnGoingCategories();
+
+                for(String category : categories) {
+                    List<Room> getItems = roomRepository.findTop8OnGoingByCategory(category);
+                    featuredList.add(FeaturedDto.builder()
+                            .category(category)
+                            .rooms(convertRoomToPublic(getItems))
+                            .build());
+                }
         }
 
         return featuredList;
