@@ -49,6 +49,11 @@
         align-items: center;
     }
 
+    .home-tab {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
     .contributor-name {
         width: 100%;
         flex-grow: 1;
@@ -66,7 +71,7 @@
 </style>
 
 <section class="main-content">
-    <div class="mdc-tab-bar" role="tablist">
+    <div class="mdc-tab-bar home-tab" role="tablist">
         <div class="mdc-tab-scroller">
             <div class="mdc-tab-scroller__scroll-area">
                 <div class="mdc-tab-scroller__scroll-content">
@@ -74,7 +79,7 @@
                         <span class="mdc-tab__content">
                             <span class="mdc-tab__text-label">진행</span>
                         </span>
-                        <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                        <span class="mdc-tab-indicator" id="tab_1">
                             <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
                         </span>
                         <span class="mdc-tab__ripple"></span>
@@ -83,7 +88,7 @@
                         <span class="mdc-tab__content">
                             <span class="mdc-tab__text-label">대기</span>
                         </span>
-                        <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                        <span class="mdc-tab-indicator" id="tab_2">
                             <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
                         </span>
                         <span class="mdc-tab__ripple"></span>
@@ -92,7 +97,7 @@
                         <span class="mdc-tab__content">
                             <span class="mdc-tab__text-label">완료</span>
                         </span>
-                        <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                        <span class="mdc-tab-indicator" id="tab_3">
                             <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
                         </span>
                         <span class="mdc-tab__ripple"></span>
