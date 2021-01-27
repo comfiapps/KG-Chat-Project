@@ -29,8 +29,8 @@ let user = {
         });
 
         $('#ageInput').on('input', (e) => {
-            if(updateForm_original_age === e.target.value.trim()
-                || e.target.value.trim().length <= 0 || e.target.value.trim().length > 2) $("#ageSubmit").attr("disabled", true);
+            if(updateForm_original_age === e.target.value
+                || e.target.value.length <= 0 || e.target.value.length > 2) $("#ageSubmit").attr("disabled", true);
             else $("#ageSubmit").attr("disabled", false);
         });
 
@@ -53,7 +53,7 @@ let user = {
 
         $('#ageSubmit').on('click', () => {
             this.modify({
-                ageRange:  $("#ageInput").val().trim()
+                ageRange:  $("#ageInput").val()
             })
         });
 
