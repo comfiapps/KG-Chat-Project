@@ -42,13 +42,13 @@ public class RoomService {
     private ParticipantRepository participantRepository;
 
     @Transactional(readOnly = true)
-    private List<RoomInfoDto> convertRoomToPublic(List<Room> raw) {
+    public List<RoomInfoDto> convertRoomToPublic(List<Room> raw) {
         List<RoomInfoDto> result = new ArrayList<>();
 
         for(Room room : raw) {
             RoomInfoDto roomInfoDto = defaultInfo(room.getId());
             roomInfoDto.setRoomId(room.getId());
-            roomInfoDto.setCountOwnerVote(voteRepository.countByIdRoomIdAndIdUserId(room.getId(), room.getOwner().getId()));
+            roomInfoDto.setCountOwnerVote(voteRepository.countByIdRoomIdAndVoteToId(room.getId(), room.getOwner().getId()));
             roomInfoDto.setCountOpponentVote(voteRepository.countByIdRoomIdAndVoteToId(room.getId(), room.getOpponentId()));
             result.add(roomInfoDto);
         }

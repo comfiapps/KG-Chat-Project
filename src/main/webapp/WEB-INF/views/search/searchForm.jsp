@@ -58,10 +58,25 @@
                         </div>
                         <c:choose>
                             <c:when test="${result.endDebate == null}">
-                                <div class="process_bar" style="visibility: hidden"><div class="process_left"></div></div>
+                                <div class="score_bar" style="height: 0.8em">
+                                    <div class="score_bar_right hidden">
+                                    </div>
+                                </div>
                             </c:when>
                             <c:otherwise>
-                                <div class="process_bar"><div class="process_left"></div></div>
+                                <div class="score_bar" style="height: 0.8em">
+                                    <c:choose>
+                                        <c:when test="${result.countOwnerVote != 0 || result.countOpponentVote !=0}">
+                                            <div class="score_bar_right" >
+                                                <div class="score_bar_left" style="width:${(result.countOwnerVote/(result.countOwnerVote+result.countOpponentVote))*100}%; ${result.countOwnerVote/(result.countOwnerVote+result.countOpponentVote)== 1?'border-radius: 5px 5px 5px 5px;':''}"></div>                                                </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="score_bar_right" >
+                                                <div class="score_bar_left" style="width:50%;"></div>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                             </c:otherwise>
                         </c:choose>
                         <div><sub>${result.roomCategory}</sub></div>

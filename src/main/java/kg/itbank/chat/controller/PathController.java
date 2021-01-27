@@ -41,6 +41,7 @@ public class PathController {
         model.addAttribute("recommend", roomService.listFeaturedRoom());
         model.addAttribute("roomCounter", participantService.getRoomLoopupList());
 
+        logger.info("recommen: {}", roomService.listFeaturedRoom());
         return "home";
     }
 
