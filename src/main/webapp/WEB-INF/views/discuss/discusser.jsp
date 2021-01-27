@@ -133,7 +133,6 @@
         </div>
     </div>
 
-
     <%--경고 창 대신 사용할 모달창--%>
     <div class="warn_modal fade2" id="warn_disscuss">
         <div class="warn_modal_center">
@@ -153,7 +152,6 @@
         </div>
     </div>
 
-
     <div class="modal fade2 hidden" id="enter">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -172,7 +170,6 @@
             </div>
         </div>
     </div>
-
 
 <%--    <%@ include file="../../component/dialog/enterDiscuss.jsp"%>--%>
 </section>
@@ -257,8 +254,6 @@
                     location.href="/discuss/" + roomStatus.roomId;
                 }else{
                     modal.msg("이미 다른 사용자가 참여하셨습니다.", function(){modal.hidden(); $("#enter").removeClass("show"); $("#enter").addClass("hidden")})
-                    // alert("이미 다른 사용자가 참여하셨습니다.");
-
                 }
             }).fail(error => {
                 console.log("error.....");
