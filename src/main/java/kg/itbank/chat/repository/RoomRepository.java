@@ -18,7 +18,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     boolean existsByOpponentId(long id);
 
-    @Query(value = "select * from (select * from Room where userId = ?1 or opponentId = ?1 and closeDate is null) r where endTime > current_timestamp or endTime is null", nativeQuery = true)
+    @Query(value = "select * from (select * from Room where (userId = ?1 or opponentId = ?1) and closeDate is null) r where endTime > current_timestamp or endTime is null", nativeQuery = true)
     Room findDebatingRoom(long owner);
 
     @Query(value = "delete from Room where id = ?1 and userId =?2", nativeQuery = true)
