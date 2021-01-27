@@ -3,7 +3,7 @@
 let chat = {
     //웹 세션 연결 및 메시지 받기
     connect: function (destination) {
-        socket = new SockJS("/chat");
+        socket = new SockJS("/ws");
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function () {
 

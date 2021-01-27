@@ -47,8 +47,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 		interceptor.setCopyAllAttributes(false);
 		interceptor.setCopyHttpSessionId(false);
 
-		registry.addEndpoint("/chat")
+		registry.addEndpoint("/ws")
 				.addInterceptors(interceptor)	// 인터셉터 부착 : HttpSessionHandshakeInterceptor 기존 섹션의 모든 정보를 복사해 넘김
+				.setAllowedOrigins("*")
 				.withSockJS();
 	}
 

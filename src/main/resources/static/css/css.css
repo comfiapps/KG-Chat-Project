@@ -227,3 +227,31 @@ header{
     border: 0;
 }
 /* Card end - */
+
+
+.score_bar{
+    height: 2em;
+    width: 100%;
+    display: flex; flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+.score_bar_right{
+    width: 80%;
+    height: 60%;
+    background: #FF8D8D 0% 0% no-repeat padding-box;
+    border-radius: 10px;
+}
+.score_bar_left{
+    width: 50%;
+    height: 100%;
+    background: #70A9FF 0% 0% no-repeat padding-box;
+    border-radius: 10px 0px  0px 10px;
+
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in;
+}
+
+.hidden{
+    display: none;
+}
