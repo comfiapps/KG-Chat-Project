@@ -102,12 +102,12 @@ public class UserService {
     }
 
     @Transactional
-    public long update(long id, User user, int code) {
+    public long update(long id, User user, String code) {
         User model = userRepository.findById(id).orElseThrow(()
                 -> new UsernameNotFoundException("User Not Found - Id : " + id));
 
-        if(user.getEmail() != null && code != 0) {
-            Code codeObj = codeRepository.findByIdUserIdAndIdTypeAndEmailEqualsAndCodeEqualsAndUsedIsFalse(id, CodeType.MODIFY, user.getEmail(), code);
+        if(user.getEmail() != null && Integer.parseInt(code) != 0) {
+            Code codeObj = codeRepository.findByIdUserIdAndIdTypeAndEmailEqualsAndCodeEqualsAndUsedIsFalse(id, CodeType.MODIFY, user.getEmail(), Integer.parseInt(code));
             if(codeObj != null) {
                 model.setEmail(codeObj.getEmail());
                 codeObj.setUsed(true);

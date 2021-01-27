@@ -71,7 +71,7 @@ let user = {
         });
 
         $('#codeInput').on('input', (e) => {
-           if(e.target.value.trim().length == 6) {
+           if(e.target.value.length == 6) {
                $('#codeSubmit').attr("disabled", false)
            }
         });

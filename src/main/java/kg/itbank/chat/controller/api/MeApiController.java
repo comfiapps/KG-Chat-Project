@@ -44,7 +44,7 @@ public class MeApiController {
     @PostMapping
     public ResponseDto<?> updateUserData(@AuthenticationPrincipal PrincipalDetail principal,
                                          @RequestBody User user,
-                                         @RequestParam(value = "code", required = false) int code) {
+                                         @RequestParam(value = "code", required = false) String code) {
         UserDetails userDetails = principalService.loadUserById(
                 userService.update(principal.getId(), user, code));
         UsernamePasswordAuthenticationToken authentication =

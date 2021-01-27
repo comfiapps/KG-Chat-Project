@@ -45,7 +45,7 @@
 
 			<button class="mdc-button w-100" style="margin-top: 8px" onclick="location.href='/register'">
 				<span class="mdc-button__ripple"></span>
-				<span class="mdc-button__label">아직 계정이 없습니다</span>
+				<span class="mdc-button__label">아직 계정이 없습니다. 회원가입하기</span>
 			</button>
 
 <%--			<div style="margin-top: 56px"><input placeholder="테스트 이름 입력(등록)" id="test_register"> &lt;%&ndash; TODO test login&ndash;%&gt;</div>--%>
