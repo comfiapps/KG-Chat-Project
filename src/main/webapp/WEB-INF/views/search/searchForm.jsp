@@ -22,7 +22,7 @@
                                 <sub class="mdc-theme--error">준비중...</sub>
                             </c:when>
                             <c:otherwise>
-                                <sub>--명 시청 • <fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${result.endDebate}" /></sub>
+                                <sub>${roomCounter[result.roomId] == null?0:roomCounter[result.roomId]}명 조회 • <fmt:formatDate value="${result.endDebate}" pattern="YYYY-MM-DD HH:mm"/></sub>
                             </c:otherwise>
                         </c:choose>
 
