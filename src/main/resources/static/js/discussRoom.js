@@ -7,12 +7,13 @@
 //토론방 전체
 let discussRoom = {
 
-    active : function(){
+    active : function(selectNum){
         discussRoom.inputDiscusser();           //상태 상관없이 토론자 정보 넣기
         discussRoom.watcherScollViewEvent()     //
         discussRoom.endDiscussBtnEvent();
         //만약 opponent 정보가 없으면 참여하기 버튼 호출
         if(user.id != roomStatus.owner.id && roomStatus.opponent.id == '') $("#enter").addClass("show");
+        if(selectNum == 4) $(".closeBtnArea").addClass("hidden");
     },
 
     //현재 방상태 선택
@@ -39,7 +40,7 @@ let discussRoom = {
         voteBoard.active(selectNum);
         discussChat.active(selectNum);
         watcherChat.active();
-        discussRoom.active();
+        discussRoom.active(selectNum);
     },
 
     //토론자 정보 입력
@@ -49,7 +50,6 @@ let discussRoom = {
             $(".user1_name").html(roomStatus.owner.name);
             $(".vote_box .user1_name").html(roomStatus.owner.name +" VOTE");
             $(".user1_img img").attr("src", util.defaultImg(roomStatus.owner.image));
-
         }
 
         if(roomStatus.opponent.id != ""){
@@ -98,6 +98,7 @@ let discussRoom = {
             }
         });
     },
+
 
     //받아온 채팅리스트 출력
     inputChatData: function(list){

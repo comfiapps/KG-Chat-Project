@@ -103,7 +103,7 @@ public class PathController {
             return "redirect:/";
         }
 
-        logger.info("Discuss room: {}", room);
+        logger.info("Discuss room 이동");
 
         return "discuss/discusser";
     }

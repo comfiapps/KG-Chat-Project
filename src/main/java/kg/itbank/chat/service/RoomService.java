@@ -48,7 +48,7 @@ public class RoomService {
         for(Room room : raw) {
             RoomInfoDto roomInfoDto = defaultInfo(room.getId());
             roomInfoDto.setRoomId(room.getId());
-            roomInfoDto.setCountOwnerVote(voteRepository.countByIdRoomIdAndIdUserId(room.getId(), room.getOwner().getId()));
+            roomInfoDto.setCountOwnerVote(voteRepository.countByIdRoomIdAndVoteToId(room.getId(), room.getOwner().getId()));
             roomInfoDto.setCountOpponentVote(voteRepository.countByIdRoomIdAndVoteToId(room.getId(), room.getOpponentId()));
             result.add(roomInfoDto);
         }
@@ -69,17 +69,14 @@ public class RoomService {
         List<String> categories = roomRepository.listCategories();
 
         List<Room> waitItems = roomRepository.findAllByOpponentIdOrderByCreateDateDesc(0);
-        if(waitItems.size() > 0) {
-            featuredList.add(FeaturedDto.builder()
-                    .category("대기중인 방...")
-                    .rooms(convertRoomToPublic(waitItems))
-                    .build());
 
-        }
+        featuredList.add(FeaturedDto.builder()
+                .category("대기중인 방...")
+                .rooms(convertRoomToPublic(waitItems))
+                .build());
 
         for(String category : categories) {
             List<Room> getItems = roomRepository.findTop8ByCategory(category);
-
             featuredList.add(FeaturedDto.builder()
                     .category(category)
                     .rooms(convertRoomToPublic(getItems))

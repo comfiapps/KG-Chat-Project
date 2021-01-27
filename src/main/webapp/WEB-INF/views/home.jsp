@@ -177,6 +177,7 @@
                 </button>
             </div>
         </div>
+
         <c:if test="${e.index==0}">
             <div class="line"></div>
         </c:if>

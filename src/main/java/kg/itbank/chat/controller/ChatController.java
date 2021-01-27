@@ -141,24 +141,18 @@ public class ChatController {
 		}catch (EntityNotFoundException | AccessDeniedException e){
 			simpMessagingTemplate.convertAndSend("/topic/info/"+roomId, new ResponseDto(HttpStatus.BAD_REQUEST.value(), "Request Fail"));
 		}
-
-		log.info("진입 테스트 {} ", principalDetail.getUser().getImage());
-
-
 	}
+
 
 
 	@MessageMapping("/chat/msg")
 	public void sendMsg(ChatMsgDto message, StompHeaderAccessor stompHeaderAccessor, SimpMessageHeaderAccessor sha) {
 		log.info("msg 받은 메시지 {}" , message);
-		log.info("stompHeader: {}", stompHeaderAccessor);
 
 		PrincipalDetail principalDetail = (PrincipalDetail)((UsernamePasswordAuthenticationToken)stompHeaderAccessor.getUser()).getPrincipal();
 
 		long roomId = ((long)stompHeaderAccessor.getSessionAttributes().get("roomId"));
 		RoomInfoDto room = roomService.defaultInfo(roomId);
-
-		log.info("room: {}", room);
 
 		if(room.getCloseDate() == null && message.getMessageType().equals("text")){
 
@@ -169,8 +163,6 @@ public class ChatController {
 					.message(message.getMessage())
 					.messageType(message.getMessageType())
 					.build();
-
-			log.info("메시지 전송: {}", msg);
 
 			chatService.insert(roomId, principalDetail.getId(), (String)message.getMessage());
 			simpMessagingTemplate.convertAndSend("/topic/msg/"+roomId, msg);
