@@ -29,11 +29,11 @@ public class StompChannelInterceptor implements ChannelInterceptor {
         if(StompCommand.CONNECT.equals(accessor.getCommand())){
             ((ParticipantService) ApplicationContextProvider.getBean("participantService"))
                     .join(roomId, ((PrincipalDetail)((UsernamePasswordAuthenticationToken)accessor.getUser()).getPrincipal()).getUser().getId() );
-
         }else if(StompCommand.DISCONNECT.equals(accessor.getCommand()) && accessor.getNativeHeader("receipt") == null){
             ((ParticipantService) ApplicationContextProvider.getBean("participantService"))
                     .leave(roomId, ((PrincipalDetail)((UsernamePasswordAuthenticationToken)accessor.getUser()).getPrincipal()).getUser().getId() );
         }
+    
 
         return message;
     }

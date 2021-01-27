@@ -74,11 +74,10 @@ public class RoomService {
                     .category("대기중인 방...")
                     .rooms(convertRoomToPublic(waitItems))
                     .build());
-
         }
 
         for(String category : categories) {
-            List<Room> getItems = roomRepository.findTop8ByCategoryAndOpponentIdGreaterThan(category, 0);
+            List<Room> getItems = roomRepository.findTop8ByCategory(category);
 
             featuredList.add(FeaturedDto.builder()
                     .category(category)

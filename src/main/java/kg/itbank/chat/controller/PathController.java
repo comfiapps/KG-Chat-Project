@@ -82,6 +82,8 @@ public class PathController {
     public String discussRoom(@AuthenticationPrincipal PrincipalDetail principal,
                               @PathVariable long id, Model model, RedirectAttributes redirectAttributes, HttpSession session){
 
+        logger.info("pricipal: {}",principal.getId());
+
         long joined = roomService.isUserOnDebate(principal.getId());
 
         if(joined != -1 && joined != id) {

@@ -115,37 +115,3 @@ let discussRoom = {
         }
     },
 }
-
-function myModal (tagId){
-    let id = tagId;
-    let modalHandler;
-
-    document.querySelector("#"+id).addEventListener("click", function(event){
-        event.preventDefault();
-        if(event.target.id == id){
-            document.querySelector("#"+id).classList.remove("show");
-            if(modalHandler != undefined) modalHandler();
-        }
-    });
-
-    return {
-        show : function(){
-            document.querySelector("#"+id).classList.add("show");},
-        hidden: function(){
-            document.querySelector("#"+id).classList.remove("show");
-        },
-        event: function(tartgetId, handler){
-            modalHandler = handler;
-            document.getElementById(tartgetId).addEventListener("click", function(){
-                this.onclick = null;
-                handler();
-            });
-        },
-        msg: function(msg, handler){
-            modalHandler = handler;
-            document.querySelector(".warn_modal_body").innerHTML = msg;
-            this.event("warnModalBtn", handler);
-            this.show();
-        }
-    }
-};

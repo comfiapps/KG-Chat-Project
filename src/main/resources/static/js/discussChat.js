@@ -167,6 +167,7 @@ let discussChat = {
             type:"GET",
             url: "/api/chat/"+roomStatus.roomId
         }).done(response=>{
+            console.log(response)
             if(response.status == 200){
                 if(response.data.length > 0){
                     discussRoom.inputChatData(response.data);
