@@ -23,6 +23,19 @@ body {
     font-size: 16px;
 }
 
+.form {
+    margin: 0 0 0 108px;
+    float: left;
+}
+
+.kakaoLogin {
+    text-align: center;
+    padding: 32px;
+    background-color: white;
+    border-radius: 16px;
+}
+/*
+
 .kakaoLogin {
     margin: 0 0 0 108px;
     text-align: center;
@@ -30,7 +43,8 @@ body {
     float: left;
     background-color: white;
     border-radius: 16px;
-}
+}*/
+
 
 .kakaoLogin h6{
     margin-bottom: 16px;
@@ -44,7 +58,7 @@ body {
         justify-content: center;
     }
 
-    .kakaoLogin {
+    .form {
         margin: 32px 0;
         align-self: start;
     }

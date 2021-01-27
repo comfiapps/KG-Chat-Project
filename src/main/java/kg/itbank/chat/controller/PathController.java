@@ -56,6 +56,18 @@ public class PathController {
         return "user/loginForm";
     }
 
+    @GetMapping("/register")
+    public String register(@AuthenticationPrincipal PrincipalDetail principal, HttpServletRequest request, Model model) {
+        if(principal != null) return "redirect:/";
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                .replacePath(null)
+                .build()
+                .toUriString();
+
+        model.addAttribute("baseUrl", baseUrl);
+        return "user/registerForm";
+    }
+
     @GetMapping("/discuss")
     public String discussNull(@AuthenticationPrincipal PrincipalDetail principal, RedirectAttributes redirectAttributes) {
         long joined = roomService.isUserOnDebate(principal.getId());
