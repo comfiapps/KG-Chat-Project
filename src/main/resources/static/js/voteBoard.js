@@ -1,6 +1,7 @@
 //투표
 let voteBoard = {
     active: function(id){
+
         this.voteEvent();
         switch (id){
             case 1: break;
@@ -9,7 +10,6 @@ let voteBoard = {
             case 4: this.voteDisplay();
         }
     },
-
     voteEvent: function(){
         let vote = document.querySelectorAll(".user_vote");
         for(var i in vote){
@@ -27,7 +27,6 @@ let voteBoard = {
             }
         }
     },
-
     voteDisplay: function(){
         if(myVote == roomStatus.owner.id){
             $(".user_left .bg").addClass("select_vote");
@@ -40,7 +39,6 @@ let voteBoard = {
             $(".user_right .bg").removeClass("select_vote");
         }
     },
-
     //투표 요청
     voteDiscuss: function(voteUser){
         if(roomStatus.owner.id == voteUser){
@@ -59,7 +57,6 @@ let voteBoard = {
         this.voteDisplay();
         console.log("투표한 사람: ",  myVote)
     },
-
     //투표수 요청
     countVoteDiscuss: function(vote){
         roomStatus.countOwnerVote = vote.ownerVote;

@@ -47,18 +47,18 @@ let scoreBoard = {
     timer: function(time, additionalTime, timeInCallback, timeOutCallback){
 
         if(time == null || time == '') $(".time").html("00:00");
-        else if(endDiscuss) $(".time").html("토론 종료");
+        else if(endDiscuss) $(".time").html("토론종료");
         else{
             let handler = setInterval(function(){
                 var diff = moment(time).diff(moment(new Date()))/1000+additionalTime;
                 if(diff <= 0){
                     clearInterval(handler)
-                    $(".time").html("토론 종료");
+                    $(".time").html("토론종료");
                     if(roomStatus.owner.id == user.id) chat.info(2);
                     return;
                 }else{
                     if(endDiscuss){
-                        $(".time").html("토론 종료");
+                        $(".time").html("토론종료");
                         clearInterval(handler);
                         endDiscuss = true;
                     }else{

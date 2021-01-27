@@ -116,13 +116,13 @@
                             </div>
                             <c:choose>
                                 <c:when test="${roomList.endDebate == null}">
-                                    <div class="score_bar" style="height: 0.8em">
+                                    <div class="score_bar" style="height: 0.5em">
                                         <div class="score_bar_right hidden">
                                         </div>
                                     </div>
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="score_bar" style="height: 0.8em">
+                                    <div class="score_bar" style="height: 0.5em">
                                         <c:choose>
                                             <c:when test="${roomList.countOwnerVote != 0 || roomlist.countOpponentVote !=0}">
                                                 <div class="score_bar_right" >
