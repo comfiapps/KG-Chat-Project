@@ -228,17 +228,16 @@ header{
 }
 /* Card end - */
 
-
 .score_bar{
-    height: 2em;
+    height: 0.7em;
     width: 100%;
     display: flex; flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
 }
 .score_bar_right{
-    width: 80%;
-    height: 60%;
+    width: 85%;
+    height: 100%;
     background: #FF8D8D 0% 0% no-repeat padding-box;
     border-radius: 10px;
 }
@@ -251,7 +250,10 @@ header{
     transition-duration: 0.5s;
     transition-timing-function: ease-in;
 }
-
 .hidden{
     display: none;
+    opacity: 0;
+    width: 0px;
 }
+
+

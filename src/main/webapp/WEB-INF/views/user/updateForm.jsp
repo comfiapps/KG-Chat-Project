@@ -90,7 +90,7 @@
                                                 <sub class="mdc-theme--error">준비중...</sub>
                                             </c:when>
                                             <c:otherwise>
-                                                <sub>--명 시청 • ${roomList.endDebate}</sub>
+                                                <sub>${roomCounter[roomList.roomId] == null?0:roomCounter[roomList.roomId]}명 조회 • ${roomList.endDebate}</sub>
                                             </c:otherwise>
                                         </c:choose>
 
@@ -127,13 +127,13 @@
                                         </div>
                                         <c:choose>
                                             <c:when test="${rooms.endDebate == null}">
-                                                <div class="score_bar" style="height: 0.8em">
+                                                <div class="score_bar" style="height: 0.5em">
                                                     <div class="score_bar_right hidden">
                                                     </div>
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
-                                                <div class="score_bar" style="height: 0.8em">
+                                                <div class="score_bar" style="height: 0.5em">
                                                     <c:choose>
                                                         <c:when test="${rooms.countOwnerVote != 0 || rooms.countOpponentVote !=0}">
                                                             <div class="score_bar_right" >

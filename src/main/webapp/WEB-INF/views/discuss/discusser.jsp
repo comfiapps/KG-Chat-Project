@@ -2,113 +2,10 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-
-
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chat.css">
 
 <style>
-
-    /*html{ font-size:10px; }*/
-
-    div{
-        /*border: 1px solid black; */
-        box-sizing: border-box; }
-
-
-    .lineBtn{
-        position: relative;
-        width: fit-content;
-        border: 1.5px solid #AFAFAF;
-        border-radius: 5px;
-        padding: 2px 4px;
-        margin: 0 auto;
-        cursor: pointer;
-    }
-    .lineBtn:hover{
-        box-shadow: 0 1px 5px rgba(0,0,0,.2);
-    }
-    .line {
-        border: 0;
-        border-radius: 10px;
-        width: 30px;
-        height: 5px;
-        margin: 4px 0px;
-        background-color: #AFAFAF;
-    }
-    .closeContent{
-        position: absolute;
-        top: 45px;
-        right: 0px;
-        padding: 5px;
-        background-color: white;
-        border: 1px solid rgba(0, 0, 0, .2);
-        box-shadow: 0 2px 10px rgba(0,0,0,.2);
-        width: fit-content;
-        height: fit-content;
-        text-align: center;
-    }
-    .closeTitle{
-        font-size: 15px;
-        margin: 10px 0px;
-    }
-    .closeBtn{
-        width: 150px;
-        text-align: center;
-        margin: 10px 0px;
-    }
-    .closeBtnArea{
-        width: fit-content; height: fit-content; position: absolute; right: 0px; top: 0px;
-    }
-    .divider {
-        height: 1px;
-        background: #1a00001a;
-        margin: 16px 0;
-    }
-     /*모달 css*/
-     .warn_modal{
-         position: fixed; top: 0px; left: 0px; z-index: 1060; width: 100%; height: 100%; background-color: #30303031;
-     }
-    .warn_modal_center{
-        position: relative;
-        top: 30%;
-        margin: 0 auto;
-        transform: translateY(-20%);
-        width: fit-content;
-        height: fit-content;
-    }
-    .warn_modal_container{
-        color: #616060;
-        background-color: white;
-        box-shadow: 0px 3px 6px #00000029;
-        border: 1px solid rgb(185, 185, 185);
-        border-radius: 5px;
-        padding: 2.5em;
-    }
-    .warn_modal_title{
-        font-size: 1.7em;
-        font-weight: 600;
-        margin-bottom: 2em;
-    }
-    .warn_modal_body{
-        min-width: 12em;
-        max-width: 17em;
-        max-height: 40em;
-        text-align: center;
-        font-size: 2.2em;
-        font-weight: 500;
-
-        overflow-wrap: anywhere;
-        overflow-y: auto;
-        margin: 0.2em;
-    }
-    .warn_modal_footer{
-        text-align: right;
-    }
-    .warn_modal_footer span{
-        font-size: 1.5em;
-    }
-
-
+    div{box-sizing: border-box; }
 </style>
 
 <section class="chatting main-content">
@@ -136,6 +33,7 @@
                             <div class="score_bar_left"></div>
                         </div>
                     </div>
+
                 </div>
                 <div class="closeBtnArea hidden">
                     <div class="lineBtn">
@@ -185,10 +83,9 @@
             <div>올리기/내리기</div>
         </div>
         <div class="watcher_container">
-
             <div class="watcher_vote">
                 <div class="vote_title">
-                    <div>Vote the Best One</div>
+                    <div class="titleName"></div>
                 </div>
                 <div class="vote_box">
                     <div class="user_vote message_left user_left " id="vote_left">
@@ -242,17 +139,6 @@
     <%@ include file="../../component/dialog/enterDiscuss.jsp"%>
 </section>
 
-
-<script src="${pageContext.request.contextPath}/js/sockjs.js"></script>
-<script src="${pageContext.request.contextPath}/js/stomp.js"></script>
-<script src="${pageContext.request.contextPath}/js/moment.js"></script>
-<script src="${pageContext.request.contextPath}/js/myUtil.js"></script>
-<script src="${pageContext.request.contextPath}/js/chat.js"></script>
-<script src="${pageContext.request.contextPath}/js/scoreBoard.js"></script>
-<script src="${pageContext.request.contextPath}/js/discussChat.js"></script>
-<script src="${pageContext.request.contextPath}/js/watcherChat.js"></script>
-<script src="${pageContext.request.contextPath}/js/voteBoard.js"></script>
-
 <script>
     let socket;
     let stompClient;
@@ -268,172 +154,28 @@
     let transData = {'message': null, 'messageType': null, 'sendTime': null,};
     let modal;
 
-    console.log("roomStatus: ", roomStatus);
-    console.log("user: ", user);
+</script>
+<script src="${pageContext.request.contextPath}/js/discussRoom.js"></script>
+<script src="${pageContext.request.contextPath}/js/sockjs.js"></script>
+<script src="${pageContext.request.contextPath}/js/stomp.js"></script>
+<script src="${pageContext.request.contextPath}/js/moment.js"></script>
+<script src="${pageContext.request.contextPath}/js/myUtil.js"></script>
+<script src="${pageContext.request.contextPath}/js/chat.js"></script>
+<script src="${pageContext.request.contextPath}/js/scoreBoard.js"></script>
+<script src="${pageContext.request.contextPath}/js/discussChat.js"></script>
+<script src="${pageContext.request.contextPath}/js/watcherChat.js"></script>
+<script src="${pageContext.request.contextPath}/js/voteBoard.js"></script>
 
-    //1: 토론자 입장 전 대기 화면
-    //2: 토론자 입장 완료 및 토론 시작 전 화면
-    //3: 토론 중 화면
-    //4: 토론 종료 화면
-
-    //토론방 전체
-    let discussRoom = {
-
-        active : function(){
-            discussRoom.inputDiscusser();           //상태 상관없이 토론자 정보 넣기
-            discussRoom.watcherScollViewEvent()     //
-            discussRoom.endDiscussBtnEvent();
-            //만약 opponent 정보가 없으면 참여하기 버튼 호출
-            if(user.id != roomStatus.owner.id && roomStatus.opponent.id == '') $("#enter").addClass("show");
-        },
-
-        //현재 방상태 선택
-        getStatus : function(){
-            roomStatus.opponent = util.userCheck(roomStatus.opponent);
-            let selectNum;
-            if(!endDiscuss){
-                if(roomStatus.opponent.id == ""){
-                    selectNum = 1;
-                }else{
-                    if(roomStatus.endDebate == ''|| roomStatus.endDebate == null){ selectNum = 2;}
-                    else{ selectNum = 3;}
-                }
-            }else{
-                selectNum = 4;
-            }
-            return selectNum;
-        },
-
-        //출력할 화면 선택
-        selectView: function(){
-            let selectNum = this.getStatus();
-            scoreBoard.active(selectNum);
-            voteBoard.active(selectNum);
-            discussChat.active(selectNum);
-            watcherChat.active();
-            discussRoom.active();
-        },
-
-        //토론자 정보 입력
-        inputDiscusser: function(){
-            console.log('토론자 정보 입력')
-            if(roomStatus.owner.id != ""){
-                $(".user1_name").html(roomStatus.owner.name);
-                $(".user1_img img").attr("src", util.defaultImg(roomStatus.owner.image));
-            }
-            if(roomStatus.opponent.id != ""){
-                $(".user2_name").html(roomStatus.opponent.name);
-                $(".user2_img img").attr("src", util.defaultImg(roomStatus.opponent.image));
-            }
-        },
-
-        //모바일용 시청자 채팅 보이기/감추기 이벤트
-        watcherScollViewEvent: function(){
-            document.querySelector("#watcher_scroll_view").onclick = ()=>{
-                if($(".watcher_scrollbar").hasClass("watcher_scrollbar_ani")){
-                    $(".watcher_scrollbar").removeClass("watcher_scrollbar_ani");
-                    $(".watcher_container").removeClass("watcher_container_ani");
-                }else{
-                    $(".watcher_scrollbar").addClass("watcher_scrollbar_ani");
-                    $(".watcher_container").addClass("watcher_container_ani");
-                }
-            };
-        },
-
-        //토론자 나가기 버튼 이벤트
-        endDiscussBtnEvent: function(){
-            //토론자만 보이게
-            if(roomStatus.owner.id == user.id || roomStatus.opponent.id == user.id) $(".closeBtnArea").removeClass("hidden");
-
-            document.querySelector("#endBtn").onclick = ()=>{
-                if(!endDiscuss){
-                    if (roomStatus.owner.id != "" && roomStatus.opponent.id != "" && user.id == roomStatus.owner.id && chatAble) {
-                        console.log("토론 종료 실행");
-                        chat.info(2);
-                    }else{
-                        console.log("토론 나가기 실행");
-                        chat.info(3);
-                    }
-                }
-            };
-            //나가기 창 띄위기 용
-            document.querySelector(".lineBtn").onclick=function(event){
-                document.querySelector(".closeContent ").classList.toggle("hidden");
-            };
-            $(document).mouseup(function (e){
-                if(!$(".closeBtnArea").is(e.target) && $(".closeBtnArea").has(e.target).length === 0){
-                    $(".closeContent").addClass("hidden");
-                }
-            });
-        },
-
-        //받아온 채팅리스트 출력
-        inputChatData: function(list){
-            let msg = {sender:null, senderType: null,  message:null};
-            for (var i in list){
-                msg.senderId = list[i].user.id;
-                msg.sender = list[i].user.name;
-                msg.message = list[i].content;
-
-                if(msg.senderId == roomStatus.owner.id || msg.senderId == roomStatus.opponent.id){
-                    discussChat.contributor(msg);
-                }else{
-                    watcherChat.contributor(msg);
-                }
-            }
-        },
-    }
-
-    function myModal (tagId){
-        let id = tagId;
-        let modalHandler;
-
-        document.querySelector("#"+id).addEventListener("click", function(event){
-            event.preventDefault();
-            if(event.target.id == id){
-                document.querySelector("#"+id).classList.remove("show");
-                if(modalHandler != undefined) modalHandler();
-            }
-        });
-
-        return {
-            show : function(){
-                document.querySelector("#"+id).classList.add("show");},
-            hidden: function(){
-                document.querySelector("#"+id).classList.remove("show");
-            },
-            event: function(tartgetId, handler){
-                modalHandler = handler;
-                document.getElementById(tartgetId).addEventListener("click", function(){
-                    this.onclick = null;
-                    handler();
-                });
-            },
-            msg: function(msg, handler){
-                modalHandler = handler;
-                document.querySelector(".warn_modal_body").innerHTML = msg;
-                this.event("warnModalBtn", handler);
-                this.show();
-            }
-        }
-    };
-
+<script>
     // main
     function discussMain() {
-
+        if(joinedError) modal.msg("참여 중이던 방으로 이동되었습니다", modal.hidden);
+        $(".titleName").html(roomStatus.roomName);
+        modal = myModal("warn_disscuss");
         discussChat.getChatting();
-
         if(!endDiscuss) chat.connect(roomStatus.roomId);
-
         discussRoom.selectView();
     }
-
-
-    $(document).ready(function(){
-        modal = myModal("warn_disscuss");
-        if(joinedError) modal.msg("참여 중이던 방으로 이동되었습니다", modal.hidden);
-    })
-
     discussMain();
 
 </script>
