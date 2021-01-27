@@ -1,6 +1,11 @@
 let scroll = {
     init: function() {
         $(document).ready(function() {
+            const c = new URL(location.href).searchParams.get("c");
+            if(c === "w") $( "#tab_2" ).addClass("mdc-tab-indicator--active");
+            else if(c === "d") $( "#tab_3" ).addClass("mdc-tab-indicator--active");
+            else $( "#tab_1" ).addClass("mdc-tab-indicator--active");
+
             $( ".scrollmenu" ).each(function() {
                 if($(this).scrollLeft() <= 0 ) $(this).find('#panLeft').hide();
                 else $(this).find('#panLeft').show();
