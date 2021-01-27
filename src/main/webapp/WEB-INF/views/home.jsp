@@ -57,14 +57,13 @@
 </style>
 
 <section class="main-content">
-
     <c:set var="categoryNum" value="0" />
     <c:forEach items="${recommend}" var="recommends">
         <h4 class="font-weight-bold category-title">${recommends.category}</h4>
 
         <div class="scrollmenu-wrapper">
             <div class="scrollmenu" id="scrollmenu-${categoryNum}">
-                <c:forEach items= "${recommends.rooms}" var = "roomList">
+                <c:forEach items= "${recommends.rooms}" var = "roomList" varStatus="i">
                     <div class="mdc-card mdc-card--outlined my-card room-card" onclick="location.href = '/discuss/${roomList.roomId}'">
                         <div class="mdc-card__primary-action my-card-content" tabindex="0">
                             <c:choose>
@@ -75,7 +74,7 @@
                                     <sub class="mdc-theme--error">준비중...</sub>
                                 </c:when>
                                 <c:otherwise>
-                                    <sub>--명 시청 • ${roomList.endDebate}</sub>
+                                    <sub>${roomCounter[roomList.roomId] == null?0:roomCounter[roomList.roomId]}명 조회 • <fmt:formatDate value="${roomList.endDebate}" pattern="YYYY-MM-DD HH:mm"/></sub>
                                 </c:otherwise>
                             </c:choose>
 

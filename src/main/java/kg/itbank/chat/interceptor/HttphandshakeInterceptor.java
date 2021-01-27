@@ -18,8 +18,5 @@ public class HttphandshakeInterceptor extends HttpSessionHandshakeInterceptor {
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }
 
-
-
-
 }
 

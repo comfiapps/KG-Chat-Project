@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://seoul-kgproject.cg0ggsvujvps.ap-northeast-2.rds.amazonaws.com:3306/kgDB
+    url: jdbc:mysql://naman3.cuq8cbd2pwhf.ap-northeast-2.rds.amazonaws.com :3306/naman3
     username: admin
     password: 11111111
 
@@ -13,7 +13,7 @@ spring:
     cache: false
 
   jpa:
-    show-sql: true
+#    show-sql: true
     hibernate:
       ddl-auto: update
       naming:

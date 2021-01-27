@@ -4,8 +4,8 @@ package kg.itbank.chat.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kg.itbank.chat.config.PrincipalDetail;
 import kg.itbank.chat.dto.RoomInfoDto;
-import kg.itbank.chat.interceptor.UserCounter;
 import kg.itbank.chat.model.Vote;
+import kg.itbank.chat.service.ParticipantService;
 import kg.itbank.chat.service.RoomService;
 import kg.itbank.chat.service.VoteService;
 import org.slf4j.Logger;
@@ -20,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @Controller
 public class PathController {
@@ -31,12 +30,17 @@ public class PathController {
     private VoteService voteService;
 
     @Autowired
+    private ParticipantService participantService;
+
+    @Autowired
     private RoomService roomService;
 
     @GetMapping({"", "/", "/home"})
     public String home(@AuthenticationPrincipal PrincipalDetail principal, Model model) {
         if(principal == null) return "redirect:/login";
         model.addAttribute("recommend", roomService.listFeaturedRoom());
+        model.addAttribute("roomCounter", participantService.getRoomLoopupList());
+
         return "home";
     }
 
@@ -88,7 +92,6 @@ public class PathController {
         }
 
         logger.info("Discuss room: {}", room);
-        logger.info("현재 접속자수: {}", UserCounter.getCountRoomUser(id));
 
         return "discuss/discusser";
     }

@@ -14,8 +14,6 @@
         /*border: 1px solid black; */
         box-sizing: border-box; }
 
-
-
     .chatting{font-size: 10px;}
 
     .chatting, .chat_container{
@@ -32,13 +30,13 @@
     .chat_container{ min-height: 40em; }
 
     .discusser_chat_container, .watcher_chat_container {
-        height: 100%; border: 1px solid  rgb(202, 202, 202);
+        height: 100%; /*border: 1px solid  rgb(202, 202, 202);*/
     }
     .discusser_container{
         width: 70%;
     }
     .watcher_container{
-        width: 30%; min-width: 320px;
+        width: 30%; min-width: 300px;
     }
     .discusser_container, .watcher_container{
         padding: 0.7em 1.2em; flex-flow: column nowrap;
@@ -103,6 +101,10 @@
         height: 100%;
         background: #70A9FF 0% 0% no-repeat padding-box;
         border-radius: 10px 0px  0px 10px;
+
+        transition-duration: 0.5s;
+        transition-timing-function: ease-in;
+
     }
     .result_box{
         width: fit-content;
@@ -114,7 +116,7 @@
         font-size: 2.5em;
     }
     .score_container, .watcher_vote{
-        min-height: 12em;
+        min-height: 13em;
     }
 
     .user div:nth-child(1), .result div:nth-child(1){
@@ -141,17 +143,21 @@
         border: 1px solid rgb(185, 185, 185);
         border-radius: 25px;
         text-indent: 1.5rem;
-        font-size: 1.5rem;
+        font-size: 1.5em;
         background: #E5E5E5 0% 0% no-repeat padding-box;
     }
     .send_box input:hover, .send_box input:focus{
         border: 2px solid rgb(78, 105, 136);
+        box-shadow: 0 1px 5px rgba(0,0,0,.2);
         border-radius: 25px;
         outline: 0;
     }
     /* 채팅 공통 영역 */
     .chat_box{
         height: 100%;
+        border: 1px solid  rgb(202, 202, 202);
+        margin: 0.5em 2em;
+        padding: 0.5em 2em;
         overflow: auto;
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
@@ -263,6 +269,10 @@
     .user_vote{
         color: white; cursor: pointer; position: relative;
     }
+    .user_vote:hover{
+        border: 1px solid lightslategrey;
+        box-shadow: 0 1px 5px rgba(0,0,0,.2);
+    }
     .user_vote div{
         height: fit-content;
     }
@@ -353,10 +363,10 @@
     
     @media (max-width: 1024px) and (min-width: 748px) {
         .discusser_container{
-            width: 65%;
+            width: 70%;
         }
         .watcher_container{
-            width: 35%;
+            width: 30%;
         }
 
     }
@@ -395,6 +405,9 @@
         margin: 0 auto;
         cursor: pointer;
     }
+    .lineBtn:hover{
+        box-shadow: 0 1px 5px rgba(0,0,0,.2);
+    }
     .line {
         border: 0;
         border-radius: 10px;
@@ -432,11 +445,9 @@
         background: #1a00001a;
         margin: 16px 0;
     }
-
-
      /*모달 css*/
      .warn_modal{
-         position: fixed; top: 0px; left: 0px; z-index: 10; width: 100%; height: 100%; background-color: #30303031;
+         position: fixed; top: 0px; left: 0px; z-index: 1060; width: 100%; height: 100%; background-color: #30303031;
      }
     .warn_modal_center{
         position: relative;
@@ -452,39 +463,34 @@
         box-shadow: 0px 3px 6px #00000029;
         border: 1px solid rgb(185, 185, 185);
         border-radius: 5px;
-        padding: 2.5rem;
+        padding: 2.5em;
     }
     .warn_modal_title{
-        font-size: 2rem;
+        font-size: 1.7em;
         font-weight: 600;
-        margin-bottom: 2rem;
+        margin-bottom: 2em;
     }
     .warn_modal_body{
-        min-width: 30rem;
-        max-width: 40rem;
-        max-height: 40rem;
+        min-width: 12em;
+        max-width: 17em;
+        max-height: 40em;
         text-align: center;
-        font-size: 1.7rem;
+        font-size: 2.2em;
         font-weight: 500;
 
         overflow-wrap: anywhere;
         overflow-y: auto;
-
-        margin: 1rem;
+        margin: 0.2em;
     }
     .warn_modal_footer{
         text-align: right;
     }
     .warn_modal_footer span{
-        font-size: 1.8rem;
+        font-size: 1.5em;
     }
 
 
 </style>
-
-
-
-
 
 <section class="chatting main-content">
     <div class="chat_container">
@@ -511,7 +517,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="closeBtnArea">
+                <div class="closeBtnArea hidden">
                     <div class="lineBtn">
                         <div class="line"></div>
                         <div class="line"></div>
@@ -640,6 +646,7 @@
 
     let chatAble = false;
     let transData = {'message': null, 'messageType': null, 'sendTime': null,};
+    let modal;
 
     console.log("roomStatus: ", roomStatus);
     console.log("user: ", user);
@@ -651,13 +658,13 @@
 
     //토론방 전체
     let discussRoom = {
+
         active : function(){
             discussRoom.inputDiscusser();           //상태 상관없이 토론자 정보 넣기
             discussRoom.watcherScollViewEvent()     //
             discussRoom.endDiscussBtnEvent();
             //만약 opponent 정보가 없으면 참여하기 버튼 호출
             if(user.id != roomStatus.owner.id && roomStatus.opponent.id == '') $("#enter").addClass("show");
-
         },
 
         //현재 방상태 선택
@@ -715,6 +722,9 @@
 
         //토론자 나가기 버튼 이벤트
         endDiscussBtnEvent: function(){
+            //토론자만 보이게
+            if(roomStatus.owner.id == user.id || roomStatus.opponent.id == user.id) $(".closeBtnArea").removeClass("hidden");
+
             document.querySelector("#endBtn").onclick = ()=>{
                 if(!endDiscuss){
                     if (roomStatus.owner.id != "" && roomStatus.opponent.id != "" && user.id == roomStatus.owner.id && chatAble) {
@@ -726,12 +736,20 @@
                     }
                 }
             };
+            //나가기 창 띄위기 용
+            document.querySelector(".lineBtn").onclick=function(event){
+                document.querySelector(".closeContent ").classList.toggle("hidden");
+            };
+            $(document).mouseup(function (e){
+                if(!$(".closeBtnArea").is(e.target) && $(".closeBtnArea").has(e.target).length === 0){
+                    $(".closeContent").addClass("hidden");
+                }
+            });
         },
 
         //받아온 채팅리스트 출력
         inputChatData: function(list){
             let msg = {sender:null, senderType: null,  message:null};
-
             for (var i in list){
                 msg.senderId = list[i].user.id;
                 msg.sender = list[i].user.name;
@@ -743,36 +761,32 @@
                     watcherChat.contributor(msg);
                 }
             }
-
-            if(discussRoom.getStatus() == 4) chat.disconnect();
         },
-
     }
 
-    function myModal (){
-        let id = "warn_disscuss";
+    function myModal (tagId){
+        let id = tagId;
         let modalHandler;
 
-        document.querySelector(".warn_modal").addEventListener("click", function(event){
+        document.querySelector("#"+id).addEventListener("click", function(event){
             event.preventDefault();
             if(event.target.id == id){
-                document.querySelector("#warn_disscuss").classList.remove("show");
+                document.querySelector("#"+id).classList.remove("show");
                 if(modalHandler != undefined) modalHandler();
             }
         });
 
         return {
             show : function(){
-                document.querySelector("#warn_disscuss").classList.add("show");},
+                document.querySelector("#"+id).classList.add("show");},
             hidden: function(){
-                document.querySelector("#warn_disscuss").classList.remove("show");
+                document.querySelector("#"+id).classList.remove("show");
             },
             event: function(tartgetId, handler){
                 modalHandler = handler;
                 document.getElementById(tartgetId).addEventListener("click", function(){
                     this.onclick = null;
                     handler();
-                    // this.removeEventListener("click", arguments.callee);
                 });
             },
             msg: function(msg, handler){
@@ -783,25 +797,21 @@
             }
         }
     };
+
     // main
     function discussMain() {
-        chat.connect(roomStatus.roomId);
+
+        discussChat.getChatting();
+
+        if(!endDiscuss) chat.connect(roomStatus.roomId);
+
         discussRoom.selectView();
     }
-    let modal;
-    $(document).ready(function(){
-        modal = myModal();
-        if(joinedError) modal.msg("참여 중이던 방으로 이동되었습니다", modal.hidden);
 
-        //나가기 창 띄위기 용
-        document.querySelector(".lineBtn").onclick=function(event){
-            document.querySelector(".closeContent ").classList.toggle("hidden");
-        }
-        $(document).mouseup(function (e){
-            if(!$(".closeBtnArea").is(e.target) && $(".closeBtnArea").has(e.target).length === 0){
-                $(".closeContent").addClass("hidden");
-            }
-        });
+
+    $(document).ready(function(){
+        modal = myModal("warn_disscuss");
+        if(joinedError) modal.msg("참여 중이던 방으로 이동되었습니다", modal.hidden);
     })
 
     discussMain();

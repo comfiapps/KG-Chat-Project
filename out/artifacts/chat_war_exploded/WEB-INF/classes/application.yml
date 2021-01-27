@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    url: jdbc:mysql://naman3.cuq8cbd2pwhf.ap-northeast-2.rds.amazonaws.com :3306/naman3
+    username: admin
+    password: 11111111
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  freemarker:
+    cache: false
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      use-new-id-generator-mappings: false
+    properties:
+      hibernate.format_sql: true
+
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kgdiscussion@gmail.com
+    password: qwer1234$
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 5000
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8

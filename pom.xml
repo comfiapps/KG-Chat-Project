@@ -12,6 +12,7 @@
     <groupId>kg.itbank</groupId>
     <artifactId>chat</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>chat</name>
     <description>Demo project for Spring Boot</description>
 
