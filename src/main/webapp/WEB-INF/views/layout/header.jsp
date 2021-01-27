@@ -44,7 +44,7 @@
 					</div>
 					<div class="nav_search">
 						<input placeholder="토론방 통합 검색 - 제목, 주제, 참여자" class="searchInput" type="text" id="desktopSearchInput" value="${keyword}">
-						<span class="material-icons md-16 searchBtn">search</span>
+						<span class="material-icons md-16 searchBtn" style="cursor: pointer;">search</span>
 					</div>
 					<div class="nav_profile">
 						<div>
@@ -96,7 +96,7 @@
 
 					<div class="nav_search">
 						<input placeholder="토론방 통합 검색 - 제목, 주제, 참여자" class="searchInput" type="text" id="mobileSearchInput" value="${keyword}">
-						<span class="material-icons md-16 searchBtn">search</span>
+						<span class="material-icons md-16 searchBtn" style="cursor: pointer">search</span>
 					</div>
 				</div>
 			</div>
