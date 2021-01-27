@@ -14,7 +14,7 @@
             <div class="modal-body">
 
                 <div>
-                    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100" style="margin-bottom: 30px">
+                    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100" style="margin-bottom: 10px">
                         <span class="mdc-text-field__ripple"></span>
                         <input class="mdc-text-field__input" type="text" maxlength="100" placeholder="변경할 이메일" aria-label="Label"
                                id="emailInput" value="${principal.user.email}">
@@ -24,6 +24,7 @@
                         </button>
                     </label>
 
+                    <span id = "msgEmail"></span>
 
 
                 </div>
@@ -35,6 +36,8 @@
                     <span class="mdc-line-ripple"></span>
                 </label>
             </div>
+
+
 
             <div class="modal-footer border-top-0">
                 <button  class="mdc-button no-outline" id = "emailCancel" data-dismiss="modal"/>
