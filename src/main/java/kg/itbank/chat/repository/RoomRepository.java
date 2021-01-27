@@ -26,10 +26,12 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Transactional
     int deleteRoom(long id, long userId);
 
-    @Query(value = "SELECT category FROM Room GROUP BY category", nativeQuery = true)
+    List<Room> findAllByOpponentIdIsNullOrderByCreateDateDesc();
+
+    @Query(value = "SELECT category FROM Room WHERE opponentId IS NOT NULL GROUP BY category", nativeQuery = true)
     List<String> listCategories();
 
-    List<Room> findTop8ByCategory(String category);
+    List<Room> findTop8ByCategoryAndOpponentIdIsNotNull(String category);
 
     List<Room> findByNameIsContainingOrCategoryContainingOrOwnerNameContaining(String name, String category, String owner);
 
