@@ -66,18 +66,27 @@ let user = {
         $('#emailCancel').on('click', () => {
             $("#codeInput").attr("disabled", true);
             $("#emailLabel").addClass("mdc-text-field--disabled");
+            $("#emailSubmit").attr("disabled", false);
+            document.getElementById("msgEmail").innerHTML = "";
         });
 
-        $('#codeInput').on('change', (e) => {
+        $('#codeInput').on('input', (e) => {
            if(e.target.value.length == 6) {
                $('#codeSubmit').attr("disabled", false)
            }
+        });
+
+        $('#codeSubmit').on('click', () => {
+            this.modify({
+                email:  $("#emailInput").val()
+            }, $("#codeInput").val());
         });
 
     },
 
     emailRequest: function (data) {
         $("#emailSubmit").attr("disabled", true);
+        $("#codeInput").attr("disabled", true);
 
         $.ajax({
             type:"POST",
@@ -87,16 +96,15 @@ let user = {
             dataType: "json"
 
         }).done(response => {
-
             if(response.status === 200) {
-                alert("메일이 성공적으로 발송되었습니다");
+                document.getElementById("msgEmail").innerHTML = "이메일이 전송되었습니다";
+                document.getElementById("msgEmail").style.color = "green";
                 $("#codeInput").attr("disabled", false);
                 $("#emailLabel").removeClass("mdc-text-field--disabled");
-                return;
 
             } else {
-                alert("이메일 발송에 실패하였습니다 다시 확인하세요")
-                return;
+                document.getElementById("msgEmail").innerHTML = "이메일이 전송에 실패했습니다";
+                document.getElementById("msgEmail").style.color = "red";
             }
 
         }).fail(error => {
@@ -106,7 +114,7 @@ let user = {
         })
     },
 
-    modify: function (data) {
+    modify: function (data, code) {
         $("#nicknameSubmit").attr("disabled", true);
         $("#codeSubmit").attr("disabled", true);
         $("#ageSubmit").attr("disabled", true);
@@ -114,7 +122,7 @@ let user = {
 
         $.ajax({
             type:"POST",
-            url:"/api/me",
+            url:"/api/me" + (code ? "?code=" + code : ""),
             data:JSON.stringify(data),
             contentType: "application/json; charset = utf-8",
             dataType: "json"
@@ -128,6 +136,7 @@ let user = {
             $("#nicknameSubmit").attr("disabled", false);
             $("#ageSubmit").attr("disabled", false);
             $("#genderSubmit").attr("disabled", false);
+            $("#codeSubmit").attr("disabled", false);
         })
     }
 }
