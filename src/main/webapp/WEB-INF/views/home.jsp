@@ -66,6 +66,42 @@
 </style>
 
 <section class="main-content">
+    <div class="mdc-tab-bar" role="tablist">
+        <div class="mdc-tab-scroller">
+            <div class="mdc-tab-scroller__scroll-area">
+                <div class="mdc-tab-scroller__scroll-content">
+                    <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0" onclick="location.href = '/home?c=o'">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__text-label">진행</span>
+                        </span>
+                        <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                    <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0" onclick="location.href = '/home?c=w'">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__text-label">대기</span>
+                        </span>
+                        <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                    <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0" onclick="location.href = '/home?c=d'">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__text-label">완료</span>
+                        </span>
+                        <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <c:set var="categoryNum" value="0" />
     <c:forEach items="${recommend}" var="recommends" varStatus="e">
         <h4 class="font-weight-bold category-title">${recommends.category}</h4>
@@ -178,9 +214,11 @@
             </div>
         </div>
 
+<%--
         <c:if test="${e.index==0}">
             <div class="line"></div>
         </c:if>
+--%>
 
         <c:set var="categoryNum" value="${categoryNum + 1}" />
     </c:forEach>

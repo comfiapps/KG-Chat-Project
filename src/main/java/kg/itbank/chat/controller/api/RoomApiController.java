@@ -21,11 +21,6 @@ public class RoomApiController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @GetMapping
-    public ResponseDto<?> listFeaturedRoom() {
-        return new ResponseDto<>(HttpStatus.OK.value(), roomService.listFeaturedRoom());
-    }
-
     @PostMapping
     public ResponseDto<?> createRoom(@AuthenticationPrincipal PrincipalDetail principal,
                                      @RequestBody Room room) {
