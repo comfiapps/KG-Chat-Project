@@ -28,7 +28,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room> findAllByOpponentIdOrderByCreateDateDesc(long id);
 
-    @Query(value = "SELECT category FROM Room WHERE opponentId=0 GROUP BY category", nativeQuery = true)
+    @Query(value = "SELECT category FROM Room GROUP BY category", nativeQuery = true)
     List<String> listCategories();
 
     List<Room> findTop8ByCategory(String category);
