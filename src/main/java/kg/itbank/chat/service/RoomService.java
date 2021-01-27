@@ -69,10 +69,13 @@ public class RoomService {
         List<String> categories = roomRepository.listCategories();
 
         List<Room> waitItems = roomRepository.findAllByOpponentIdOrderByCreateDateDesc(0);
-        featuredList.add(FeaturedDto.builder()
-                .category("대기중인 방...")
-                .rooms(convertRoomToPublic(waitItems))
-                .build());
+        if(waitItems.size() > 0) {
+            featuredList.add(FeaturedDto.builder()
+                    .category("대기중인 방...")
+                    .rooms(convertRoomToPublic(waitItems))
+                    .build());
+
+        }
 
         for(String category : categories) {
             List<Room> getItems = roomRepository.findTop8ByCategoryAndOpponentIdGreaterThan(category, 0);
