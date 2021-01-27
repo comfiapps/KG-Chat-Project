@@ -1,0 +1,452 @@
+.chatting{font-size: 10px;}
+
+.chatting, .chat_container{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.vote_title, .vote_box, .user_vote, .discusser_box, .discusser_start_area,
+.chat_container, .score_container, .score_box, .score_content, .score_content div , .discusser_send_container, .watcher_send_container, .discusser_message_box, .watcher_vote{
+    display: flex; flex-wrap: nowrap;
+}
+.chat_container{ min-height: 40em; }
+
+.discusser_chat_container, .watcher_chat_container {
+    height: 100%; /*border: 1px solid  rgb(202, 202, 202);*/
+}
+.discusser_container{
+    width: 70%;
+}
+.watcher_container{
+    width: 30%; min-width: 300px;
+}
+.discusser_container, .watcher_container{
+    padding: 0.7em 1.2em; flex-flow: column nowrap;
+}
+
+/* 토론자 부분 */
+.score_container, .watcher_vote{
+    height: 18%;
+    min-height: 5em;
+}
+.discusser_chat_container{
+    height: 67%;
+}
+.discusser_send_container{
+    height: 15%;
+}
+
+/* 점수 영역 */
+.score_container{
+    align-items: center;
+    justify-content: center;
+    padding: 0 10%;
+    position: relative;
+}
+.score_box{
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    align-items: center;
+}
+.score_content{
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    padding: 0.5em 0;
+    align-content: center;
+    justify-content: center;
+}
+.score_content>div{
+    flex-direction: column;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2em;
+}
+
+.result_box{
+    width: fit-content;
+}
+.result{
+    font-size: 4em;
+}
+.time{
+    font-size: 2.3em;
+}
+.score_container, .watcher_vote{
+    min-height: 13em;
+}
+
+.user div:nth-child(1), .result div:nth-child(1){
+    height: fit-content;
+    padding: 0.2em 0.5em;
+}
+.user div:nth-child(2), .result div:nth-child(2){
+    height: 30%;
+    font-size: 2em;
+}
+
+/* 보내기 영역 */
+.discusser_send_container, .watcher_send_container{
+    padding: 0.5rem 2em;
+    min-height: 10em;
+}
+.send_box{
+    width: 100%;
+    height: 50%;
+}
+.send_box input{
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgb(185, 185, 185);
+    border-radius: 25px;
+    text-indent: 1.5rem;
+    font-size: 1.5em;
+    background: #E5E5E5 0% 0% no-repeat padding-box;
+}
+.send_box input:hover, .send_box input:focus{
+    border: 2px solid rgb(78, 105, 136);
+    box-shadow: 0 1px 5px rgba(0,0,0,.2);
+    border-radius: 25px;
+    outline: 0;
+}
+/* 채팅 공통 영역 */
+.chat_box{
+    height: 100%;
+    border: 1px solid  rgb(202, 202, 202);
+    margin: 0.5em 2em;
+    padding: 0.5em 2em;
+    overflow: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.chat_box::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+.discusser_send_container, .watcher_send_container{
+    align-items: center;
+}
+
+/* 시청자 채팅 영역 */
+.watcher_vote{
+    height: 18%;
+}
+.watcher_chat_container{
+    height: 67%;
+    padding: 0.5em 0em;
+}
+.watcher_send_container{
+    height: 15%;
+}
+.watcher_message_box{
+    height: fit-content;
+    margin-bottom: 1.2em;
+}
+.watcher_content{
+    font-size: 1.5em;
+}
+.watcher_user_area{
+    font-size: 1.3em;
+    margin-bottom: 0.3em;
+    color: #AFAFAF;
+}
+.watcher_container{
+    background-color: #faf1f1;
+}
+/* 토론자 채팅 영역 */
+.discusser_chat_container{
+    padding: 0.5em 0em;
+}
+.discusser_message_box{
+    margin-bottom: 1em;
+    font-size: 2em;
+    align-items: flex-start;
+    height: fit-content;
+}
+.discusser_profile_area{
+    max-width: fit-content;
+    height: fit-content;
+    padding: 5px;
+}
+.discusser_content{
+    width: fit-content;
+    max-width: 60%;
+    padding: .7em;
+    border-radius: 15px;
+}
+.user div img{
+    height: 5em;
+    width: 5em;
+}
+.watcher_vote img{
+    width: 4em;
+    height: 4em;
+}
+.discusser_profile_area img{
+    width: 2em;
+    height: 2em;
+}
+.user_vote img, .user div img, .watcher_vote img{
+    border-radius: 100%;
+}
+
+.message_left{
+    flex-direction: row;
+}
+.message_right{
+    flex-direction: row-reverse;
+}
+.message_left p, .message_right p{
+    text-align: left;
+    color: white;
+    margin: 0.3em;
+    font-size: 1em;
+}
+.message_left p{ background: #70A9FF 0% 0% no-repeat padding-box; }
+.message_right p{ background: #FF8D8D 0% 0% no-repeat padding-box; }
+
+.watcher_vote{
+    padding: 0 1em;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.vote_title, .user_vote, .user{
+    text-align: center; align-items: center; justify-items: center; font-weight: 1000;
+}
+
+.vote_title{
+    height: fit-content; font-size: 2.5em; padding-bottom: 0.5em;
+}
+.vote_title div{
+    width: 100%;
+}
+.vote_box{
+    height: 5em;
+}
+.user_vote{
+    color: white; cursor: pointer; position: relative;
+}
+.user_vote:hover{
+    border: 1px solid lightslategrey;
+    box-shadow: 0 1px 5px rgba(0,0,0,.2);
+}
+.user_vote div{
+    height: fit-content;
+}
+.user_left{
+    width: 100%; padding-right: 2em; background: #70A9FF 0% 0% no-repeat padding-box; border-radius: 5px 0px 0px 5px;
+}
+.user_right{
+    width: 100%; padding-left: 2em; background: #FF8D8D 0% 0% no-repeat padding-box; border-radius: 0px 5px 5px 0px;
+}
+.user_vote div:nth-child(1){
+    margin: 0.5em 0.5em;
+}
+.user_vote .select_vote{
+    background-color: black; opacity: 0.3; width: 100%; height: 100%;
+}
+.bg{
+    position: absolute; z-index: 5; border-radius: inherit;
+}
+#discusserBox>.hidden{ display: none;}
+.hidden{ display: none; }
+
+a{ text-decoration: none; color: black; }
+
+.watcher_scrollbar{
+    display: none;
+    position: absolute;
+    bottom: 0%;
+    z-index: 5;
+    width: 100%;
+    height: 3em;
+    background-color: #AFAFAF;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.watcher_scrollbar a{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.discusser_area, .watcher_area{
+    height: fit-content;
+}
+.discusser_box{
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.discusser_chat_container .backgroundColor{
+    background-color: #30303031;
+}
+
+.discusser_start_area{
+    justify-content: center;
+    align-items: center;
+    width: 40em;
+    height: 10em;
+    text-align: center;
+    font-size: 3em;
+}
+.user2_name, .user1_name{
+    padding: 0 0.2em;
+    font-size: 1.7em;
+}
+.watcher_scrollbar_ani, .watcher_container_ani{
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+.watcher_scrollbar_ani{
+    animation-name: moveScroll;
+}
+.watcher_container_ani{
+    animation-name: moveCotainer;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes moveCotainer{
+    0% {left: 0%; bottom: -80%;}
+    100% {left: 0%; bottom: 0%; animation-timing-function: ease-out;}
+}
+@keyframes moveScroll{
+    0% {left: 0%; bottom: 0%;}
+    100% {left: 0%; bottom: 80%; animation-timing-function: ease-out;}
+}
+
+@media (max-width: 1024px) and (min-width: 748px) {
+    .discusser_container{
+        width: 70%;
+    }
+    .watcher_container{
+        width: 30%;
+    }
+
+}
+
+/* 모바일시 작동할 부분 */
+@media (max-width: 747px){
+    .chatting{
+        padding-top: 112px;
+        font-size: 6.5px;
+    }
+    .chat_container{
+        overflow: hidden;
+    }
+    .discusser_container{
+        width: 100%;
+    }
+    .watcher_scrollbar{
+        display: block;
+    }
+    .watcher_container{
+        position: absolute;
+        z-index: 5;
+        width: 100%;
+        height: 80%;
+        bottom: -80%;
+        left: 0;
+    }
+
+}
+
+
+.lineBtn{
+    position: relative;
+    width: fit-content;
+    border: 1.5px solid #AFAFAF;
+    border-radius: 5px;
+    padding: 2px 4px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.lineBtn:hover{
+    box-shadow: 0 1px 5px rgba(0,0,0,.2);
+}
+.line {
+    border: 0;
+    border-radius: 10px;
+    width: 30px;
+    height: 5px;
+    margin: 4px 0px;
+    background-color: #AFAFAF;
+}
+.closeContent{
+    position: absolute;
+    top: 45px;
+    right: 0px;
+    padding: 5px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, .2);
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+    width: fit-content;
+    height: fit-content;
+    text-align: center;
+}
+.closeTitle{
+    font-size: 15px;
+    margin: 10px 0px;
+}
+.closeBtn{
+    width: 150px;
+    text-align: center;
+    margin: 10px 0px;
+}
+.closeBtnArea{
+    width: fit-content; height: fit-content; position: absolute; right: 0px; top: 0px;
+}
+.divider {
+    height: 1px;
+    background: #1a00001a;
+    margin: 16px 0;
+}
+/*모달 css*/
+.warn_modal{
+    position: fixed; top: 0px; left: 0px; z-index: 1060; width: 100%; height: 100%; background-color: #30303031;
+}
+.warn_modal_center{
+    position: relative;
+    top: 30%;
+    margin: 0 auto;
+    transform: translateY(-20%);
+    width: fit-content;
+    height: fit-content;
+}
+.warn_modal_container{
+    color: #616060;
+    background-color: white;
+    box-shadow: 0px 3px 6px #00000029;
+    border: 1px solid rgb(185, 185, 185);
+    border-radius: 5px;
+    padding: 2.5em;
+}
+.warn_modal_title{
+    font-size: 1.7em;
+    font-weight: 600;
+    margin-bottom: 2em;
+}
+.warn_modal_body{
+    min-width: 12em;
+    max-width: 17em;
+    max-height: 40em;
+    text-align: center;
+    font-size: 2.2em;
+    font-weight: 500;
+
+    overflow-wrap: anywhere;
+    overflow-y: auto;
+    margin: 0.2em;
+}
+.warn_modal_footer{
+    text-align: right;
+}
+.warn_modal_footer span{
+    font-size: 1.5em;
+}
