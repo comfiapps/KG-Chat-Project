@@ -12,7 +12,10 @@ let discussRoom = {
         discussRoom.watcherScollViewEvent()     //
         discussRoom.endDiscussBtnEvent();
         //만약 opponent 정보가 없으면 참여하기 버튼 호출
-        if(user.id != roomStatus.owner.id && roomStatus.opponent.id == '') $("#enter").addClass("show");
+        if(user.id != roomStatus.owner.id && roomStatus.opponent.id == '') {
+            $("#enter").addClass("show");
+            $("#enter").removeClass("hidden");
+        }
         if(selectNum == 4) $(".closeBtnArea").addClass("hidden");
     },
 
