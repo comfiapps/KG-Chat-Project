@@ -125,9 +125,16 @@
                                                 </c:choose>
                                             </div>
                                         </div>
-                                        <div class="process_bar"><div class="process_left"></div></div>
+                                        <c:choose>
+                                            <c:when test="${rooms.endDebate == null}">
+                                                <div class="process_bar" style="visibility: hidden"><div class="process_left"></div></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="process_bar"><div class="process_left"></div></div>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <div><sub>${rooms.roomCategory}</sub></div>
-                                        <h5 class="font-weight-bold">(1-2) ${rooms.roomName}</h5>
+                                        <h5 class="font-weight-bold">(${rooms.countOwnerVote}-${rooms.countOpponentVote}) ${rooms.roomName}</h5>
                                         <div>
                                             <c:set var="today" value="<%=new java.util.Date()%>" />
                                             <sub><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${rooms.createDate}" /></sub>

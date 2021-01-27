@@ -22,7 +22,7 @@
                                 <sub class="mdc-theme--error">준비중...</sub>
                             </c:when>
                             <c:otherwise>
-                                <sub>--명 시청 • ${result.endDebate}</sub>
+                                <sub>--명 시청 • <fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${result.endDebate}" /></sub>
                             </c:otherwise>
                         </c:choose>
 
@@ -56,9 +56,16 @@
                                 </c:choose>
                             </div>
                         </div>
-                        <div class="process_bar"><div class="process_left"></div></div>
+                        <c:choose>
+                            <c:when test="${result.endDebate == null}">
+                                <div class="process_bar" style="visibility: hidden"><div class="process_left"></div></div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="process_bar"><div class="process_left"></div></div>
+                            </c:otherwise>
+                        </c:choose>
                         <div><sub>${result.roomCategory}</sub></div>
-                        <h5 class="font-weight-bold" style="white-space: nowrap">(1-2) ${result.roomName}</h5>
+                        <h5 class="font-weight-bold" style="white-space: nowrap">(${result.countOwnerVote}-${result.countOpponentVote}) ${result.roomName}</h5>
                     </div>
                 </div>
                 <%--                                <c:out value = "${result.owner.id}" />--%>

@@ -55,8 +55,9 @@
                 if (response.data === 1){
                     location.href="/discuss/" + roomStatus.roomId;
                 }else{
-                    alert("이미 다른 사용자가 참여하셨습니다.");
-                    $("#enter").removeClass("show");
+                    modal.msg("이미 다른 사용자가 참여하셨습니다.", function(){modal.hidden(); $("#enter").removeClass("show");})
+                    // alert("이미 다른 사용자가 참여하셨습니다.");
+
                 }
             }).fail(error => {
                 console.log("error.....");
