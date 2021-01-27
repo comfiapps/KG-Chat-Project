@@ -31,7 +31,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query(value = "SELECT category FROM Room WHERE opponentId=0 GROUP BY category", nativeQuery = true)
     List<String> listCategories();
 
-    List<Room> findTop8ByCategoryAndOpponentIdGreaterThan(String category, long id);
+    List<Room> findTop8ByCategory(String category);
 
     List<Room> findByNameIsContainingOrCategoryContainingOrOwnerNameContaining(String name, String category, String owner);
 

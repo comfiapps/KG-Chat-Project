@@ -78,7 +78,7 @@ public class RoomService {
         }
 
         for(String category : categories) {
-            List<Room> getItems = roomRepository.findTop8ByCategoryAndOpponentIdGreaterThan(category, 0);
+            List<Room> getItems = roomRepository.findTop8ByCategory(category);
 
             featuredList.add(FeaturedDto.builder()
                     .category(category)

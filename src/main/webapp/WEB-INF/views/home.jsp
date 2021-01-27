@@ -54,11 +54,20 @@
         flex-grow: 1;
         text-align: center;
     }
+    .line{
+        width: 95%;
+        margin: 0 auto;
+        margin-top: 25px;
+        height: 1px;
+        background-color: RGBA(0,0,0,.1);
+    }
+
+
 </style>
 
 <section class="main-content">
     <c:set var="categoryNum" value="0" />
-    <c:forEach items="${recommend}" var="recommends">
+    <c:forEach items="${recommend}" var="recommends" varStatus="e">
         <h4 class="font-weight-bold category-title">${recommends.category}</h4>
 
         <div class="scrollmenu-wrapper">
@@ -168,6 +177,10 @@
                 </button>
             </div>
         </div>
+        <c:if test="${e.index==0}">
+            <div class="line"></div>
+        </c:if>
+
         <c:set var="categoryNum" value="${categoryNum + 1}" />
     </c:forEach>
     <br>
