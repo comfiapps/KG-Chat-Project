@@ -4,6 +4,9 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 
+<script>const pageInfo = "login";</script>
+<%@ include file="../../component/backdrop/code.jsp"%>
+
 <div class="loginPage">
 
 	<div class ="line">
@@ -26,7 +29,7 @@
 				</div>
 
 				<div>
-					<button class="mdc-button mdc-button--raised w-100" style="margin-bottom: 4px" disabled>
+					<button id="submit" class="mdc-button mdc-button--raised w-100" style="margin-bottom: 4px" disabled>
 						<span class="mdc-button__label">로그인 요청</span>
 					</button>
 				</div>
@@ -43,23 +46,25 @@
 				<span class="mdc-button__label">아직 계정이 없습니다</span>
 			</button>
 
-			<div style="margin-top: 56px"><input placeholder="테스트 이름 입력(등록)" id="test_register"> <%-- TODO test login--%></div>
-			<div style="margin-top: 8px"><input placeholder="DB 기준 아이디 입력" id="test_login"> <%-- TODO test login--%></div>
+<%--			<div style="margin-top: 56px"><input placeholder="테스트 이름 입력(등록)" id="test_register"> &lt;%&ndash; TODO test login&ndash;%&gt;</div>--%>
+<%--			<div style="margin-top: 8px"><input placeholder="DB 기준 아이디 입력" id="test_login"> &lt;%&ndash; TODO test login&ndash;%&gt;</div>--%>
 		</span>
 
 	</div>
 
 </div>
 
-
 <%-- TODO test login--%>
-<script>
+<%--<script>
 	$("#test_login").on("keyup", (event) => {
 		if (event.key === "Enter") location.href = "${baseUrl}/auth/test/callback/" + $("#test_login").val();
 	});
 	$("#test_register").on("keyup", (event) => {
 		if (event.key === "Enter") location.href = "${baseUrl}/auth/test/register/" + $("#test_register").val();
 	});
-</script>
+</script>--%>
+
+<script src="${pageContext.request.contextPath}/js/login.js"></script>
+<script src="${pageContext.request.contextPath}/js/code.js"></script>
 
 <%@ include file="../layout/footer.jsp"%>

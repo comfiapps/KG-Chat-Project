@@ -1,13 +1,18 @@
 package kg.itbank.chat.service;
 
 import kg.itbank.chat.model.Code;
+import kg.itbank.chat.model.RegisterCode;
 import kg.itbank.chat.model.User;
+import kg.itbank.chat.model.enums.CodeType;
 import kg.itbank.chat.repository.CodeRepository;
+import kg.itbank.chat.repository.RegisterCodeRepository;
 import kg.itbank.chat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 public class UserService {
@@ -17,6 +22,9 @@ public class UserService {
 
     @Autowired
     private CodeRepository codeRepository;
+
+    @Autowired
+    private RegisterCodeRepository registerCodeRepository;
 
     @Transactional(readOnly = true)
     public User findUserById(long id) {
@@ -67,12 +75,39 @@ public class UserService {
     }
 
     @Transactional
+    public long registerByCode(String name, String email, int code) {
+        RegisterCode codeObj = registerCodeRepository.findFirstByEmailAndCodeAndUsedIsFalseOrderByCreateDateDesc(email, code);
+        if(codeObj == null) return -1;
+        System.out.println(codeObj.toString());
+
+        User model = User.builder()
+                .kakaoId((int) (new Date().getTime()/1000))
+                .email(email)
+                .name(name)
+                .build();
+
+        userRepository.save(model);
+        codeObj.setUsed(true);
+        return model.getId();
+    }
+
+    @Transactional
+    public long loginByCode(String email, int code) {
+        User model = userRepository.findByEmail(email).orElseThrow(()
+                -> new UsernameNotFoundException("User Not Found - Email : " + email));
+        Code codeObj = codeRepository.findByIdUserEmailAndIdTypeAndCodeEqualsAndUsedIsFalse(email, CodeType.LOGIN, code);
+        if(codeObj == null) return -1;
+        codeObj.setUsed(true);
+        return model.getId();
+    }
+
+    @Transactional
     public long update(long id, User user, int code) {
         User model = userRepository.findById(id).orElseThrow(()
                 -> new UsernameNotFoundException("User Not Found - Id : " + id));
 
         if(user.getEmail() != null && code != 0) {
-            Code codeObj = codeRepository.findByIdUserIdAndEmailEqualsAndCodeEquals(id, user.getEmail(), code);
+            Code codeObj = codeRepository.findByIdUserIdAndIdTypeAndEmailEqualsAndCodeEqualsAndUsedIsFalse(id, CodeType.MODIFY, user.getEmail(), code);
             if(codeObj != null) {
                 model.setEmail(codeObj.getEmail());
                 codeObj.setUsed(true);

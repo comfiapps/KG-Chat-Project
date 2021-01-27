@@ -4,6 +4,9 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 
+<script>const pageInfo = "register";</script>
+<%@ include file="../../component/backdrop/code.jsp"%>
+
 <div class="loginPage">
 
 	<div class ="line">
@@ -33,7 +36,7 @@
 				</div>
 
 				<div>
-					<button class="mdc-button mdc-button--raised w-100" style="margin-bottom: 4px" disabled>
+					<button id="submit" class="mdc-button mdc-button--raised w-100" style="margin-bottom: 4px" disabled>
 						<span class="mdc-button__label">회원가입</span>
 					</button>
 				</div>
@@ -52,7 +55,10 @@
 		</span>
 
 	</div>
-
 </div>
+
+
+<script src="${pageContext.request.contextPath}/js/register.js"></script>
+<script src="${pageContext.request.contextPath}/js/code.js"></script>
 
 <%@ include file="../layout/footer.jsp"%>

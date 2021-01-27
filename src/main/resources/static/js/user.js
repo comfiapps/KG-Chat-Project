@@ -17,20 +17,20 @@ let user = {
         });
 
         $('#nicknameInput').on('input', (e) => {
-            if(updateForm_original_nick === e.target.value
-                || e.target.value.length <= 0) $("#nicknameSubmit").attr("disabled", true);
+            if(updateForm_original_nick === e.target.value.trim()
+                || e.target.value.trim().length <= 0) $("#nicknameSubmit").attr("disabled", true);
             else $("#nicknameSubmit").attr("disabled", false);
         });
 
         $('#emailInput').on('input', (e) => {
-            if(updateForm_original_email === e.target.value
-                || e.target.value.length <= 0) $("#emailSubmit").attr("disabled", true);
+            if(updateForm_original_email === e.target.value.trim()
+                || e.target.value.trim().length <= 0) $("#emailSubmit").attr("disabled", true);
             else $("#emailSubmit").attr("disabled", false);
         });
 
         $('#ageInput').on('input', (e) => {
-            if(updateForm_original_age === e.target.value
-                || e.target.value.length <= 0 || e.target.value.length > 2) $("#ageSubmit").attr("disabled", true);
+            if(updateForm_original_age === e.target.value.trim()
+                || e.target.value.trim().length <= 0 || e.target.value.trim().length > 2) $("#ageSubmit").attr("disabled", true);
             else $("#ageSubmit").attr("disabled", false);
         });
 
@@ -41,19 +41,19 @@ let user = {
 
         $('#nicknameSubmit').on('click', () => {
             this.modify({
-                name:  $("#nicknameInput").val()
+                name:  $("#nicknameInput").val().trim()
             })
         });
 
         $('#emailSubmit').on('click', () => {
             this.emailRequest({
-                email:  $("#emailInput").val()
+                email:  $("#emailInput").val().trim()
             })
         });
 
         $('#ageSubmit').on('click', () => {
             this.modify({
-                ageRange:  $("#ageInput").val()
+                ageRange:  $("#ageInput").val().trim()
             })
         });
 
@@ -71,15 +71,15 @@ let user = {
         });
 
         $('#codeInput').on('input', (e) => {
-           if(e.target.value.length == 6) {
+           if(e.target.value.trim().length == 6) {
                $('#codeSubmit').attr("disabled", false)
            }
         });
 
         $('#codeSubmit').on('click', () => {
             this.modify({
-                email:  $("#emailInput").val()
-            }, $("#codeInput").val());
+                email:  $("#emailInput").val().trim()
+            }, $("#codeInput").val().trim());
         });
 
     },

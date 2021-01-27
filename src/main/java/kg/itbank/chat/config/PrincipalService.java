@@ -27,7 +27,7 @@ public class PrincipalService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found - id"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found - id : " + id));
 
         return new PrincipalDetail(user);
     }

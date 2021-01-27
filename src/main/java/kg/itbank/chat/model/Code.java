@@ -25,6 +25,4 @@ public class Code {
     private String email;
     private int code;
     private boolean used;
-
-    private Timestamp expireDate;
 }

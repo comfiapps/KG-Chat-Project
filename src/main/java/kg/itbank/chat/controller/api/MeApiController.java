@@ -57,15 +57,14 @@ public class MeApiController {
     @PostMapping("/email")
     public ResponseDto<?> requestEmailChange(@AuthenticationPrincipal PrincipalDetail principal,
                                              @RequestBody User user) {
-        if(user.getEmail() != null) {
-            int code = codeService.generateCode(principal.getId(), user.getEmail());
-            if(code == -1) return new GlobalExceptionHandler().handleArgumentException(
-                    new Exception("email already in use"));
-            mailService.sendCode(user.getEmail(), code);
-        } else {
-            return new GlobalExceptionHandler().handleArgumentException(
-                    new Exception("email value is null"));
-        }
+        if(user.getEmail() == null) return new GlobalExceptionHandler().handleArgumentException(
+                new Exception("email value is null"));
+
+        int code = codeService.generateModifyCode(principal.getId(), user.getEmail());
+        if(code == -1) return new GlobalExceptionHandler().handleArgumentException(
+                new Exception("email already in use"));
+        mailService.sendCode("이메일 변결을", user.getEmail(), code);
+
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
 

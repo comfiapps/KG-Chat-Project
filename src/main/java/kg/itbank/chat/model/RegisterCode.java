@@ -1,5 +1,6 @@
 package kg.itbank.chat.model;
 
+import kg.itbank.chat.model.embbedId.CodeId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,31 +11,19 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Builder
-public class User {
+public class RegisterCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(unique = true)
-    private int kakaoId;
-
-    @Lob
-    @Column(unique = true)
     private String email;
-
-    private String name;
-
-    @Lob
-    private String image;
-
-    private String ageRange;
-
-    private String gender;
+    private int code;
+    private boolean used;
 
     @CreationTimestamp
     private Timestamp createDate;
