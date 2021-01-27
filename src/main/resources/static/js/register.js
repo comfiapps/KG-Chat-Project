@@ -16,6 +16,7 @@ let register = {
     },
 
     registerRequest: function (name, email) {
+        $(".backdrop2").css("display", "flex");
         $("#submit").attr("disabled", true);
 
         $.ajax({
@@ -23,6 +24,7 @@ let register = {
             url:"/api/request/register/" + name + "/" + email,
 
         }).done(response => {
+            $(".backdrop2").css("display", "none");
             if(response.status === 200) {
                 $('.backdrop').css("display", "flex");
             } else if (response.status === 500) {
@@ -30,6 +32,7 @@ let register = {
             }
 
         }).fail(error => {
+            $(".backdrop2").css("display", "none");
             alert(JSON.stringify(error))
             $("#submit").attr("disabled", false);
         })

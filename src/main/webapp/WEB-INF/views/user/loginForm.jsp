@@ -4,6 +4,8 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 
+<%@ include file="../../component/backdrop/loading.jsp"%>
+
 <script>const pageInfo = "login";</script>
 <%@ include file="../../component/backdrop/code.jsp"%>
 

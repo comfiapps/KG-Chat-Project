@@ -11,7 +11,7 @@
         width: 100vw;
         height: 100vh;
         background: rgba(0,0,0, 0.5);
-        z-index: 9999;
+        z-index: 5000;
         align-items: center;
         justify-content: center
     }

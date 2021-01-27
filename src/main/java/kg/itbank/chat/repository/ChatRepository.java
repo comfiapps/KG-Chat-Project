@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-    @Query(value = "select d.id as id, content, createDate, roomId, userId from (select * from Chat where roomId = :roomId) d inner join User u on d.userId = u.id order by createDate", nativeQuery = true)
+    @Query(value = "select d.id as id, content, d.createDate, roomId, userId from (select * from Chat where roomId = :roomId) d inner join User u on d.userId = u.id order by createDate", nativeQuery = true)
     List<Chat> findPastChatByRoomId(@Param("roomId") long roomId);
     List<Chat> findAllByRoomIdOrderByCreateDate(long roomId);
 }

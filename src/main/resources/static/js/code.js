@@ -29,6 +29,7 @@ let code = {
 
     requestSign: function (url, data) {
         $(".fd-code").attr("disabled", true);
+        $(".backdrop2").css("display", "flex");
 
         $.ajax({
             type: "POST",
@@ -38,6 +39,7 @@ let code = {
             dataType: "json"
 
         }).done(response => {
+            $(".backdrop2").css("display", "none");
             if(response.status === 200) {
                 location.href = "/"
 
@@ -53,6 +55,7 @@ let code = {
             }
 
         }).fail(error => {
+            $(".backdrop2").css("display", "none");
             alert(JSON.stringify(error))
         })
     },
