@@ -28,12 +28,16 @@
 
                 </div>
 
-                <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100 mdc-text-field--disabled" id = "emailLabel">
-                    <span class="mdc-text-field__ripple"></span>
-                    <input class="mdc-text-field__input" type="text" maxlength="6" placeholder="인증번호" aria-label="Label"
-                           id="codeInput" disabled>
-                    <span class="mdc-line-ripple"></span>
-                </label>
+                <div>
+                    <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label w-100 mdc-text-field--disabled" id = "emailLabel">
+                        <span class="mdc-text-field__ripple"></span>
+                        <input class="mdc-text-field__input" type="text" maxlength="6" placeholder="인증번호" aria-label="Label"
+                               id="codeInput" disabled>
+                        <span class="mdc-line-ripple"></span>
+                    </label>
+
+                    <span id = "msgCode"></span>
+                </div>
             </div>
 
             <div class="modal-footer border-top-0">

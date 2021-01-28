@@ -111,7 +111,7 @@ public class UserService {
             if(codeObj != null) {
                 model.setEmail(codeObj.getEmail());
                 codeObj.setUsed(true);
-            }
+            } else return -1;
         }
         if(user.getName() != null) model.setName(user.getName());
         if(user.getImage() != null) model.setImage(user.getImage());

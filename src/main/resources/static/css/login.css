@@ -54,12 +54,12 @@ body {
 @media(max-width : 881px) {
     .line {
         flex-wrap: wrap;
-        width: 500px;
+        max-width: 500px;
         justify-content: center;
     }
 
     .form {
-        margin: 32px 0;
+        margin: 32px 16px;
         align-self: start;
     }
 

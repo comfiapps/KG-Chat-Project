@@ -45,8 +45,9 @@ public class MeApiController {
     public ResponseDto<?> updateUserData(@AuthenticationPrincipal PrincipalDetail principal,
                                          @RequestBody User user,
                                          @RequestParam(value = "code", required = false) String code) {
-        UserDetails userDetails = principalService.loadUserById(
-                userService.update(principal.getId(), user, code));
+        long userId =  userService.update(principal.getId(), user, code);
+        if(userId == -1) return new ResponseDto<>(1006, "코드가 틀렸습니다");
+        UserDetails userDetails = principalService.loadUserById(userId);
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
@@ -61,9 +62,8 @@ public class MeApiController {
                 new Exception("email value is null"));
 
         int code = codeService.generateModifyCode(principal.getId(), user.getEmail());
-        if(code == -1) return new GlobalExceptionHandler().handleArgumentException(
-                new Exception("email already in use"));
-        mailService.sendCode("이메일 변결을", user.getEmail(), code);
+        if(code == -1) return new ResponseDto<>(1001, "이메일이 이미 사용 중입니다");
+        mailService.sendCode("이메일 변경을", user.getEmail(), code);
 
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }

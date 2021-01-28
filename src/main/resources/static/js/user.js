@@ -88,6 +88,8 @@ let user = {
         $("#emailSubmit").attr("disabled", true);
         $("#codeInput").attr("disabled", true);
 
+        document.getElementById("msgEmail").innerHTML = "";
+
         $.ajax({
             type:"POST",
             url:"/api/me/email",
@@ -101,6 +103,10 @@ let user = {
                 document.getElementById("msgEmail").style.color = "green";
                 $("#codeInput").attr("disabled", false);
                 $("#emailLabel").removeClass("mdc-text-field--disabled");
+
+            } else if(response.status === 1001) {
+                document.getElementById("msgEmail").innerHTML = "이메일이 이미 사용 중입니다";
+                document.getElementById("msgEmail").style.color = "red";
 
             } else {
                 document.getElementById("msgEmail").innerHTML = "이메일이 전송에 실패했습니다";
@@ -120,6 +126,8 @@ let user = {
         $("#ageSubmit").attr("disabled", true);
         $("#genderSubmit").attr("disabled", true);
 
+        document.getElementById("msgCode").innerHTML = "";
+
         $.ajax({
             type:"POST",
             url:"/api/me" + (code ? "?code=" + code : ""),
@@ -129,8 +137,13 @@ let user = {
 
         }).done(response => {
             if(response.status === 200) location.href = "/profile";
+            else if(response.status === 1006) {
+                document.getElementById("msgCode").innerHTML = "코드가 맞지 않습니다";
+                document.getElementById("msgCode").style.color = "red";
 
-        }).fail(error => {
+            }
+
+                }).fail(error => {
             alert(JSON.stringify(error))
 
             $("#nicknameSubmit").attr("disabled", false);

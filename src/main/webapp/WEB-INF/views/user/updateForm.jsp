@@ -151,12 +151,11 @@
                                         <div><sub>${rooms.roomCategory}</sub></div>
                                         <h5 class="font-weight-bold">(${rooms.countOwnerVote}-${rooms.countOpponentVote}) ${rooms.roomName}</h5>
                                         <div>
-
                                             <sub>${roomCounter[rooms.roomId] == null?0:roomCounter[rooms.roomId]}명 조회 • <fmt:formatDate value="${rooms.endDebate}" pattern="YYYY-MM-DD HH:mm"/></sub>
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
                         </c:forEach>
 
                     </div>
