@@ -12,8 +12,8 @@ public class KakaoProfile {
 	@Data
 	public static class Properties {
 		public String nickname;
-		public String profile_image;
-		public String thumbnail_image;
+//		public String profile_image;
+//		public String thumbnail_image;
 	}
 
 	@Data
@@ -37,6 +37,7 @@ public class KakaoProfile {
 			public String nickname;
 			public String thumbnail_image_url;
 			public String profile_image_url;
+			public Boolean is_default_image;
 		}
 	}
 }

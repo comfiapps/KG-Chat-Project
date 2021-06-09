@@ -138,7 +138,7 @@ public class AuthController {
                 .kakaoId(kakaoProfile.getId())
                 .email(kakaoProfile.getKakao_account().getEmail())
                 .name(kakaoProfile.getKakao_account().getProfile().getNickname())
-                .image(kakaoProfile.getProperties().getProfile_image())
+                .image(kakaoProfile.getKakao_account().getProfile().getProfile_image_url())
                 .ageRange(kakaoProfile.getKakao_account().getAge_range())
                 .gender(kakaoProfile.getKakao_account().getGender())
                 .build();

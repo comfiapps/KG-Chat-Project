@@ -39,10 +39,10 @@ public class ParticipantService {
 
     @Transactional(readOnly = true)
     public  Map<Long, Long> getRoomLoopupList(){
-        List list = participantRepository.findRoomLookup();
+        List<RoomLookup> list = participantRepository.findRoomLookup();
         Map<Long, Long> map = new HashMap<>();
-        for(int i = 0 ; i<list.size() ; i++){
-            RoomLookup roomLookup = (RoomLookup)list.get(i);
+        for (Object o : list) {
+            RoomLookup roomLookup = (RoomLookup) o;
             map.put(roomLookup.getRoomId(), roomLookup.getCount());
         }
         return map;
